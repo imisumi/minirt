@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/06/07 00:09:42 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/06/07 00:57:57 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 # include <stdint.h>
 
 # define PI 3.14159265
-# define WIDTH 1580
-# define HEIGHT 1080
+# define WIDTH 1000
+# define HEIGHT 500
 
 void	key_hook(mlx_key_data_t key, void *param);
 
