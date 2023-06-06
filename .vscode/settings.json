@@ -1,0 +1,27 @@
+{
+	"files.associations": {
+		"*.rmd": "markdown",
+		"mlx42.h": "c",
+		"stdlib.h": "c",
+		"ios": "c",
+		"fdf.h": "c",
+		"string": "c",
+		"filesystem": "c",
+		"iosfwd": "c",
+		"mlx42_int.h": "c",
+		"array": "c",
+		"iterator": "c",
+		"string_view": "c",
+		"vector": "c",
+		"stdio.h": "c",
+		"__tree": "c",
+		"map": "c",
+		"ratio": "c",
+		"__locale": "c",
+		"sstream": "c",
+		"algorithm": "c",
+		"variant": "c",
+		"chrono": "c",
+		"typeinfo": "c"
+	}
+}

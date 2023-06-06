@@ -1,0 +1,95 @@
+# -----------------------------------------------------------------------------
+# Codam Coding College, Amsterdam @ 2022-2023-2023 by W2Wizard.
+# See README in the root project for more information.
+# -----------------------------------------------------------------------------
+
+name: Build
+
+#=============================================================================#
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+#=============================================================================#
+
+jobs:
+
+# Tests
+#=============================================================================#
+
+  unit-test:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    env:
+      DISPLAY: ":99"
+
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq xorg-dev xvfb
+
+    - name: Setup virtual screen
+      run: Xvfb $DISPLAY -screen 0 1280x1024x24 &
+
+    - name: Build MLX42 & tests
+      run: cmake -DBUILD_TESTS=YES -B ${{github.workspace}}/build && cmake --build ${{github.workspace}}/build
+
+    - name: Run tests
+      run: ctest --output-on-failure --test-dir ${{github.workspace}}/build
+
+# Unix
+#=============================================================================#
+
+  build-unix:
+    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: |
+        set -x
+        if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq xorg-dev
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+            brew update
+            brew install glfw
+        else
+            echo "$RUNNER_OS not supported"
+            exit 1
+        fi
+
+    - name: Build
+      run: cmake -B build && cmake --build build
+
+# Windows
+#=============================================================================#
+
+  build-win:
+    name: Win32
+    runs-on: windows-latest
+    timeout-minutes: 20
+    # env:
+    #   CFLAGS: /WX
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: cmake -B build && cmake --build build --parallel
+
+#=============================================================================#
