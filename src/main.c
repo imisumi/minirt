@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:16:03 by imisumi           #+#    #+#             */
-/*   Updated: 2023/06/08 17:35:06 by imisumi          ###   ########.fr       */
+/*   Updated: 2023/06/09 01:21:50 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,33 @@
 #include <sys/time.h>
 
 float change = 0;
+t_vec3 light_dir = {-1.0f, -1.0f, 1.0f};
 
 // float iTime = gettimeofday(NULL, NULL);
 
 uint32_t ft_pixel(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
     return (r << 24 | g << 16 | b << 8 | a);
+}
+
+uint32_t vec4_convert_to_rgba(t_rgba color)
+{
+	uint8_t r = color.r * 255;
+	uint8_t g = color.g * 255;
+	uint8_t b = color.b * 255;
+	uint8_t a = color.a * 255;
+	uint32_t res = ft_pixel(r, g, b, a);
+	return (res);
+}
+
+uint32_t vec3_convert_to_rgb(t_vec3 color)
+{
+	uint8_t r = color.x * 255;
+	uint8_t g = color.y * 255;
+	uint8_t b = color.z * 255;
+	uint8_t a = 255;
+	uint32_t res = ft_pixel(r, g, b, a);
+	return (res);
 }
 
 void	ft_mlx_put_pixel(t_fdf *data, int x, int y, uint32_t color)
@@ -237,55 +258,140 @@ void hello_world(t_fdf *data)
 	}
 }
 
+float max(float a, float b) {
+    return (a > b) ? a : b;
+}
+
+
+void cherno(t_fdf *data)
+{
+	for (int y = 0; y < HEIGHT; y++) {
+		for (int x = 0; x < WIDTH; x++) {
+
+			t_vec2 coord = {(float)x / (float)WIDTH, (float)y / (float)HEIGHT};
+			//! 0 - 1 -> -1 to 1
+			coord.x = (coord.x * 2.0f) - 1.0f;
+			coord.y = (coord.y * 2.0f) - 1.0f;
+			
+			uint8_t r = (uint8_t)(255.0f * coord.x);
+			uint8_t g = (uint8_t)(255.0f * coord.y);
+
+			t_vec3 ray_direction = {coord.x, coord.y, -1.0f};
+			ray_direction.x *= ASPECT_RATIO;
+			t_vec3 ray_origin = {0.0f, 0.0f, 1.0f};
+			t_vec3 sphere_origin = {0.0f, 0.0f, 0.0f};
+			// t_vec3 light_dir = {-1.0f, -1.0f, -1.0f};
+			light_dir = vec3_normalize(light_dir);
+			float radius = 0.5f;
+
+			// TODO (bx^2 + by^2)t^2 + (2(axbx + ayby))t + (ax^2 + ay^2 - r^2) = 0
+			//? a = ray origin
+			//? b = ray direction
+			//? r = radius
+			//? t = time
+			float a = vec3_dot_float(ray_direction, ray_direction);
+			float b = 2.0f * vec3_dot_float(ray_origin, ray_direction);
+			float c = vec3_dot_float(ray_origin, ray_origin) - (radius * radius);
+
+			// TODO Quadratic formula discriminant:
+			// TODO b^2 - 4ac
+			// TODO (-b +- sqrt(discriminant)) / (2.0f * a)
+			float discriminant = (b * b) - (4.0f * a * c);
+			if (discriminant < 0.0f)
+				ft_mlx_put_pixel(data, x, HEIGHT - y, vec3_convert_to_rgb((t_vec3){0, 0, 0}));
+			else {
+				// float t[2];
+				// t[0] = (-b - sqrtf(discriminant)) / (2.0f * a);
+				// t[1] = (-b + sqrtf(discriminant)) / (2.0f * a);
+				// // printf("%f	%f\n", t[0], t[1]);
+
+				// t_vec3 hit_pos[2];
+				// t_vec3 normal;
+				// for (int i = 0; i < 1; i++) {
+				// 	hit_pos[i] = vec3_mul_float(vec3_add(ray_direction, ray_origin), t[i]);
+				// 	normal = vec3_sub(hit_pos[i], sphere_origin);
+				// }
+				
+				float t0 = (-b + sqrtf(discriminant)) / (2.0f * a);
+				float closest_t = (-b - sqrtf(discriminant)) / (2.0f * a);
+				
+				t_vec3 hit_pos = vec3_add(ray_origin, vec3_mul_float(ray_direction, closest_t));
+				t_vec3 normal = vec3_sub(hit_pos, sphere_origin);
+				normal = vec3_normalize(normal);
+
+
+				float d = max(0.0f, vec3_dot_float(normal, vec3_mul_float(light_dir, -1.0f))); //? == cos(angle)  cos(<90) return negative
+				// float d = vec3_dot_float(normal, vec3_mul_float(light_dir, -1.0f)); //? == cos(angle)  cos(<90) return negative
+
+				t_vec3 sphere_color = {1, 0, 1};
+			
+				//? Sets range to -1 to 1
+				// t_vec3 sphere_color = vec3_add_float(vec3_mul_float(normal, 0.5f), 0.5f);
+				sphere_color = vec3_mul_float(sphere_color, d);
+				uint32_t col = vec3_convert_to_rgb(sphere_color);
+				ft_mlx_put_pixel(data, x, HEIGHT - y, col);
+				
+
+
+
+
+
+
+
+
+				
+				// for (int i = 0; i < 1; i++) {
+				// 	hit_pos[i] = vec3_add(ray_origin, vec3_mul_float(ray_direction, t[i]));
+				// 	normal = vec3_sub(hit_pos[i], sphere_origin);
+				// }
+				// normal = vec3_normalize(normal);
+				
+				// t_rgba c;
+				// c.r = (normal.x * 0.5f + 0.5f) * 255.0f;
+				// c.g = (normal.y * 0.5f + 0.5f) * 255.0f;
+				// c.b = (normal.z * 0.5f + 0.5f) * 255.0f;
+				// c.a = 255;
+
+				// float light = max(0.0f, vec3_dot_float(normal, vec3_mul_float(light_dir, -1.0f)));
+
+				// c.r *= light;
+				// c.g *= light;
+				// c.b *= light;
+
+				// // ft_mlx_put_pixel(data, x, HEIGHT - y, ft_pixel(c.r, c.g, c.b, c.a));
+				
+				// t_vec3 c2 = {1, 0, 0};
+				// // ft_mlx_put_pixel(data, x, HEIGHT - y, vec3_convert_to_rgb(c2));
+			}
+			
+				
+			// uint32_t color = LIGHT_CORAL;
+			// color = ft_pixel(r, g, 0, 255);
+			// ft_mlx_put_pixel(data, x, HEIGHT - y, color);
+		}
+	}
+	light_dir.z -= 0.03f;
+	light_dir.x += 0.03f;
+}
+
 void	ft_loop_hook(void *param)
 {
 	t_fdf	*data;
 
 	data = param;
-	mainImage(data);
+	cherno(data);
+	// mainImage(data);
 	// draw_background(data);
 }
 
 void	mlx_actions(t_fdf *data)
 {
-	// struct timeval currentTime;
-    // gettimeofday(&currentTime, NULL);
-	// long int time = currentTime.tv_usec;
-    // printf("%ld\n", time);
 
-    // sleep(1);
-
-    // gettimeofday(&currentTime, NULL);
-	// float iTime = time - currentTime.tv_usec;
-    // // printf("%ld\n", currentTime.tv_usec);
-	// printf("%f\n", iTime);
-
-	// printf("%ld\n", currentTime.tv_usec);
-
-	// struct timeval start, end;
-    // double elapsed_time;
-
-    // // Start measuring time
-    // gettimeofday(&start, NULL);
-
-    // // Call your function
-    // sleep(1);
-
-    // // Stop measuring time
-    // gettimeofday(&end, NULL);
-
-    // // Calculate the elapsed time in seconds
-    // elapsed_time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
-
-    // printf("Elapsed time: %f seconds\n", elapsed_time);
-
-
-	
 	// draw_background(data);
 	// test_map(data);
 
 	// mainImage(data);
-
+	// cherno(data);
 	// hello_world(data);
 	mlx_key_hook(data->mlx, key_hook, data);
 	mlx_loop_hook(data->mlx, ft_loop_hook, data);
@@ -301,7 +407,7 @@ int32_t	main(int32_t argc, char *argv[])
 	data = ft_calloc(sizeof(t_fdf), 1);
 	if (data == NULL)
 		exit (EXIT_FAILURE);
-	data->mlx = mlx_init(WIDTH, HEIGHT, "MLX42", false);
+	data->mlx = mlx_init(WIDTH, HEIGHT, "Ray Tracer", false);
 	if (!data->mlx)
 		exit(EXIT_FAILURE);
 	data->image = mlx_new_image(data->mlx, WIDTH, HEIGHT);

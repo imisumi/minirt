@@ -59,10 +59,13 @@ t_vec3 vec3_sub(t_vec3 v1, t_vec3 v2);
 
 t_vec3 vec3_mul(t_vec3 v1, t_vec3 v2);
 
-t_vec3 vec3_dot(t_vec3 v1, t_vec3 v2);
+t_vec3 vec3_dot_vec3(t_vec3 v1, t_vec3 v2);
+float vec3_dot_float(t_vec3 v1, t_vec3 v2);
 
 float dot(t_vec3 v1, t_vec3 v2);
 
 float length(t_vec3 v);
 
 t_vec3 point_at_parameter(float t, t_ray r);
+
+t_vec3 vec3_normalize(t_vec3 v);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/06/08 12:54:13 by imisumi          ###   ########.fr       */
+/*   Updated: 2023/06/08 22:56:11 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 
 # define PI 3.14159265
 # define WIDTH 1000
-# define HEIGHT 500
+# define HEIGHT 1000
+# define ASPECT_RATIO (float)WIDTH / (float)HEIGHT
 
 typedef struct s_coord
 {
