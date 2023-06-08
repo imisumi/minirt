@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 13:10:54 by imisumi           #+#    #+#             */
-/*   Updated: 2023/06/06 23:57:03 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/06/07 09:53:30 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "../includes/minirt.h"
 
 void	key_hook(mlx_key_data_t key, void *param)
 {
