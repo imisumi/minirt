@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/06/09 18:13:16 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/06/10 15:24:55 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ typedef struct s_camera
 	float far_clip;
 
 	float rotation_speed;
+
+	t_vec3	*ray_dir;
 	
 	t_vec3 pos;
 	t_vec3 for_dir;

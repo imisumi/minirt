@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:16:03 by imisumi           #+#    #+#             */
-/*   Updated: 2023/06/10 04:32:48 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/06/10 15:51:59 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,29 @@ void camera(t_fdf *data, float verticalFOV, float nearClip, float farClip)
 	
 	data->camera.for_dir = (t_vec3){0.0f, 0.0f, -1.0f};
 	data->camera.pos = (t_vec3){0.0f, 0.0f, 3.0f};
+}
+
+void recalculate_ray_dir(t_fdf *data)
+{
+	for (uint32_t y = 0; y < HEIGHT; y++) {
+		for (uint32_t x = 0; x < WIDTH; x++) {
+			t_vec2 coord = (t_vec2){(float)x / (float)WIDTH, (float)y / (float)HEIGHT};
+			coord.x = (coord.x * 2.0f) - 1.0f;
+			coord.y = (coord.y * 2.0f) - 1.0f;
+
+			t_vec4 target = mat4_mul_vec4(data->camera.inv_projection, (t_vec4){coord.x, coord.y, 1.0f, 1.0f});
+			t_vec4 temp = vec3_to_vec4(vec3_normalize(vec3_divide(vec4_to_vec3(target), target.w)), 0);
+			temp = mat4_mul_vec4(data->camera.inv_view, temp);
+			t_vec3 ray_direction = vec4_to_vec3(temp);
+			data->camera.ray_dir[x + y * WIDTH] = ray_direction;
+		}
+	}
+}
+
+void recalculate_projection(t_fdf *data)
+{
+	data->camera.projection = perspective(data->camera.vertical_fov, (float)WIDTH, (float)HEIGHT, data->camera.near_clip, data->camera.far_clip);
+	data->camera.inv_projection = inverse_mat4(data->camera.projection);
 }
 
 void recalculate_view(t_fdf *data)
@@ -131,3 +154,7 @@ void on_update(t_fdf *data)
 	// printf("delta: %f, %f\n", delta.x, delta.y);
 	// printf("%d	%d\n", data->mouse.button, data->mouse.action);
 }
+
+
+
+

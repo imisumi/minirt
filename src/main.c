@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 13:16:03 by imisumi           #+#    #+#             */
-/*   Updated: 2023/06/09 20:53:54 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/06/10 15:57:22 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,22 @@ t_vec4 trace_ray(t_vec2 coord)
 		return vec3_to_vec4(sphere_color, 1.0f);
 	}
 }
+
+// void cherno(t_fdf *data)
+// {
+// 	for (int y = 0; y < HEIGHT; y++) {
+// 		for (int x = 0; x < WIDTH; x++) {
+
+// 			t_vec2 coord = {(float)x / (float)WIDTH, (float)y / (float)HEIGHT};
+// 			//! 0 - 1 -> -1 to 1
+// 			coord.x = (coord.x * 2.0f) - 1.0f;
+// 			coord.y = (coord.y * 2.0f) - 1.0f;
+			
+// 			t_vec4 color = trace_ray(coord);
+// 			ft_mlx_put_pixel(data, x, HEIGHT - y, vec4_to_int32_color(color));
+// 		}
+// 	}
+// }
 
 void cherno(t_fdf *data)
 {
@@ -210,7 +226,9 @@ void setup(t_fdf *data)
 	data->camera.far_clip = 100.0f;
 
 	data->camera.rotation_speed = 0.3f;
-	
+
+	data->camera.ray_dir = malloc(sizeof(t_vec3) * WIDTH * HEIGHT);
+
 	data->camera.pos = (t_vec3){0.0f, 0.0f, 0.0f};
 	data->camera.for_dir = (t_vec3){0.0f, 0.0f, 0.0f};
 }

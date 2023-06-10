@@ -560,3 +560,58 @@ void print_matrix(t_mat4 matrix)
 		printf("\n");
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include <math.h>
+
+t_mat4 perspective(float fov, float width, float height, float nearclip, float farclip) {
+	float aspectRatio = width / height;
+	float tanHalfFov = tanf(fov / 2.0f);
+	t_mat4 res;
+		
+	res.m[0][0] = 1.0f / (aspectRatio * tanHalfFov);
+	res.m[0][1] = 0.0f;
+	res.m[0][2] = 0.0f;
+	res.m[0][3] = 0.0f;
+		
+	res.m[1][0] = 0.0f;
+	res.m[1][1] = 1.0f / tanHalfFov;
+	res.m[1][2] = 0.0f;
+	res.m[1][3] = 0.0f;
+		
+	res.m[2][0] = 0.0f;
+	res.m[2][1] = 0.0f;
+	res.m[2][2] = -(farclip + nearclip) / (farclip - nearclip);
+	res.m[2][3] = -1.0f;
+		
+	res.m[3][0] = 0.0f;
+	res.m[3][1] = 0.0f;
+	res.m[3][2] = -(2.0f * farclip * nearclip) / (farclip - nearclip);
+	res.m[3][3] = 0.0f;
+
+	return res;
+}
+
+
+
+
+
+t_vec4 mat4_mul_vec4(t_mat4 m, t_vec4 v) {
+	t_vec4 res;
+	res.x = m.m[0][0] * v.x + m.m[1][0] * v.y + m.m[2][0] * v.z + m.m[3][0] * v.w;
+	res.y = m.m[0][1] * v.x + m.m[1][1] * v.y + m.m[2][1] * v.z + m.m[3][1] * v.w;
+	res.z = m.m[0][2] * v.x + m.m[1][2] * v.y + m.m[2][2] * v.z + m.m[3][2] * v.w;
+	res.w = m.m[0][3] * v.x + m.m[1][3] * v.y + m.m[2][3] * v.z + m.m[3][3] * v.w;
+	return res;
+}

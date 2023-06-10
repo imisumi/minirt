@@ -67,6 +67,7 @@ t_vec3 vec3_add(t_vec3 v1, t_vec3 v2);
 t_vec3 vec3_sub(t_vec3 v1, t_vec3 v2);
 
 t_vec3 vec3_mul(t_vec3 v1, t_vec3 v2);
+t_vec4 vec4_mul_vec4(t_vec4 v1, t_vec4 v2);
 
 t_vec3 vec3_dot_vec3(t_vec3 v1, t_vec3 v2);
 float vec3_dot_float(t_vec3 v1, t_vec3 v2);
@@ -104,3 +105,10 @@ void print_matrix(t_mat4 matrix);
 
 
 t_mat4	mat4_mul_mat4(t_mat4 a, t_mat4 b);
+
+t_vec4 mat4_mul_vec4(t_mat4 m, t_vec4 v);
+t_vec3 vec4_to_vec3(t_vec4 v);
+
+t_vec4 vec4_divide(t_vec4 v, float f);
+
+t_vec3 vec3_divide(t_vec3 v, float f);

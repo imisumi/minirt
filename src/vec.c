@@ -59,6 +59,17 @@ t_vec3 vec3_mul(t_vec3 v1, t_vec3 v2)
 	return (v);
 }
 
+t_vec4 vec4_mul_vec4(t_vec4 v1, t_vec4 v2)
+{
+	t_vec4 v;
+
+	v.x = v1.x * v2.x;
+	v.y = v1.y * v2.y;
+	v.z = v1.z * v2.z;
+	v.w = v1.w * v2.w;
+	return (v);
+}
+
 t_vec3 vec3_dot_vec3(t_vec3 v1, t_vec3 v2)
 {
 	t_vec3 v;
@@ -183,4 +194,35 @@ t_mat4	mat4_mul_mat4(t_mat4 a, t_mat4 b)
 		}
 	}
 	return (m);
+}
+
+t_vec4 vec4_divide(t_vec4 v, float f)
+{
+	t_vec4 res;
+
+	res.x = v.x / f;
+	res.y = v.y / f;
+	res.z = v.z / f;
+	res.w = v.w / f;
+	return (res);
+}
+
+t_vec3 vec3_divide(t_vec3 v, float f)
+{
+	t_vec3 res;
+
+	res.x = v.x / f;
+	res.y = v.y / f;
+	res.z = v.z / f;
+	return (res);
+}
+
+t_vec3 vec4_to_vec3(t_vec4 v)
+{
+	t_vec3 res;
+
+	res.x = v.x;
+	res.y = v.y;
+	res.z = v.z;
+	return (res);
 }
