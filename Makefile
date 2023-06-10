@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+         #
+#    By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2023/06/07 12:26:16 by imisumi          ###   ########.fr        #
+#    Updated: 2023/06/09 17:03:13 by ichiro           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,10 @@ INC := -I $(INCLUDE_DIR)
 
 SRCS = main.c \
 		vec.c \
-		key_hook.c
+		key_hook.c \
+		utils.c \
+		matrix.c \
+		camera.c
 		
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
 

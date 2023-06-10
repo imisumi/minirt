@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/06/08 22:56:11 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/06/09 17:00:22 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include "struct.h"
 # include "colors.h"
 # include "vec.h"
+# include "utils.h"
+# include "camera.h"
 
 # include <stdlib.h>
 # include <stdio.h>
