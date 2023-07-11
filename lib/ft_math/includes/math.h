@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:29:15 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/10 23:11:30 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/11 02:41:25 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,38 +47,6 @@
 // 	return result;
 // }
 
-
-t_vec4 vec4_div_float(t_vec4 v, float t)
-{
-	return (vec4_create(v.x / t, v.y / t, v.z / t, v.w / t));
-}
-
-
-t_vec3 reflect(t_vec3 incident, t_vec3 normal) {
-    // Calculate the reflection direction
-    t_vec3 reflection_direction;
-	float dot_product = vec3_dot(incident, normal);
-    reflection_direction.x = incident.x - 2.0f * dot_product * normal.x;
-    reflection_direction.y = incident.y - 2.0f * dot_product * normal.y;
-    reflection_direction.z = incident.z - 2.0f * dot_product * normal.z;
-
-    return reflection_direction;
-}
-
-t_vec4 vec4_add(t_vec4 a, t_vec4 b)
-{
-	return (vec4_create(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w));
-}
-
-t_vec4 vec4_mul(t_vec4 a, t_vec4 b)
-{
-	return (vec4_create(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w));
-}
-
-t_vec3 vec3_reflect(t_vec3 incident, t_vec3 normal)
-{
-	return vec3_sub(incident, vec3_mul_float(normal, 2.0f * vec3_dot(incident, normal)));
-}
 
 
 #endif // MATH_H

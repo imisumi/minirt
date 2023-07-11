@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/10 01:36:22 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/11 02:50:27 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,6 @@
 # include "../lib/ft_math/includes/math.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 
-// #include "main.h"
-
-// typedef struct s_material
-// {
-// 	t_vec3 albedo;
-// 	float roughness;
-
-// }	t_material;
-
-// typedef struct s_sphere
-// {
-// 	t_vec3 position;
-// 	float radius;
-// 	int material_index;
-// }	t_sphere;
-
-// typedef struct s_scene
-// {
-// 	int number_of_spheres;
-// 	t_sphere spheres[10];
-// 	t_material materials[10];
-// }	t_scene;
-
-
 typedef struct s_material
 {
 	t_vec3 albedo;
@@ -47,15 +23,6 @@ typedef struct s_material
 	t_vec3 emission_color;
 	float emission_intensity;
 }	t_material;
-
-
-// typedef struct hit_record
-// {
-// 	float	t;
-// 	t_vec3	p;
-// 	t_vec3	normal;
-// 	s_material material;
-// } t_hit_record;
 
 typedef struct s_cylinder
 {

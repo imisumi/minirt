@@ -41,3 +41,18 @@ t_vec4 vec4_normalize(t_vec4 v)
 	v.w /= len;
 	return(v);
 }
+
+t_vec4 vec4_div_float(t_vec4 v, float t)
+{
+	return (vec4_create(v.x / t, v.y / t, v.z / t, v.w / t));
+}
+
+t_vec4 vec4_add(t_vec4 a, t_vec4 b)
+{
+	return (vec4_create(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w));
+}
+
+t_vec4 vec4_mul(t_vec4 a, t_vec4 b)
+{
+	return (vec4_create(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w));
+}

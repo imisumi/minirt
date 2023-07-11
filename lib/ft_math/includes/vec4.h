@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:29:15 by ichiro            #+#    #+#             */
-/*   Updated: 2023/06/17 01:35:49 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/11 02:28:13 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 // vec4
 t_vec4 vec4_clamp(t_vec4 v, float min, float max);
 t_vec4 vec4_normalize(t_vec4 v);
+t_vec4 vec4_div_float(t_vec4 v, float t);
+t_vec4 vec4_add(t_vec4 a, t_vec4 b);
+t_vec4 vec4_mul(t_vec4 a, t_vec4 b);
+
 
 
 #endif // VEC4_H
