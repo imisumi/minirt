@@ -6,7 +6,7 @@
 #    By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 12:43:01 by imisumi           #+#    #+#              #
-#    Updated: 2023/06/07 00:07:41 by ichiro           ###   ########.fr        #
+#    Updated: 2023/06/11 03:51:43 by ichiro           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra
 
-OBJS_DIR = objs
+OBJS_DIR = .obj
 SRC_DIR = src
 
 GREEN := \033[1;32m
@@ -52,7 +52,7 @@ $(NAME): $(OBJS)
 
 $(OBJS_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
-	@echo "$(BLUE)[Compiling $<]$(NC)" >/dev/null 2>&1
+	@echo "$(BLUE)[Compiling $<]$(NC)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:

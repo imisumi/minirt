@@ -6,22 +6,21 @@
 #    By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2023/06/09 17:03:13 by ichiro           ###   ########.fr        #
+#    Updated: 2023/07/10 23:09:05 by ichiro           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = miniRT
+NAME = raytracer
 
-HEADER = includes/fdf.h
+HEADER = ./includes/main.h
 
-CFLAGS = -g -I include
-
-LEAKS = -fsanitize=address
+CFLAGS = -g 
 
 cc = gcc 
 
+LFLAGS = -framework Cocoa -framework OpenGl -framework IOKit -lm -Ofast -O3 -ffast-math -flto
+
 UNAME := $(shell uname -m)
-LFLAGS = -framework Cocoa -framework OpenGl -framework IOKit -lm
 
 ifeq ($(UNAME), x86_64)
 	LFLAGS += -lglfw3
@@ -30,9 +29,11 @@ else
 endif
 
 MLX = lib/MLX42/build/libmlx42.a
+CGLM = lib/cglm/build/lib/libcglm.a
 LIBFT = lib/libft/libft.a
+MATH = lib/ft_math/math.a
 
-OBJS_DIR = objs
+OBJ_DIR = .obj
 SRC_DIR = src
 
 GREEN := \033[1;32m
@@ -43,59 +44,67 @@ NC := \033[0m
 
 INC := -I $(INCLUDE_DIR)
 
-SRCS = main.c \
-		vec.c \
-		key_hook.c \
-		utils.c \
-		matrix.c \
-		camera.c
-		
-OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
+SRC = main.c camera.c
 
-all: $(LIBFT) $(MLX) $(NAME)
-	@echo "$(GREEN)[Completed fdf]$(NC)"
 
-$(OBJS_DIR)/%.o: $(SRC_DIR)/%.c
+OBJ = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
+
+all: $(CGLM) $(MLX) $(LIBFT) $(MATH) $(NAME)
+	@echo "$(GREEN)[Completed]$(NC)"
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER)
 	@mkdir -p $(dir $@)
 	@echo "$(BLUE)[Compiling $<]$(NC)"
-	@$(cc) $(CFLAGS) $(INC) -I -c -o $@ $<
+	@$(cc) $(CFLAGS) -I -I -c -o $@ $<
 
-$(LIBFT):
-	@$(MAKE) -C lib/libft
-
+$(CGLM):
+	@echo "$(BLUE)[Compiling cglm]$(NC)"
+	cd ./lib/cglm && mkdir build && \
+		cd build && \
+		cmake .. -DCGLM_SHARED=OFF -DCGLM_STATIC=ON -DCMAKE_INSTALL_PREFIX=./ && \
+		make install
+	@echo "$(GREEN)[Completed cglm]$(NC)"
+	
 $(MLX):
 	@echo "$(BLUE)[Compiling MLX]$(NC)"
 	@cd ./lib/MLX42 && cmake -DBUILD_TESTS=ON -B build && cmake --build build --parallel
 	@echo "$(GREEN)[Completed MLX]$(NC)"
-	
-$(NAME): $(MLX) $(LIBFT) $(OBJS)
-	@$(cc) $(CFLAGS) $(INC) -I $^ -o $(NAME) $(LFLAGS)
+
+$(LIBFT):
+	@$(MAKE) -C lib/libft
+
+$(MATH):
+	@$(MAKE) -C lib/ft_math
+
+$(NAME): $(MLX) $(CGLM) $(LIBFT) $(MATH) $(OBJ)
+	$(cc) $(CFLAGS) -I -I $(LFLAGS) $^ -o $(NAME)
 
 run: all
-	./miniRT
-	
-git:
-	git add .
-	git commit -m "$(m)"
-	git push
+	./raytracer
+
+test: all
+	$(cc) $(CFLAGS) -I -I $(LFLAGS) $(MLX) temp.c -o $(NAME)
+	./raytracer
 
 clean:
-	@rm -rf $(OBJS_DIR)
-	@rm -f libmlx.dylib
-	@make clean -C lib/libft
-	@echo "$(RED)[Deleted fdf objects]$(NC)"
+	@rm -rf $(OBJ_DIR)
+	@echo "$(RED)[Deleted objects]$(NC)"
 
 fclean:
-	@rm -rf $(OBJS_DIR)
+	@rm -rf $(OBJ_DIR)
 	@rm -rf $(NAME)
-	@make fclean -C lib/libft
-	@echo "$(RED)[Deleted fdf objects]$(NC)"
-	@echo "$(RED)[Deleted fdf]$(NC)"
+	@echo "$(RED)[Deleted objects]$(NC)"
+	@echo "$(RED)[Deleted]$(NC)"
+
+cglmclean:
+	@rm -rf ./lib/cglm/build
+	@echo "$(RED)[Deleted cglm]$(NC)"
 
 mlxclean:
 	@rm -rf ./lib/MLX42/build
 	@echo "$(RED)[Deleted MLX]$(NC)"
 
 re: fclean all
+	cd ./lib/ft_math && make re
 
 .PHONY: all clean fclean re

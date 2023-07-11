@@ -1,0 +1,9 @@
+[submodule "lib/libft"]
+	path = lib/libft
+	url = https://github.com/imisumi/libft.git
+[submodule "lib/cglm"]
+	path = lib/cglm
+	url = https://github.com/recp/cglm.git
+[submodule "lib/MLX42"]
+	path = lib/MLX42
+	url = https://github.com/codam-coding-college/MLX42.git
