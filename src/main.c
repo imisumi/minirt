@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/11 03:10:32 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/11 16:00:28 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int hdr_width;
 int hdr_height;
 int hdr_channels;
 uint32_t total_frames;
+t_vec4 *accumulated_data;
+uint32_t accumulated_frames;
 
 double previousTime = 0.0;
 
@@ -64,7 +66,7 @@ void init_scene(t_scene *s)
 	s->camera.verticalFOV = 60.0f;
 	s->camera.aspectRatio = (float)WIDTH / (float)HEIGHT;
 	s->camera.zNear = 0.1f;
-	s->camera.zFar = 100.0f;
+	s->camera.zFar = 10.0f;
 
 	s->camera.prevMousePos.x = -1;
 	s->camera.prevMousePos.y = -1;
@@ -74,11 +76,11 @@ void init_scene(t_scene *s)
 
 
 	s->nb_spheres = 2;
-	s->spheres[0] = create_sphere(vec3_create(0.0f, 1.4f, 0.0f), 0.5f);
+	s->spheres[0] = create_sphere(vec3_create(0.0f, .7f, 0.0f), 0.5f);
 	// s->spheres[0].material.albedo = vec3_create(0.3f, 0.3f, 0.5f);
 	s->spheres[0].material.albedo = vec3_create(0.0f, 0.0f, 0.0f);
 	s->spheres[0].material.emission_color = vec3_create(1.0f, 1.0f, 1.0f);
-	s->spheres[0].material.emission_intensity = 5.0f;
+	s->spheres[0].material.emission_intensity = 100.0f;
 	
 	s->spheres[1] = create_sphere(vec3_create(1.5f, 0.0f, 0.0f), 0.5f);
 	s->spheres[1].material.albedo = vec3_create(1.0f, 0.0f, 0.0f);
@@ -284,53 +286,6 @@ t_obj_hit sphere_intersection(t_ray ray, t_scene s, t_obj_hit obj_hit)
 	return (obj_hit);
 }
 
-// float my_sign(float num) {
-//     if (num > 0.0f) {
-//         return 1.0f;
-//     } else if (num < 0.0f) {
-//         return -1.0f;
-//     } else {
-//         return 0.0f;
-//     }
-// }
-
-
-
-// float random_value_normal_distribution(uint32_t *state)
-// {
-// 	float theta = 2 * 3.1415926 * randomFloat(state);
-// 	float rho = sqrtf(-2 * logf(randomFloat(state)));
-// 	return rho * cosf(theta);
-// }
-
-// t_vec3 random_direction(uint32_t *state)
-// {
-// 	float x = random_value_normal_distribution(state);
-// 	float y = random_value_normal_distribution(state);
-// 	float z = random_value_normal_distribution(state);
-// 	return vec3_normalize(vec3_create(x, y, z));
-	
-// }
-
-// t_vec3 random_himisphere_dir(t_vec3 normal, uint32_t *state)
-// {
-// 	// t_vec3 dir;
-// 	// dir.x = randomFloat(state);
-// 	// dir.y = randomFloat(state);
-// 	// dir.z = randomFloat(state);
-// 	// float dot = vec3_dot(dir, normal);
-// 	// dot = my_sign(dot);
-// 	// if (dot < 0.0f)
-// 	// 	dir = vec3_mul_float(dir, -1.0f);
-// 	// return dir;
-// 	// return vec3_mul_float(dir, my_sign(vec3_dot(normal, dir)));
-
-
-// 	t_vec3 dir;
-// 	dir = random_direction(state);
-
-// 	return vec3_mul_float(dir, my_sign(vec3_dot(normal, dir)));
-// }
 
 t_vec4 per_pixel(t_ray ray, t_vec2 coord, t_scene s, t_vec2 xy, uint32_t *rngState)
 {
@@ -371,20 +326,20 @@ t_vec4 per_pixel(t_ray ray, t_vec2 coord, t_scene s, t_vec2 xy, uint32_t *rngSta
 	
 
 
-	for (int i = 0; i < 5; i++)
-	{
-		obj_hit = sphere_intersection(ray, s, obj_hit);
-		obj_hit = plane_intersection(ray, s, obj_hit);
-		if (obj_hit.hit == false)
-			break;
-		// TODO: relection
-		ray.origin = vec3_add(obj_hit.position, vec3_mul_float(obj_hit.normal, 0.001f));
-		ray.direction = reflect(ray.direction, obj_hit.normal);
-		// ray.direction = random_himisphere_dir(obj_hit.normal, &rngState);
-		obj_hit.hit = false;
-		obj_hit.hit_distance = MAXFLOAT;
-	}
-	return get_sky_color_int(ray, coord);
+	// for (int i = 0; i < 5; i++)
+	// {
+	// 	obj_hit = sphere_intersection(ray, s, obj_hit);
+	// 	obj_hit = plane_intersection(ray, s, obj_hit);
+	// 	if (obj_hit.hit == false)
+	// 		break;
+	// 	// TODO: relection
+	// 	ray.origin = vec3_add(obj_hit.position, vec3_mul_float(obj_hit.normal, 0.001f));
+	// 	ray.direction = reflect(ray.direction, obj_hit.normal);
+	// 	// ray.direction = random_himisphere_dir(obj_hit.normal, &rngState);
+	// 	obj_hit.hit = false;
+	// 	obj_hit.hit_distance = MAXFLOAT;
+	// }
+	// return get_sky_color_int(ray, coord);
 
 
 
@@ -398,18 +353,27 @@ t_vec4 per_pixel(t_ray ray, t_vec2 coord, t_scene s, t_vec2 xy, uint32_t *rngSta
 		
 		obj_hit = sphere_intersection(ray, s, obj_hit);
 		obj_hit = plane_intersection(ray, s, obj_hit);
-		if (obj_hit.hit == false)
-			break;
+		
 		// TODO: relection
-
-		ray.origin = vec3_add(obj_hit.position, vec3_mul_float(obj_hit.normal, 0.001f));
-		// ray.direction = reflect(ray.direction, obj_hit.normal);
-		ray.direction = random_himisphere_dir(obj_hit.normal, rngState);
-
-		t_material material = obj_hit.material;
-		t_vec3 emitted_light = vec3_mul_float(material.emission_color, material.emission_intensity);
-		incoming_licht = vec3_add(incoming_licht, vec3_mul(ray_color, emitted_light));
-		ray_color = vec3_mul(ray_color, material.albedo);
+		if (obj_hit.hit == true)
+		{
+			ray.origin = vec3_add(obj_hit.position, vec3_mul_float(obj_hit.normal, 0.001f));
+			// ray.direction = reflect(ray.direction, obj_hit.normal);
+			ray.direction = random_himisphere_dir(obj_hit.normal, rngState);
+	
+			t_material material = obj_hit.material;
+			t_vec3 emitted_light = vec3_mul_float(material.emission_color, material.emission_intensity);
+			incoming_licht = vec3_add(incoming_licht, vec3_mul(ray_color, emitted_light));
+			ray_color = vec3_mul(ray_color, material.albedo);
+		}
+		else
+		{
+			t_vec4 temp = get_sky_color_int(ray, coord);
+			t_vec3 sky_color = vec3_create(temp.x, temp.y, temp.z);
+			incoming_licht = vec3_add(incoming_licht, vec3_mul(ray_color, sky_color));
+			break;
+		}
+			
 
 		// return vec4_create(0.2f, 0.7f, 0.2f, 1.0f);
 		// return vec4_create(material.emission_color.x, material.emission_color.y, material.emission_color.z, 1.0f);
@@ -447,6 +411,9 @@ void	render(t_mlx *d)
 	t_ray ray;
 	ray.origin = scene.camera.position;
 	// for (int y = d->img->height - 1; y >= 0; y--)
+
+	if (accumulated_frames == 1)
+		memset(accumulated_data, 0, WIDTH * HEIGHT * sizeof(t_vec4));
 	for (int y = HEIGHT - 1; y >= 0; y--)
 	{
 		for (int x = 0; x < WIDTH; x++)
@@ -462,7 +429,7 @@ void	render(t_mlx *d)
 			t_vec2 numPixels = vec2_create((float)WIDTH, (float)HEIGHT);
 			t_vec2 pixelCoord = vec2_mul(coord, numPixels);
 			uint32_t pixelIndex = pixelCoord.x + pixelCoord.y * numPixels.x;
-			uint32_t rngState = pixelIndex;
+			uint32_t rngState = pixelIndex + total_frames * 719393;
 
 
 
@@ -471,12 +438,17 @@ void	render(t_mlx *d)
 			// coord.y = y;
 			t_vec4 color = per_pixel(ray, coord, d->scene, vec2_create(x, y), &rngState);
 
+			// color = vec4_clamp(color, 0.0, 1.0);
 			
+			accumulated_data[x + y * WIDTH] = vec4_add(accumulated_data[x + y * WIDTH], color);
+			
+			t_vec4 accumulated_color = accumulated_data[x + y * WIDTH];
+			accumulated_color = vec4_div_float(accumulated_color, accumulated_frames);
+			accumulated_color = vec4_clamp(accumulated_color, 0.0, 1.0);
 
 			
 			// printf("x: %f\n", color.x);
 			// t_vec4 color = per_pixel(coord, d->scene);
-			color = vec4_clamp(color, 0.0, 1.0);
 			// put_pixel(d->img, x, d->img->height - y, vec4_to_color(color));
 			// put_pixel(d->img, x, HEIGHT - y, vec4_to_color(color));
 			
@@ -484,12 +456,18 @@ void	render(t_mlx *d)
 			{
 				for (int j = 0; j < PIXEL_SIZE; j++)
 				{
-					put_pixel(d->img, (x * PIXEL_SIZE) + i, ((HEIGHT - y - 1) * PIXEL_SIZE) + j, vec4_to_color(color));
+					// put_pixel(d->img, (x * PIXEL_SIZE) + i, \
+					// 	((HEIGHT - y - 1) * PIXEL_SIZE) + j, \
+					// 	vec4_to_color(color));
+					put_pixel(d->img, (x * PIXEL_SIZE) + i, \
+						((HEIGHT - y - 1) * PIXEL_SIZE) + j, \
+						vec4_to_color(accumulated_color));
 				}
 			}
 		}
 		// exit(0);
 	}
+	accumulated_frames++;
 }
 
 
@@ -646,6 +624,7 @@ void	movement(t_mlx *d)
 	
 
 	if (moved) {
+		accumulated_frames = 1;
 		recalculate_view(d);
 		if (rotated) {
 			recalculat_ray_directions(d);
@@ -662,7 +641,7 @@ void	ft_loop_hook(void *param)
 	double deltaTime = currentTime - previousTime;
 	double frameTimeMs = deltaTime * 1000.0;
 	//! use this one
-	printf("\rframeTimeMs: %.2f ms    frames: %d    ", frameTimeMs, total_frames);
+	printf("\rframeTimeMs: %.2f ms    frames: %d	accumulated frames: %d", frameTimeMs, total_frames, accumulated_frames);
 
 
 	
@@ -687,27 +666,27 @@ void ft_hook(void* param)
 void read_hdr_file(t_mlx *d)
 {
 	
-	// const char* filename = "resized_sky_2.jpg";
-	const char* filename = "little_paris_eiffel_tower.jpg";
+	const char* filename = "resized_sky_2.jpg";
+	// const char* filename = "little_paris_eiffel_tower.jpg";
 	// const char* filename = "test.png";
 	// int width, height, num_channels;
-	pixels = stbi_loadf(filename, &hdr_width, &hdr_height, &hdr_channels, 0);
+	// pixels = stbi_loadf(filename, &hdr_width, &hdr_height, &hdr_channels, 0);
 	pixels_8 = stbi_load(filename, &hdr_width, &hdr_height, &hdr_channels, 0);
 	printf("width: %d, height: %d, channels: %d\n", hdr_width, hdr_height, hdr_channels);
 
-	if (pixels == NULL) {
-		printf("Error in loading the image\n");
-		exit(EXIT_FAILURE);
-	}
+	// if (pixels == NULL) {
+	// 	printf("Error in loading the image\n");
+	// 	exit(EXIT_FAILURE);
+	// }
 	float num = 0.0f;
 	float num2 = 1.0f;
-	for (int i = 0; i < hdr_width * hdr_height * hdr_channels; i++)
-	{
-		if (pixels[i] > num)
-			num = pixels[i];
-		if (pixels[i] < num2)
-			num2 = pixels[i];
-	}
+	// for (int i = 0; i < hdr_width * hdr_height * hdr_channels; i++)
+	// {
+	// 	if (pixels[i] > num)
+	// 		num = pixels[i];
+	// 	if (pixels[i] < num2)
+	// 		num2 = pixels[i];
+	// }
 	
 	pixels_8bit = malloc(sizeof(uint8_t) * hdr_width * hdr_height * hdr_channels);
 	for (int i = 0; i < hdr_width * hdr_height * hdr_channels; i++)
@@ -737,6 +716,8 @@ int main(int argc, const char* argv[])
 {
 	t_mlx data;
 	total_frames = 0;
+	accumulated_data = malloc(sizeof(t_vec4) * WIDTH * HEIGHT);
+	accumulated_frames = 1;
 
 	int width = WIDTH;
 	int height = HEIGHT;

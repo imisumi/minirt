@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/11 03:09:41 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/11 15:52:56 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@
 #include "scene.h"
 # include "hitable.h"
 
-# define WIDTH 300
-# define HEIGHT 200
-# define PIXEL_SIZE 5
+// # define WIDTH 400
+// # define HEIGHT 300
+// # define PIXEL_SIZE 4
 
 // # define WIDTH 800
 // # define HEIGHT 600
 // # define PIXEL_SIZE 1
 
-// # define WIDTH 1024
-// # define HEIGHT 512
-// # define PIXEL_SIZE 1
+# define WIDTH 1024
+# define HEIGHT 1024
+# define PIXEL_SIZE 1
 
 
 // typedef struct s_mlx
