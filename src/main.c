@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/11 16:00:28 by imisumi          ###   ########.fr       */
+/*   Updated: 2023/07/12 01:45:53 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,17 @@ void init_scene(t_scene *s)
 
 	s->nb_spheres = 2;
 	s->spheres[0] = create_sphere(vec3_create(0.0f, .7f, 0.0f), 0.5f);
-	// s->spheres[0].material.albedo = vec3_create(0.3f, 0.3f, 0.5f);
-	s->spheres[0].material.albedo = vec3_create(0.0f, 0.0f, 0.0f);
-	s->spheres[0].material.emission_color = vec3_create(1.0f, 1.0f, 1.0f);
-	s->spheres[0].material.emission_intensity = 100.0f;
+	s->spheres[0].material.albedo = vec3_create(0.5f, 0.5f, 0.5f);
+	// s->spheres[0].material.albedo = vec3_create(0.0f, 0.0f, 0.0f);
+	// s->spheres[0].material.emission_color = vec3_create(0.8f, .5f, .6f);
+	s->spheres[0].material.emission_color = vec3_create(0.0f, .0f, .0f);
+	
+	// s->spheres[0].material.albedo = s->spheres[0].material.emission_color;
+	
+	s->spheres[0].material.emission_intensity = 2.0f;
 	
 	s->spheres[1] = create_sphere(vec3_create(1.5f, 0.0f, 0.0f), 0.5f);
-	s->spheres[1].material.albedo = vec3_create(1.0f, 0.0f, 0.0f);
+	s->spheres[1].material.albedo = vec3_create(0.9f, 0.9f, 0.9f);
 
 
 	s->nb_inv_planes = 1;
@@ -95,7 +99,7 @@ void init_scene(t_scene *s)
 	s->planes[0].normal = vec3_create(0.0f, 1.0f, 0.0f);
 	s->planes[0].width = 5.0f;
 	s->planes[0].height = 5.0f;
-	s->planes[0].material.albedo = vec3_create(0.0f, 1.0f, 0.0f);
+	s->planes[0].material.albedo = vec3_create(0.5f, 0.5f, 0.5f);
 }
 
 float hit_inv_plane(t_ray ray, t_vec3 pos, t_vec3 normal)
@@ -358,26 +362,37 @@ t_vec4 per_pixel(t_ray ray, t_vec2 coord, t_scene s, t_vec2 xy, uint32_t *rngSta
 		if (obj_hit.hit == true)
 		{
 			ray.origin = vec3_add(obj_hit.position, vec3_mul_float(obj_hit.normal, 0.001f));
-			// ray.direction = reflect(ray.direction, obj_hit.normal);
-			ray.direction = random_himisphere_dir(obj_hit.normal, rngState);
+			// ray.direction = random_himisphere_dir(obj_hit.normal, rngState);
+			ray.direction = vec3_normalize(vec3_add(obj_hit.normal, random_direction(rngState)));
+			// ray.direction = vec3_reflect(ray.direction, obj_hit.normal);
 	
 			t_material material = obj_hit.material;
 			t_vec3 emitted_light = vec3_mul_float(material.emission_color, material.emission_intensity);
+
+			t_vec4 s = get_sky_color_float(ray, coord);
+			t_vec3 sc = vec3_create(s.x, s.y, s.z);
+
+			// incoming_licht = vec3_add(incoming_licht, vec3_mul(ray_color, vec3_mul_float(vec3_normalize(sc), 0.5f)));
 			incoming_licht = vec3_add(incoming_licht, vec3_mul(ray_color, emitted_light));
+			
+
+
 			ray_color = vec3_mul(ray_color, material.albedo);
 		}
 		else
 		{
 			t_vec4 temp = get_sky_color_int(ray, coord);
+			// temp = get_sky_color_float(ray, coord);
+			
 			t_vec3 sky_color = vec3_create(temp.x, temp.y, temp.z);
+			if (xy.x > 512)
+				sky_color = vec3_mul_float(sky_color, 1.1f);
+			// sky_color = vec3_mul_float(sky_color, 2.0f);
+			// sky_color = vec3_create(0.0f, 0.0f, 0.0f);
+			
 			incoming_licht = vec3_add(incoming_licht, vec3_mul(ray_color, sky_color));
 			break;
 		}
-			
-
-		// return vec4_create(0.2f, 0.7f, 0.2f, 1.0f);
-		// return vec4_create(material.emission_color.x, material.emission_color.y, material.emission_color.z, 1.0f);
-		// return vec4_create(material.albedo.x, material.albedo.y, material.albedo.z, 1.0f);
 	}
 	// if (obj_hit.hit == false)
 	// {
@@ -445,7 +460,9 @@ void	render(t_mlx *d)
 			t_vec4 accumulated_color = accumulated_data[x + y * WIDTH];
 			accumulated_color = vec4_div_float(accumulated_color, accumulated_frames);
 			accumulated_color = vec4_clamp(accumulated_color, 0.0, 1.0);
-
+			// accumulated_color = vec4_normalize(accumulated_color);
+			// accumulated_color.w = 1.0f;
+			
 			
 			// printf("x: %f\n", color.x);
 			// t_vec4 color = per_pixel(coord, d->scene);
@@ -666,11 +683,11 @@ void ft_hook(void* param)
 void read_hdr_file(t_mlx *d)
 {
 	
-	const char* filename = "resized_sky_2.jpg";
-	// const char* filename = "little_paris_eiffel_tower.jpg";
+	// const char* filename = "resized_sky_2.jpg";
+	const char* filename = "little_paris_eiffel_tower.jpg";
 	// const char* filename = "test.png";
 	// int width, height, num_channels;
-	// pixels = stbi_loadf(filename, &hdr_width, &hdr_height, &hdr_channels, 0);
+	pixels = stbi_loadf(filename, &hdr_width, &hdr_height, &hdr_channels, 0);
 	pixels_8 = stbi_load(filename, &hdr_width, &hdr_height, &hdr_channels, 0);
 	printf("width: %d, height: %d, channels: %d\n", hdr_width, hdr_height, hdr_channels);
 
@@ -678,8 +695,8 @@ void read_hdr_file(t_mlx *d)
 	// 	printf("Error in loading the image\n");
 	// 	exit(EXIT_FAILURE);
 	// }
-	float num = 0.0f;
-	float num2 = 1.0f;
+	// float num = 0.0f;
+	// float num2 = 1.0f;
 	// for (int i = 0; i < hdr_width * hdr_height * hdr_channels; i++)
 	// {
 	// 	if (pixels[i] > num)
