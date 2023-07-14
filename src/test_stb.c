@@ -130,7 +130,7 @@ t_vec4 per_pixel(t_ray ray, t_vec2 coord, t_scene s)
 			
 			if (t < hit_distance)
 			{
-				t_vec3 intersection_point = point_at_parameter(ray, t);
+				t_vec3 intersection_point = hit_position(ray, t);
 				float half_width = s.planes->width / 2.0f;
 				float half_height = s.planes->height / 2.0f;
 				
@@ -160,7 +160,7 @@ t_vec4 per_pixel(t_ray ray, t_vec2 coord, t_scene s)
 
 
 	t_vec3 origin = vec3_sub(ray.origin, obj_hit.position);
-	t_vec3 hitPoint = point_at_parameter(ray, hit_distance);
+	t_vec3 hitPoint = hit_position(ray, hit_distance);
 	t_vec3 normal = vec3_normalize(vec3_sub(hitPoint, obj_hit.position));
 
 	t_vec3 lightDirection = vec3_fill(-1.0f);

@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 11:59:02 by imisumi           #+#    #+#             */
-/*   Updated: 2023/06/27 01:58:02 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/14 01:08:43 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ bool intersect_cylinder(t_ray ray, t_cylinder cylinder, float t_min, float t_max
         if (t1 > t_min && t1 < t_max)
         {
             hit->hit_distance = t1;
-            hit->position = point_at_parameter(ray, t1);
+            hit->position = hit_position(ray, t1);
             hit->normal = vec3_sub(vec3_sub(hit->position, cylinder.center), \
 				vec3_mul_float(cylinder.axis, vec3_dot(vec3_sub(hit->position, cylinder.center), cylinder.axis)));
             return true;
@@ -194,7 +194,7 @@ bool intersect_cylinder(t_ray ray, t_cylinder cylinder, float t_min, float t_max
         if (t2 > t_min && t2 < t_max)
         {
             hit->hit_distance = t2;
-            hit->position = point_at_parameter(ray, t2);
+            hit->position = hit_position(ray, t2);
             hit->normal = vec3_sub(vec3_sub(hit->position, cylinder.center), \
 				vec3_mul_float(cylinder.axis, vec3_dot(vec3_sub(hit->position, cylinder.center), cylinder.axis)));
             return true;
@@ -220,7 +220,7 @@ bool intersect_cylinder(t_ray ray, t_cylinder cylinder, float t_min, float t_max
 
         if (t1 > t_min && t1 < t_max)
         {
-            t_vec3 intersection = point_at_parameter(ray, t1);
+            t_vec3 intersection = hit_position(ray, t1);
             float height_top = cylinder.height / 2.0f;
             float height_bottom = -cylinder.height / 2.0f;
 
@@ -235,7 +235,7 @@ bool intersect_cylinder(t_ray ray, t_cylinder cylinder, float t_min, float t_max
 
         if (t2 > t_min && t2 < t_max)
         {
-            t_vec3 intersection = point_at_parameter(ray, t2);
+            t_vec3 intersection = hit_position(ray, t2);
             float height_top = cylinder.height / 2.0f;
             float height_bottom = -cylinder.height / 2.0f;
 
@@ -274,7 +274,7 @@ for (int i = 0; i < s.nb_cylinders; i++)
         
         if (t1 > 0 && t1 < hit_distance)
         {
-            t_vec3 intersection_point = point_at_parameter(ray, t1);
+            t_vec3 intersection_point = hit_position(ray, t1);
             
             // Check if the intersection point lies within the height range
             float half_height = s.cylinders[i].height / 2.0f;
@@ -290,7 +290,7 @@ for (int i = 0; i < s.nb_cylinders; i++)
         
         if (t2 > 0 && t2 < hit_distance)
         {
-            t_vec3 intersection_point = point_at_parameter(ray, t2);
+            t_vec3 intersection_point = hit_position(ray, t2);
             
             // Check if the intersection point lies within the height range
             float half_height = s.cylinders[i].height / 2.0f;

@@ -6,14 +6,14 @@
 #    By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#              #
-#    Updated: 2023/06/25 23:58:24 by ichiro           ###   ########.fr        #
+#    Updated: 2023/07/14 02:05:52 by ichiro           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME       := math.a
 HEADER     := includes/math.h
 CC         := gcc
-CFLAGS     := -Wall -Werror -Wextra
+CFLAGS     := 
 OBJS_DIR   := .obj/
 SRC_DIR    := src/
 INCLUDES   := -I includes/math.h
@@ -28,7 +28,8 @@ SRCS := vec3/vec3_add.c \
         vec2/vec2.c \
         vec/vec_fill.c \
         vec/vec_create.c \
-        vec4/vec4.c 
+        vec4/vec4.c \
+        temp.c
 
 
 OBJS := $(addprefix $(OBJS_DIR),$(SRCS:.c=.o))

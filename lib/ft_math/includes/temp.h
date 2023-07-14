@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:29:15 by ichiro            #+#    #+#             */
-/*   Updated: 2023/06/25 22:59:32 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/14 01:08:43 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <math.h>
 #include "struct.h"
 
-t_vec3 point_at_parameter(t_ray r, float t);
+t_vec3 hit_position(t_ray r, float t);
 
 t_quat quat_cross(t_quat q1, t_quat q2);
 t_quat quat_angleAxis(float angle, t_vec3 axis);

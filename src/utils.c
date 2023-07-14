@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/11 03:06:37 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/14 01:08:43 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ uint32_t vec4_to_color(t_vec4 c)
 	return (ft_pixel(r, g, b, a));
 }
 
-t_vec3 point_at_parameter(t_ray r, float t)
+t_vec3 hit_position(t_ray r, float t)
 {
 	t_vec3 res;
 

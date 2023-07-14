@@ -6,7 +6,7 @@
 #    By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2023/07/11 03:08:38 by ichiro           ###   ########.fr        #
+#    Updated: 2023/07/14 01:11:25 by ichiro           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ INC := -I $(INCLUDE_DIR)
 
 SRC =	main.c \
 		utils.c \
-		camera.c
+		camera.c \
+		ray_intersection.c
 
 
 OBJ = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))

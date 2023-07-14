@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:29:15 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/11 02:41:25 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/14 02:07:02 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "vec2.h"
 # include "vec3.h"
 # include "vec4.h"
+#include "mat4.h"
 
 // # include "mat4.h"
 

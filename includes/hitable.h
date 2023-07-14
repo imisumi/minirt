@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/06/26 00:00:13 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/14 01:57:43 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 // #include "main.h"
 #include "scene.h"
+
+#include <stdio.h>
 
 // typedef struct hit_record
 // {
@@ -81,7 +83,7 @@
 
 
 
-t_vec3 point_at_parameter(t_ray r, float t);
+t_vec3 hit_position(t_ray r, float t);
 
 t_quat quat_cross(t_quat q1, t_quat q2) {
 	t_quat result;
