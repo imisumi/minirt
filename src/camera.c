@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/14 02:13:22 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/15 17:28:02 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,30 @@
 # include <unistd.h>
 # include <string.h>
 
+void init_camera(t_camera *cam)
+{
+	cam->position = vec3_create(0.0, 1.5, 4.0f);
+	cam->direction = vec3_create(0.0, 0.0, -1.0);
+
+	cam->ray_dir = malloc(sizeof(t_vec3) * WIDTH * HEIGHT);
+
+	cam->mouse_delta.x = 0;
+	cam->mouse_delta.y = 0;
+
+	cam->projection = mat4_identity();
+	cam->inv_projection = mat4_identity();
+	cam->view = mat4_identity();
+	cam->inv_view = mat4_identity();
+
+	cam->vertical_fov = 60.0f;
+	cam->aspectRatio = (float)WIDTH / (float)HEIGHT;
+	cam->zNear = 0.1f;
+	cam->zFar = 10.0f;
+
+	cam->prev_mouse_pos.x = -1;
+	cam->prev_mouse_pos.y = -1;
+}
+
 void recalculate_view(t_mlx *d)
 {
 	d->scene.camera.view = mat4_look_at(d->scene.camera.position, \
@@ -33,7 +57,7 @@ void recalculate_view(t_mlx *d)
 
 void recalculated_projection(t_mlx *d)
 {
-	d->scene.camera.projection = mat4_perspective(fov_radians(d->scene.camera.verticalFOV), \
+	d->scene.camera.projection = mat4_perspective(fov_radians(d->scene.camera.vertical_fov), \
 								(float)WIDTH / (float)HEIGHT, \
 								d->scene.camera.zNear, d->scene.camera.zFar);
 	d->scene.camera.inv_projection = mat4_inverse(d->scene.camera.projection);
@@ -52,10 +76,10 @@ void	movement(t_mlx *d)
 	if (!mlx_is_mouse_down(d->mlx, MLX_MOUSE_BUTTON_RIGHT))
 	{
 		d->scene.camera.mouse_lock = false;
-		d->scene.camera.prevMousePos.x = -1;
-		d->scene.camera.prevMousePos.y = -1;
-		d->scene.camera.mousePos.x = 0;
-		d->scene.camera.mousePos.y = 0;
+		d->scene.camera.prev_mouse_pos.x = -1;
+		d->scene.camera.prev_mouse_pos.y = -1;
+		d->scene.camera.mouse_pos.x = 0;
+		d->scene.camera.mouse_pos.y = 0;
 		return ;
 	}
 	if (mlx_is_key_down(d->mlx, MLX_KEY_W)) {
@@ -90,35 +114,35 @@ void	movement(t_mlx *d)
 		d->scene.camera.position = vec3_sub(d->scene.camera.position, temp);
 		moved = true;
 	}
-	if (d->scene.camera.prevMousePos.x >= 0 && d->scene.camera.prevMousePos.y >= 0)
+	if (d->scene.camera.prev_mouse_pos.x >= 0 && d->scene.camera.prev_mouse_pos.y >= 0)
 	{
 		int x;
 		int y;
 		mlx_get_mouse_pos(d->mlx, &x, &y);
-		d->scene.camera.mousePos = vec2_sub(d->scene.camera.prevMousePos, vec2_create((int)x, (int)y));
-		// printf("mousePos: %f, %f\n", d->scene.camera.mousePos.x, d->scene.camera.mousePos.y);
+		d->scene.camera.mouse_pos = vec2_sub(d->scene.camera.prev_mouse_pos, vec2_create((int)x, (int)y));
+		// printf("mouse_pos: %f, %f\n", d->scene.camera.mouse_pos.x, d->scene.camera.mouse_pos.y);
 		
-		if (d->scene.camera.mousePos.x != d->scene.camera.prevMousePos.x && d->scene.camera.mousePos.y != d->scene.camera.prevMousePos.y)
+		if (d->scene.camera.mouse_pos.x != d->scene.camera.prev_mouse_pos.x && d->scene.camera.mouse_pos.y != d->scene.camera.prev_mouse_pos.y)
 		{
 			// rotated = true;
 
-			d->scene.camera.mouseDelta.x += -1 * d->scene.camera.mousePos.x * 0.12f;
-			d->scene.camera.mouseDelta.y +=  d->scene.camera.mousePos.y * 0.12f;
+			d->scene.camera.mouse_delta.x += -1 * d->scene.camera.mouse_pos.x * 0.12f;
+			d->scene.camera.mouse_delta.y +=  d->scene.camera.mouse_pos.y * 0.12f;
 		}
 		
 	}
 	int x;
 	int y;
 	mlx_get_mouse_pos(d->mlx, &x, &y);
-	d->scene.camera.prevMousePos = vec2_create((int)x, (int)y);
+	d->scene.camera.prev_mouse_pos = vec2_create((int)x, (int)y);
 
 	// TODO: rotation
 
-	if (d->scene.camera.mouseDelta.x != 0 || d->scene.camera.mouseDelta.y != 0)
+	if (d->scene.camera.mouse_delta.x != 0 || d->scene.camera.mouse_delta.y != 0)
 	{
 		// printf("HELLO\n");
-		float pitch = d->scene.camera.mouseDelta.y * -0.01f;
-		float yaw = d->scene.camera.mouseDelta.x * 0.01f;
+		float pitch = d->scene.camera.mouse_delta.y * -0.01f;
+		float yaw = d->scene.camera.mouse_delta.x * 0.01f;
 		
 		t_quat pitchRotation = quat_angleAxis(-pitch, right_direction);
 		t_quat yawRotation = quat_angleAxis(-yaw, up_direction);
@@ -129,23 +153,12 @@ void	movement(t_mlx *d)
 			
 		// Update the camera's forward direction
 		d->scene.camera.direction = rotatedForwardDirection;
-		d->scene.camera.mouseDelta.x = 0;
-		d->scene.camera.mouseDelta.y = 0;
+		d->scene.camera.mouse_delta.x = 0;
+		d->scene.camera.mouse_delta.y = 0;
 		moved = true;
 		rotated = true;
 	}
-
 	
-	// if (mlx_is_key_down(d->mlx, MLX_KEY_DOWN)) {
-	// 	d->scene.camera.verticalFOV -= 0.5f;
-	// 	recalculated_projection(d);
-	// }
-	// if (mlx_is_key_down(d->mlx, MLX_KEY_UP)) {
-	// 	d->scene.camera.verticalFOV += 0.5f;
-	// 	recalculated_projection(d);
-	// }
-	
-
 	if (moved) {
 		accumulated_frames = 1;
 		recalculate_view(d);

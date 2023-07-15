@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mat4.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:29:15 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/14 02:03:13 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/15 17:23:23 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_mat4 mat4_identity(void);
 // 	t_mat4	view;
 // 	t_mat4	inv_view;
 	
-// 	float	verticalFOV;
+// 	float	vertical_fov;
 //     float  aspectRatio;
 // 	float	zNear;
 // 	float	zFar;
@@ -59,12 +59,12 @@ t_mat4 mat4_identity(void);
 // 	t_vec3	position;
 // 	t_vec3	direction;
 
-// 	t_vec2	mouseDelta;
-//     t_vec2	mousePos;
+// 	t_vec2	mouse_delta;
+//     t_vec2	mouse_pos;
 //     bool    mouse_lock;
-//     t_vec2	prevMousePos;
+//     t_vec2	prev_mouse_pos;
 
-// 	t_vec3	*rayDirections;
+// 	t_vec3	*ray_dir;
 // } t_camera;
 
 // typedef struct s_scene

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_intersection.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/14 01:16:08 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/15 16:58:45 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ t_obj_hit plane_intersection(t_ray ray, t_scene s, t_obj_hit obj_hit)
 			if (t < obj_hit.hit_distance)
 			{
 				t_vec3 intersection_point = hit_position(ray, t);
-				float half_width = s.planes->width / 2.0f;
-				float half_height = s.planes->height / 2.0f;
+				float half_width = s.planes[i].width / 2.0f;
+				float half_height = s.planes[i].height / 2.0f;
 				
 				// Check if the intersection point lies within the plane's limits
 				if (intersection_point.x >= (s.planes[i].position.x - half_width) &&

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/14 02:16:04 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/15 17:14:37 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,18 @@
 # define HEIGHT 300
 # define PIXEL_SIZE 4
 
-// # define WIDTH 800
-// # define HEIGHT 600
-// # define PIXEL_SIZE 1
+// # define WIDTH 300
+// # define HEIGHT 100
+// # define PIXEL_SIZE 4
 
 // # define WIDTH 1024
 // # define HEIGHT 1024
 // # define PIXEL_SIZE 1
 
+
+// # define WIDTH 200
+// # define HEIGHT 200
+// # define PIXEL_SIZE 6
 
 // # define WIDTH 512
 // # define HEIGHT 512
@@ -92,5 +96,7 @@ void recalculat_ray_directions(t_mlx *d);
 void recalculate_view(t_mlx *d);
 void recalculated_projection(t_mlx *d);
 void	movement(t_mlx *d);
+
+void init_camera(t_camera *cam);
 
 #endif

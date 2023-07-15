@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/14 02:16:33 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/15 17:21:54 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 #include <GLFW/glfw3.h>
 
 double previousTime = 0.0;
+
+t_vec3 lerp(t_vec3 vec1, t_vec3 vec2, float t)
+{
+	t_vec3 result;
+	result.x = vec1.x + (t * (vec2.x - vec1.x));
+	result.y = vec1.y + (t * (vec2.y - vec1.y));
+	result.z = vec1.z + (t * (vec2.z - vec1.z));
+	return result;
+}
 
 void put_pixel(mlx_image_t* image, uint32_t x, uint32_t y, uint32_t color)
 {
@@ -23,79 +32,71 @@ void put_pixel(mlx_image_t* image, uint32_t x, uint32_t y, uint32_t color)
 
 void init_scene(t_scene *s)
 {
-	s->camera.position = vec3_create(0.0, 1.5, 4.0f);
-	s->camera.direction = vec3_create(0.0, 0.0, -1.0);
+	init_camera(&s->camera);
 
-	s->camera.rayDirections = malloc(sizeof(t_vec3) * WIDTH * HEIGHT);
-
-	s->camera.mouseDelta.x = 0;
-	s->camera.mouseDelta.y = 0;
-
-	s->camera.projection = mat4_identity();
-	s->camera.inv_projection = mat4_identity();
-	s->camera.view = mat4_identity();
-	s->camera.inv_view = mat4_identity();
-
-	s->camera.verticalFOV = 60.0f;
-	s->camera.aspectRatio = (float)WIDTH / (float)HEIGHT;
-	s->camera.zNear = 0.1f;
-	s->camera.zFar = 10.0f;
-
-	s->camera.prevMousePos.x = -1;
-	s->camera.prevMousePos.y = -1;
-
-
-
+	t_material mat;
 
 
 	s->nb_spheres = 2;
+	s->spheres = malloc(sizeof(t_sphere) * s->nb_spheres);
+	mat.albedo = vec3_create(1.0f, 1.0f, 1.0f);
+	mat.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
+	mat.emission_intensity = 0.0f;
+	mat.smoothness = 0.0f;
+	
 	s->spheres[0] = create_sphere(vec3_create(0.0f, 1.0f, 0.0f), 0.5f);
-	s->spheres[0].material.albedo = vec3_create(0.5f, 0.5f, 0.5f);
-	// s->spheres[0].material.albedo = vec3_create(0.0f, 0.0f, 0.0f);
-	// s->spheres[0].material.emission_color = vec3_create(0.8f, .5f, .6f);
-	s->spheres[0].material.emission_color = vec3_create(0.0f, .0f, .0f);
-	
-	// s->spheres[0].material.albedo = s->spheres[0].material.emission_color;
-	
-	s->spheres[0].material.emission_intensity = 4.0f;
-	
 	s->spheres[1] = create_sphere(vec3_create(0.0f, 4.9f, 0.0f), 2.0f);
-	s->spheres[1].material.albedo = vec3_create(0.0f, 0.0f, 0.0f);
-	s->spheres[1].material.emission_color = vec3_create(1.0f, 1.0f, 1.0f);
-	s->spheres[1].material.emission_intensity = 10.0f;
+	s->spheres[0].material = mat;
 
 	
+	mat.albedo = vec3_create(0.0f, 0.0f, 0.0f);
+	mat.emission_color = vec3_create(1.0f, 1.0f, 1.0f);
+	mat.emission_intensity = 10.0f;
+	mat.smoothness = 0.0f;
+	s->spheres[1].material = mat;
 
-	s->spheres[2] = create_sphere(vec3_create(-1.0f, 0.5f, 0.0f), 0.5f);
-	s->spheres[2].material.albedo = vec3_create(0.9f, 0.9f, 0.9f);
-
-	s->spheres[3] = create_sphere(vec3_create(-900.0f, 1000.0f, -3000.0f), 100.0f);
-	s->spheres[3].material.albedo = vec3_create(0.0f, 0.0f, 0.0f);
-	s->spheres[3].material.emission_color = vec3_create(1.0f, 1.0f, 1.0f);
-	s->spheres[3].material.emission_intensity = 30.0f;
-
-
-	s->nb_inv_planes = 0;
-	s->inv_planes[0].position = vec3_create(0.0f, 0.0f, 0.0f);
-	s->inv_planes[0].normal = vec3_create(0.0f, 1.0f, 0.0f);
+	// s->nb_inv_planes = 0;
+	// s->inv_planes[0].position = vec3_create(0.0f, 0.0f, 0.0f);
+	// s->inv_planes[0].normal = vec3_create(0.0f, 1.0f, 0.0f);
 
 
 
 
-	s->nb_planes = 5;
-	//bottom
+	s->nb_planes = 7;
+	s->planes = malloc(sizeof(t_plane) * s->nb_planes);
+	s->planes[6].position = vec3_create(0.0f, 2.99f, 0.0f);
+	s->planes[6].normal = vec3_create(0.0f, -1.0f, 0.0f);
+	s->planes[6].width = 1.0f;
+	s->planes[6].height = 1.0f;
+	s->planes[6].material.albedo = vec3_create(1.0f, 1.0f, 1.0f);
+	s->planes[6].material.emission_color = vec3_create(1.0f, 1.0f, 1.0f);
+	s->planes[6].material.emission_intensity = 10.0f;
+	
+	// s->planes[1].position = vec3_create(0.0f, 3.1f, 0.0f);
+	// s->planes[1].normal = vec3_create(0.0f, -1.0f, 0.0f);
+	// s->planes[1].width = 30.0f;
+	// s->planes[1].height = 30.0f;
+	// s->planes[1].material.albedo = vec3_create(0.2f, 0.2f, 0.2f);
+	// s->planes[1].material.smoothness = 0.0f;
+
+	
+	// bottom
 	s->planes[0].position = vec3_create(0.0f, 0.0f, 0.0f);
 	s->planes[0].normal = vec3_create(0.0f, 1.0f, 0.0f);
 	s->planes[0].width = 3.01f;
 	s->planes[0].height = 3.01f;
 	s->planes[0].material.albedo = vec3_create(0.0f, 1.0f, 0.0f);
+	s->planes[0].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
+	s->planes[0].material.emission_intensity = 0.0f;
 
-	//top
+	// top
 	s->planes[1].position = vec3_create(0.0f, 3.0f, 0.0f);
 	s->planes[1].normal = vec3_create(0.0f, -1.0f, 0.0f);
 	s->planes[1].width = 3.01f;
 	s->planes[1].height = 3.01f;
 	s->planes[1].material.albedo = vec3_create(1.0f, 1.0f, 1.0f);
+	s->planes[1].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
+	s->planes[1].material.emission_intensity = 0.0f;
 
 	//left
 	s->planes[2].position = vec3_create(-1.5f, 1.5f, 0.0f);
@@ -103,6 +104,8 @@ void init_scene(t_scene *s)
 	s->planes[2].width = 3.01f;
 	s->planes[2].height = 3.01f;
 	s->planes[2].material.albedo = vec3_create(1.0f, 0.0f, 0.0f);
+	s->planes[2].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
+	s->planes[2].material.emission_intensity = 0.0f;
 
 	// right
 	s->planes[3].position = vec3_create(1.5f, 1.5f, 0.0f);
@@ -110,6 +113,8 @@ void init_scene(t_scene *s)
 	s->planes[3].width = 3.01f;
 	s->planes[3].height = 3.01f;
 	s->planes[3].material.albedo = vec3_create(0.0f, 0.0f, 1.0f);
+	s->planes[3].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
+	s->planes[3].material.emission_intensity = 0.0f;
 	
 	// back
 	s->planes[4].position = vec3_create(0.0f, 1.5f, -1.5f);
@@ -117,6 +122,8 @@ void init_scene(t_scene *s)
 	s->planes[4].width = 3.01f;
 	s->planes[4].height = 3.01f;
 	s->planes[4].material.albedo = vec3_create(0.2f, 0.2f, 0.2f);
+	s->planes[4].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
+	s->planes[4].material.emission_intensity = 0.0f;
 
 	// front
 	s->planes[5].position = vec3_create(0.0f, 1.5f, 1.5f);
@@ -124,6 +131,8 @@ void init_scene(t_scene *s)
 	s->planes[5].width = 3.01f;
 	s->planes[5].height = 3.01f;
 	s->planes[5].material.albedo = vec3_create(0.2f, 0.2f, 0.2f);
+	s->planes[5].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
+	s->planes[5].material.emission_intensity = 0.0f;
 }
 
 float hit_inv_plane(t_ray ray, t_vec3 pos, t_vec3 normal)
@@ -169,6 +178,10 @@ t_vec4 per_pixel(t_ray ray, t_vec2 coord, t_scene s, t_vec2 xy, uint32_t *rngSta
 			// ray.direction = random_himisphere_dir(obj_hit.normal, rngState);
 			ray.direction = vec3_normalize(vec3_add(obj_hit.normal, random_direction(rngState)));
 			// ray.direction = vec3_reflect(ray.direction, obj_hit.normal);
+
+			// t_vec3 diffuse_dir = vec3_normalize(vec3_add(obj_hit.normal, random_direction(rngState)));
+			// t_vec3 specular_dir = vec3_reflect(ray.direction, obj_hit.normal);
+			// ray.direction =  lerp(diffuse_dir, specular_dir, obj_hit.material.smoothness);
 	
 			t_material material = obj_hit.material;
 			t_vec3 emitted_light = vec3_mul_float(material.emission_color, material.emission_intensity);
@@ -206,7 +219,7 @@ void	render(t_mlx *d)
 
 			t_vec2 coord = {(float)x / (float)(WIDTH), (float)y / (float)(HEIGHT)};
 			// coord = vec2_sub_float(vec2_mul_float(coord, 2.0), 1.0f);
-			ray.direction = scene.camera.rayDirections[x + y * WIDTH];
+			ray.direction = scene.camera.ray_dir[x + y * WIDTH];
 
 
 
@@ -262,12 +275,12 @@ void recalculat_ray_directions(t_mlx *d)
 			target = mat4_mul_vec4(d->scene.camera.inv_view, target);
 			// printf("rayDirection: %f, %f, %f\n", d->scene.camera.inv_view.m[0][1], d->scene.camera.inv_view.m[1][1], d->scene.camera.inv_view.m[2][2]);
 			t_vec3 rayDirection = vec3_create(target.x, target.y, target.z);
-			d->scene.camera.rayDirections[x + y * WIDTH] = rayDirection;
+			d->scene.camera.ray_dir[x + y * WIDTH] = rayDirection;
 			// printf("rayDirection: %f, %f, %f\n", target.x, target.y, target.z);
 
 			// glm::vec4 target = m_InverseProjection * glm::vec4(coord.x, coord.y, 1, 1);
 			// glm::vec3 rayDirection = glm::vec3(m_InverseView * glm::vec4(glm::normalize(glm::vec3(target) / target.w), 0)); // World space
-			// m_RayDirections[x + y * m_ViewportWidth] = rayDirection;
+			// m_ray_dir[x + y * m_ViewportWidth] = rayDirection;
 		}
 		// exit(0);
 	}
