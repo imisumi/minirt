@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/16 19:13:14 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/16 20:37:50 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@
 // # define PIXEL_SIZE 1
 
 
-// # define WIDTH 200
-// # define HEIGHT 200
-// # define PIXEL_SIZE 6
+# define WIDTH 200
+# define HEIGHT 200
+# define PIXEL_SIZE 6
 
-# define WIDTH 512
-# define HEIGHT 512
-# define PIXEL_SIZE 2
+// # define WIDTH 512
+// # define HEIGHT 512
+// # define PIXEL_SIZE 2
 
 
 
@@ -100,5 +100,9 @@ void recalculated_projection(t_mlx *d);
 void	movement(t_mlx *d);
 
 void init_camera(t_camera *cam);
+
+
+
+void	init_scene_one(t_scene *s);
 
 #endif

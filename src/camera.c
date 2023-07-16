@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/16 19:13:52 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/16 20:18:28 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 void init_camera(t_camera *cam)
 {
-	cam->position = vec3_create(0.0, 1.5, 4.0f);
+	cam->position = vec3_create(0.0, 1.5, 5.0f);
 	cam->direction = vec3_create(0.0, 0.0, -1.0);
 
 	cam->ray_dir = malloc(sizeof(t_vec3) * WIDTH * HEIGHT);

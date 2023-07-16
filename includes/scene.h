@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/15 17:26:16 by imisumi          ###   ########.fr       */
+/*   Updated: 2023/07/16 20:25:54 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@
 typedef struct s_material
 {
 	t_vec3	albedo;
-	float	roughness;
+	// float	roughness;
 	float	smoothness;
+	float	specular;
+	t_vec3	specular_color;
 	t_vec3	emission_color;
 	float	emission_intensity;
 }	t_material;
