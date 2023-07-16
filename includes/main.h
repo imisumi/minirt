@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/15 17:14:37 by imisumi          ###   ########.fr       */
+/*   Updated: 2023/07/16 19:13:14 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@
 #include "scene.h"
 // # include "hitable.h"
 
-# define WIDTH 400
-# define HEIGHT 300
-# define PIXEL_SIZE 4
+// # define WIDTH 400
+// # define HEIGHT 300
+// # define PIXEL_SIZE 4
 
 // # define WIDTH 300
 // # define HEIGHT 100
@@ -53,9 +53,9 @@
 // # define HEIGHT 200
 // # define PIXEL_SIZE 6
 
-// # define WIDTH 512
-// # define HEIGHT 512
-// # define PIXEL_SIZE 2
+# define WIDTH 512
+# define HEIGHT 512
+# define PIXEL_SIZE 2
 
 
 
@@ -88,6 +88,8 @@ t_vec3 random_himisphere_dir(t_vec3 normal, uint32_t *state);
 
 t_obj_hit plane_intersection(t_ray ray, t_scene s, t_obj_hit obj_hit);
 t_obj_hit sphere_intersection(t_ray ray, t_scene s, t_obj_hit obj_hit);
+
+t_vec3 random_direction_range(uint32_t *state, float f);
 
 
 //! camera.c

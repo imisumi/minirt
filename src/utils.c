@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/14 01:08:43 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/07/16 18:55:24 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,13 @@ float random_value_normal_distribution(uint32_t *state)
 	return rho * cosf(theta);
 }
 
+float float_range(float start, float end, float state) {
+    // Scale and shift the random number to the desired range
+    float result = state * (end - start) + start;
+
+    return result;
+}
+
 t_vec3 random_direction(uint32_t *state)
 {
 	float x = random_value_normal_distribution(state);
@@ -95,6 +102,27 @@ t_vec3 random_direction(uint32_t *state)
 	return vec3_normalize(vec3_create(x, y, z));
 	
 }
+
+t_vec3 random_direction_range(uint32_t *state, float f)
+{
+	if (f > 1.0f)
+		f = 1.0f;
+	if (f < 0.0f)
+		f = 0.0f;
+	float temp = 1.0f - f;
+	float max = temp * 0.5f;
+	float min = -max;
+	float x = random_value_normal_distribution(state);
+	float y = random_value_normal_distribution(state);
+	float z = random_value_normal_distribution(state);
+	
+	x = float_range(min, max, x);
+	y = float_range(min, max, y);
+	z = float_range(min, max, z);
+	return vec3_normalize(vec3_create(x, y, z));
+	
+}
+
 
 t_vec3 random_himisphere_dir(t_vec3 normal, uint32_t *state)
 {

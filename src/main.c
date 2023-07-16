@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/15 17:21:54 by imisumi          ###   ########.fr       */
+/*   Updated: 2023/07/16 19:12:47 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,7 @@
 
 double previousTime = 0.0;
 
-t_vec3 lerp(t_vec3 vec1, t_vec3 vec2, float t)
-{
-	t_vec3 result;
-	result.x = vec1.x + (t * (vec2.x - vec1.x));
-	result.y = vec1.y + (t * (vec2.y - vec1.y));
-	result.z = vec1.z + (t * (vec2.z - vec1.z));
-	return result;
-}
+
 
 void put_pixel(mlx_image_t* image, uint32_t x, uint32_t y, uint32_t color)
 {
@@ -37,23 +30,44 @@ void init_scene(t_scene *s)
 	t_material mat;
 
 
-	s->nb_spheres = 2;
+	// s->nb_spheres = 2;
+	// s->spheres = malloc(sizeof(t_sphere) * s->nb_spheres);
+	// mat.albedo = vec3_create(1.0f, 1.0f, 1.0f);
+	// mat.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
+	// mat.emission_intensity = 0.0f;
+	// mat.smoothness = 0.0f;
+	
+	// s->spheres[0] = create_sphere(vec3_create(0.0f, 1.0f, 0.0f), 0.5f);
+	// s->spheres[1] = create_sphere(vec3_create(0.0f, 4.9f, 0.0f), 2.0f);
+	// s->spheres[0].material = mat;
+
+	
+	// mat.albedo = vec3_create(0.0f, 0.0f, 0.0f);
+	// mat.emission_color = vec3_create(1.0f, 1.0f, 1.0f);
+	// mat.emission_intensity = 10.0f;
+	// mat.smoothness = 0.0f;
+	// s->spheres[1].material = mat;
+
+	s->nb_spheres = 4;
 	s->spheres = malloc(sizeof(t_sphere) * s->nb_spheres);
 	mat.albedo = vec3_create(1.0f, 1.0f, 1.0f);
 	mat.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
 	mat.emission_intensity = 0.0f;
-	mat.smoothness = 0.0f;
+	mat.smoothness = 1.0f;
 	
-	s->spheres[0] = create_sphere(vec3_create(0.0f, 1.0f, 0.0f), 0.5f);
-	s->spheres[1] = create_sphere(vec3_create(0.0f, 4.9f, 0.0f), 2.0f);
+	s->spheres[0] = create_sphere(vec3_create(-1.8f, 1.0f, 0.0f), 0.5f);
+	s->spheres[1] = create_sphere(vec3_create(-0.6f, 1.0f, 0.0f), 0.5f);
+	s->spheres[2] = create_sphere(vec3_create(0.6f, 1.0f, 0.0f), 0.5f);
+	s->spheres[3] = create_sphere(vec3_create(1.8f, 1.0f, 0.0f), 0.5f);
+	mat.smoothness = 0.4f;
 	s->spheres[0].material = mat;
-
-	
-	mat.albedo = vec3_create(0.0f, 0.0f, 0.0f);
-	mat.emission_color = vec3_create(1.0f, 1.0f, 1.0f);
-	mat.emission_intensity = 10.0f;
-	mat.smoothness = 0.0f;
+	mat.smoothness = 0.6f;
 	s->spheres[1].material = mat;
+	mat.smoothness = 0.8f;
+	s->spheres[2].material = mat;
+	mat.smoothness = 1.0f;
+	s->spheres[3].material = mat;
+
 
 	// s->nb_inv_planes = 0;
 	// s->inv_planes[0].position = vec3_create(0.0f, 0.0f, 0.0f);
@@ -72,67 +86,74 @@ void init_scene(t_scene *s)
 	s->planes[6].material.emission_color = vec3_create(1.0f, 1.0f, 1.0f);
 	s->planes[6].material.emission_intensity = 10.0f;
 	
-	// s->planes[1].position = vec3_create(0.0f, 3.1f, 0.0f);
-	// s->planes[1].normal = vec3_create(0.0f, -1.0f, 0.0f);
-	// s->planes[1].width = 30.0f;
-	// s->planes[1].height = 30.0f;
-	// s->planes[1].material.albedo = vec3_create(0.2f, 0.2f, 0.2f);
-	// s->planes[1].material.smoothness = 0.0f;
+	// // s->planes[1].position = vec3_create(0.0f, 3.1f, 0.0f);
+	// // s->planes[1].normal = vec3_create(0.0f, -1.0f, 0.0f);
+	// // s->planes[1].width = 30.0f;
+	// // s->planes[1].height = 30.0f;
+	// // s->planes[1].material.albedo = vec3_create(0.2f, 0.2f, 0.2f);
+	// // s->planes[1].material.smoothness = 0.0f;
 
 	
 	// bottom
 	s->planes[0].position = vec3_create(0.0f, 0.0f, 0.0f);
 	s->planes[0].normal = vec3_create(0.0f, 1.0f, 0.0f);
-	s->planes[0].width = 3.01f;
+	s->planes[0].width = 5.01f;
 	s->planes[0].height = 3.01f;
 	s->planes[0].material.albedo = vec3_create(0.0f, 1.0f, 0.0f);
 	s->planes[0].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
 	s->planes[0].material.emission_intensity = 0.0f;
+	s->planes[0].material.smoothness = 0.0f;
 
 	// top
 	s->planes[1].position = vec3_create(0.0f, 3.0f, 0.0f);
 	s->planes[1].normal = vec3_create(0.0f, -1.0f, 0.0f);
-	s->planes[1].width = 3.01f;
+	s->planes[1].width = 5.01f;
 	s->planes[1].height = 3.01f;
-	s->planes[1].material.albedo = vec3_create(1.0f, 1.0f, 1.0f);
+	s->planes[1].material.albedo = vec3_create(0.4f, 0.4f, 0.4f);
 	s->planes[1].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
 	s->planes[1].material.emission_intensity = 0.0f;
+	s->planes[1].material.smoothness = 0.0f;
 
 	//left
-	s->planes[2].position = vec3_create(-1.5f, 1.5f, 0.0f);
+	s->planes[2].position = vec3_create(-2.5f, 1.5f, 0.0f);
 	s->planes[2].normal = vec3_create(1.0f, 0.0f, 0.0f);
 	s->planes[2].width = 3.01f;
 	s->planes[2].height = 3.01f;
 	s->planes[2].material.albedo = vec3_create(1.0f, 0.0f, 0.0f);
 	s->planes[2].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
 	s->planes[2].material.emission_intensity = 0.0f;
+	s->planes[2].material.smoothness = 0.0f;
 
 	// right
-	s->planes[3].position = vec3_create(1.5f, 1.5f, 0.0f);
+	s->planes[3].position = vec3_create(2.5f, 1.5f, 0.0f);
 	s->planes[3].normal = vec3_create(-1.0f, 0.0f, 0.0f);
 	s->planes[3].width = 3.01f;
 	s->planes[3].height = 3.01f;
 	s->planes[3].material.albedo = vec3_create(0.0f, 0.0f, 1.0f);
 	s->planes[3].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
 	s->planes[3].material.emission_intensity = 0.0f;
+	s->planes[3].material.smoothness = 0.0f;
 	
 	// back
 	s->planes[4].position = vec3_create(0.0f, 1.5f, -1.5f);
+	// s->planes[4].position = vec3_create(0.0f, 10.5f, -1.5f);
 	s->planes[4].normal = vec3_create(0.0f, 0.0f, 1.0f);
-	s->planes[4].width = 3.01f;
+	s->planes[4].width = 5.01f;
 	s->planes[4].height = 3.01f;
-	s->planes[4].material.albedo = vec3_create(0.2f, 0.2f, 0.2f);
+	s->planes[4].material.albedo = vec3_create(1.0f, 1.0f, 1.0f);
 	s->planes[4].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
 	s->planes[4].material.emission_intensity = 0.0f;
+	s->planes[4].material.smoothness = 0.0f;
 
 	// front
 	s->planes[5].position = vec3_create(0.0f, 1.5f, 1.5f);
 	s->planes[5].normal = vec3_create(0.0f, 0.0f, -1.0f);
-	s->planes[5].width = 3.01f;
+	s->planes[5].width = 5.01f;
 	s->planes[5].height = 3.01f;
-	s->planes[5].material.albedo = vec3_create(0.2f, 0.2f, 0.2f);
+	s->planes[5].material.albedo = vec3_create(1.0f, 1.0f, 1.0f);
 	s->planes[5].material.emission_color = vec3_create(0.0f, 0.0f, 0.0f);
 	s->planes[5].material.emission_intensity = 0.0f;
+	s->planes[5].material.smoothness = 0.0f;
 }
 
 float hit_inv_plane(t_ray ray, t_vec3 pos, t_vec3 normal)
@@ -146,6 +167,17 @@ float hit_inv_plane(t_ray ray, t_vec3 pos, t_vec3 normal)
 			return (t);
 	}
 	return (-1.0f);
+}
+
+t_vec3 lerp(t_vec3 vec1, t_vec3 vec2, float t)
+{
+	// if (t == 1.0f)
+	// 	return vec1;
+	t_vec3 result;
+	result.x = vec1.x + (t * (vec2.x - vec1.x));
+	result.y = vec1.y + (t * (vec2.y - vec1.y));
+	result.z = vec1.z + (t * (vec2.z - vec1.z));
+	return result;
 }
 
 t_vec4 per_pixel(t_ray ray, t_vec2 coord, t_scene s, t_vec2 xy, uint32_t *rngState)
@@ -176,12 +208,21 @@ t_vec4 per_pixel(t_ray ray, t_vec2 coord, t_scene s, t_vec2 xy, uint32_t *rngSta
 		{
 			ray.origin = vec3_add(obj_hit.position, vec3_mul_float(obj_hit.normal, 0.001f));
 			// ray.direction = random_himisphere_dir(obj_hit.normal, rngState);
-			ray.direction = vec3_normalize(vec3_add(obj_hit.normal, random_direction(rngState)));
+			// if (obj_hit.material.smoothness == 1.0f)
+			// {
+			// 	// ray.direction = vec3_reflect(ray.direction, obj_hit.normal);
+			// 	// ray.direction = vec3_normalize(vec3_add(obj_hit.normal, random_direction_range(rngState, 0.1f)));
+			// 	t_vec3 diffuse_dir = vec3_normalize(vec3_add(obj_hit.normal, random_direction(rngState)));
+			// 	t_vec3 specular_dir = vec3_reflect(ray.direction, obj_hit.normal);
+			// 	ray.direction =  lerp(diffuse_dir, specular_dir, 1.0f);
+			// }
+			// else
+			// 	ray.direction = vec3_normalize(vec3_add(obj_hit.normal, random_direction(rngState)));
+			
+			t_vec3 diffuse_dir = vec3_normalize(vec3_add(obj_hit.normal, random_direction(rngState)));
+			t_vec3 specular_dir = vec3_reflect(ray.direction, obj_hit.normal);
+			ray.direction =  lerp(diffuse_dir, specular_dir, obj_hit.material.smoothness);
 			// ray.direction = vec3_reflect(ray.direction, obj_hit.normal);
-
-			// t_vec3 diffuse_dir = vec3_normalize(vec3_add(obj_hit.normal, random_direction(rngState)));
-			// t_vec3 specular_dir = vec3_reflect(ray.direction, obj_hit.normal);
-			// ray.direction =  lerp(diffuse_dir, specular_dir, obj_hit.material.smoothness);
 	
 			t_material material = obj_hit.material;
 			t_vec3 emitted_light = vec3_mul_float(material.emission_color, material.emission_intensity);

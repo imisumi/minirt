@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/15 17:28:02 by imisumi          ###   ########.fr       */
+/*   Updated: 2023/07/16 19:13:52 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ void init_camera(t_camera *cam)
 	cam->view = mat4_identity();
 	cam->inv_view = mat4_identity();
 
-	cam->vertical_fov = 60.0f;
+	cam->vertical_fov = 70.0f;
 	cam->aspectRatio = (float)WIDTH / (float)HEIGHT;
 	cam->zNear = 0.1f;
-	cam->zFar = 10.0f;
+	cam->zFar = 100.0f;
 
 	cam->prev_mouse_pos.x = -1;
 	cam->prev_mouse_pos.y = -1;
