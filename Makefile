@@ -6,7 +6,7 @@
 #    By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2023/12/20 21:50:37 by ichiro           ###   ########.fr        #
+#    Updated: 2023/12/21 22:10:13 by ichiro           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,8 +71,6 @@ $(LIBFT):
 	$(MAKE) -C lib/libft
 
 $(LIB3D):
-	git clone --recursive git@github.com:imisumi/lib3d.git lib/lib3d
-	git submodule update --init --recursive lib/MLX42
 	@$(MAKE) -C lib/lib3d
 # -I./tinyEXR/ -I./tinyEXR/dep/ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -lstdc++
 all: $(NAME)
