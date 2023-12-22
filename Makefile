@@ -6,96 +6,93 @@
 #    By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2023/07/16 20:05:29 by ichiro           ###   ########.fr        #
+#    Updated: 2023/12/20 21:50:37 by ichiro           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = raytracer
+NAME = minirt
 
-HEADER = ./includes/main.h
+CFLAGS = -I$(INCDIR)
+# CFLAGS += -I./lib/MLX42/include/MLX42
+CFLAGS += -I./lib/libft/includes
+CFLAGS += -I./lib/lib3d/includes
+CFLAGS += -I./lib/MLX42/include/
 
-CFLAGS = -g 
+# CFLAGS = -I./includes
 
-cc = gcc 
+CC = gcc -O2
+# CC += -g -fsanitize=thread -pthread
+# CC += -Wuninitialized -Wall -Wextra -Werror
 
-LFLAGS = -framework Cocoa -framework OpenGl -framework IOKit -lm -Ofast -O3 -ffast-math -flto
-
-UNAME := $(shell uname -m)
-
-ifeq ($(UNAME), x86_64)
-	LFLAGS += -lglfw3
-else
-	LFLAGS += -lglfw
-endif
+SRCDIR		:= src
+INCDIR		:= includes
+OBJDIR		:= .obj
 
 MLX = lib/MLX42/build/libmlx42.a
 LIBFT = lib/libft/libft.a
-MATH = lib/ft_math/math.a
+LIB3D = lib/lib3d/lib3d.a
 
-OBJ_DIR = .obj
-SRC_DIR = src
+SOURCES		= $(wildcard $(SRCDIR)/**/*.c) $(wildcard $(SRCDIR)/*.c)
+SOURCES += ./lib/MLX42/lib/png/lodepng.c
+OBJECTS		:= $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
 
-GREEN := \033[1;32m
-RED := \033[1;31m
-BLUE := \033[1;34m
-PINK := \033[1;38;5;206m
-NC := \033[0m
-
-INC := -I $(INCLUDE_DIR)
-
-SRC =	main.c \
-		utils.c \
-		camera.c \
-		ray_intersection.c \
-		scenes.c
+RED=\033[1;31m
+PINK=\033[1;35m
+CYAN=\033[1;36m
+GREEN=\033[0;32m
+NC=\033[0m
 
 
-OBJ = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
 
-all: $(MLX) $(LIBFT) $(MATH) $(NAME)
-	@echo "$(GREEN)[Completed]$(NC)"
+#	MLX42
+LFLAGS = -L./lib/MLX42/build/ -lmlx42
+#	libft
+LFLAGS += -L./lib/libft/ -lft
+#	lib3d
+LFLAGS += -L./lib/lib3d/ -l3d
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER)
-	@mkdir -p $(dir $@)
-	@echo "$(BLUE)[Compiling $<]$(NC)"
-	@$(cc) $(CFLAGS) -I -I -c -o $@ $<
-	
+LFLAGS += -framework Cocoa -framework OpenGl -framework IOKit -lglfw
+
+# LFLAGS += -lstdc++ -lm
+
+$(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D)
+	$(CC) $(CFLAGS) $(LFLAGS) $^ -o $@ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -lstdc++
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@ 
+	@echo "$(CYAN)[Compiled $@]$(NC)"
+
 $(MLX):
-	@echo "$(BLUE)[Compiling MLX]$(NC)"
-	@cd ./lib/MLX42 && cmake -DBUILD_TESTS=ON -B build && cmake --build build --parallel
-	@echo "$(GREEN)[Completed MLX]$(NC)"
+	git submodule update --init --recursive lib/MLX42
+	cd ./lib/MLX42 && cmake -B build && cmake --build build --parallel
 
 $(LIBFT):
-	@$(MAKE) -C lib/libft
+	$(MAKE) -C lib/libft
 
-$(MATH):
-	@$(MAKE) -C lib/ft_math
-
-$(NAME): $(MLX) $(LIBFT) $(MATH) $(OBJ)
-	$(cc) $(CFLAGS) -I -I $(LFLAGS) $^ -o $(NAME)
+$(LIB3D):
+	git clone --recursive git@github.com:imisumi/lib3d.git lib/lib3d
+	git submodule update --init --recursive lib/MLX42
+	@$(MAKE) -C lib/lib3d
+# -I./tinyEXR/ -I./tinyEXR/dep/ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -lstdc++
+all: $(NAME)
+	echo "$(GREEN)[Compiled $(NAME)]$(NC)"
+#	@$(CC) -O3 $(CFLAGS) $(LFLAGS) $(SOURCES)
 
 run: all
-	./raytracer
+	./$(NAME)
 
-test: all
-	$(cc) $(CFLAGS) -I -I $(LFLAGS) $(MLX) temp.c -o $(NAME)
-	./raytracer
+rerun: re
+	./$(NAME)
 
 clean:
-	@rm -rf $(OBJ_DIR)
-	@echo "$(RED)[Deleted objects]$(NC)"
+	@rm -rf $(OBJDIR)
+	@echo "$(RED)[Deleted $(NAME) objects]$(NC)"
 
-fclean:
-	@rm -rf $(OBJ_DIR)
+fclean: clean
 	@rm -rf $(NAME)
-	@echo "$(RED)[Deleted objects]$(NC)"
-	@echo "$(RED)[Deleted]$(NC)"
-
-mlxclean:
-	@rm -rf ./lib/MLX42/build
-	@echo "$(RED)[Deleted MLX]$(NC)"
+	@echo "$(RED)[Deleted $(NAME)]$(NC)"
 
 re: fclean all
-	cd ./lib/ft_math && make re
 
 .PHONY: all clean fclean re

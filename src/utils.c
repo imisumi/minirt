@@ -5,35 +5,19 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/07/16 18:55:24 by ichiro           ###   ########.fr       */
+/*   Created: 2023/12/08 01:03:04 by ichiro            #+#    #+#             */
+/*   Updated: 2023/12/18 23:52:01 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/scene.h"
+#include "minirt.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <stdbool.h>
-# include <stdint.h>
-# include <unistd.h>
-# include <string.h>
+extern uint32_t	global_frame;
 
-uint32_t ft_pixel(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void put_pixel(mlx_image_t* image, uint32_t x, uint32_t y, uint32_t color)
 {
-	return (r << 24 | g << 16 | b << 8 | a);
-}
-
-float clamp(float value, float min, float max)
-{
-    // Helper function to clamp a value within a specific range
-    if (value < min) {
-        return min;
-    } else if (value > max) {
-        return max;
-    } else {
-        return value;
-    }
+	if (x >= 0 && x < image->width && y >= 0 && y < image->height)
+		mlx_put_pixel(image, x, y, color);
 }
 
 float randomFloat(uint32_t *state)
@@ -44,13 +28,28 @@ float randomFloat(uint32_t *state)
 	return (float)result / 4294967295.0f;
 }
 
-t_sphere create_sphere(t_vec3 center, float radius)
+t_vec2	random_point_in_circle(uint32_t *state)
 {
-	t_sphere s;
+	float angle = randomFloat(state) * TWO_PI;
+	// t_vec2 point_on_circle = vec2_new(cosf(angle), sinf(angle));
+	t_vec2 point_on_circle = (t_vec2){cosf(angle), sinf(angle)};
+	return (vec2_mulf(point_on_circle, sqrtf(randomFloat(state))));
+}
 
-	s.center = center;
-	s.radius = radius;
-	return (s);
+t_vec2f	random_point_in_circle_f(uint32_t *state)
+{
+	float angle = randomFloat(state) * TWO_PI;
+	// t_vec2 point_on_circle = vec2_new(cosf(angle), sinf(angle));
+	// t_vec2 point_on_circle = (t_vec2){cosf(angle), sinf(angle)};
+	// return (vec2_mulf(point_on_circle, sqrtf(randomFloat(state))));
+	t_vec2f point_on_circle_f = {cosf(angle), sinf(angle)};
+	return point_on_circle_f * sqrtf(randomFloat(state));
+}
+
+
+int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+{
+	return (r << 24 | g << 16 | b << 8 | a);
 }
 
 uint32_t vec4_to_color(t_vec4 c)
@@ -62,36 +61,27 @@ uint32_t vec4_to_color(t_vec4 c)
 	return (ft_pixel(r, g, b, a));
 }
 
-t_vec3 hit_position(t_ray r, float t)
+uint32_t vec4f_to_color(t_vec4f c)
 {
-	t_vec3 res;
-
-	res = vec3_add(r.origin, vec3_mul_float(r.direction, t));
-	return (res);
+	uint8_t r = (uint8_t)(c[X] * 255.0);
+	uint8_t g = (uint8_t)(c[Y] * 255.0);
+	uint8_t b = (uint8_t)(c[Z] * 255.0);
+	// uint8_t a = (uint8_t)(c[] * 255.0);
+	uint8_t a = 255;
+	return (ft_pixel(r, g, b, a));
 }
 
-float my_sign(float num) {
-    if (num > 0.0f) {
-        return 1.0f;
-    } else if (num < 0.0f) {
-        return -1.0f;
-    } else {
-        return 0.0f;
-    }
-}
 
 float random_value_normal_distribution(uint32_t *state)
 {
-	float theta = 2 * 3.1415926 * randomFloat(state);
-	float rho = sqrtf(-2 * logf(randomFloat(state)));
+	float theta = TWO_PI * randomFloat(state);
+	float random_float = randomFloat(state);
+	//! avoid NaN
+	while (random_float <= EPSILON)
+		random_float = randomFloat(state);
+	// float rho = sqrtf(-2 * logf(randomFloat(state)));
+	float rho = sqrtf(-2 * logf(random_float));
 	return rho * cosf(theta);
-}
-
-float float_range(float start, float end, float state) {
-    // Scale and shift the random number to the desired range
-    float result = state * (end - start) + start;
-
-    return result;
 }
 
 t_vec3 random_direction(uint32_t *state)
@@ -99,47 +89,39 @@ t_vec3 random_direction(uint32_t *state)
 	float x = random_value_normal_distribution(state);
 	float y = random_value_normal_distribution(state);
 	float z = random_value_normal_distribution(state);
-	return vec3_normalize(vec3_create(x, y, z));
-	
+	// return vec3_normalize(vec3_new(x, y, z));
+	return vec3_normalize((t_vec3){x, y, z});
 }
 
-t_vec3 random_direction_range(uint32_t *state, float f)
+t_vec3f random_directionf(uint32_t *state)
 {
-	if (f > 1.0f)
-		f = 1.0f;
-	if (f < 0.0f)
-		f = 0.0f;
-	float temp = 1.0f - f;
-	float max = temp * 0.5f;
-	float min = -max;
 	float x = random_value_normal_distribution(state);
 	float y = random_value_normal_distribution(state);
 	float z = random_value_normal_distribution(state);
-	
-	x = float_range(min, max, x);
-	y = float_range(min, max, y);
-	z = float_range(min, max, z);
-	return vec3_normalize(vec3_create(x, y, z));
-	
+	// return vec3_normalize(vec3_new(x, y, z));
+	// return vec3_normalize((t_vec3){x, y, z});
+	return (vec3f_normalize((t_vec3f){x, y, z, 0.0f}));
 }
 
-
-t_vec3 random_himisphere_dir(t_vec3 normal, uint32_t *state)
+double	time_delta(double prev_frame)
 {
-	// t_vec3 dir;
-	// dir.x = randomFloat(state);
-	// dir.y = randomFloat(state);
-	// dir.z = randomFloat(state);
-	// float dot = vec3_dot(dir, normal);
-	// dot = my_sign(dot);
-	// if (dot < 0.0f)
-	// 	dir = vec3_mul_float(dir, -1.0f);
-	// return dir;
-	// return vec3_mul_float(dir, my_sign(vec3_dot(normal, dir)));
+	double	current_time;
+	double	delta_time;
 
+	current_time = glfwGetTime();
+	delta_time = current_time - prev_frame;
+	return (delta_time);
+}
 
-	t_vec3 dir;
-	dir = random_direction(state);
+uint32_t	get_rngstate(uint32_t width, uint32_t height, uint32_t x, uint32_t y)
+{
+	t_vec2		coord;
+	t_vec2		num_pixels;
+	uint32_t	pixel_index;
 
-	return vec3_mul_float(dir, my_sign(vec3_dot(normal, dir)));
+	coord = (t_vec2){(float)x / (float)(width), (float)y / (float)(height)};
+	num_pixels = (t_vec2){(float)width, (float)height};
+	coord = vec2_mul(coord, num_pixels);
+	pixel_index = coord.x + coord.y * num_pixels.x;
+	return (pixel_index + global_frame * 719393);
 }

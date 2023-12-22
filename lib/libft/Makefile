@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+         #
+#    By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 12:43:01 by imisumi           #+#    #+#              #
-#    Updated: 2023/06/11 03:51:43 by ichiro           ###   ########.fr        #
+#    Updated: 2023/09/05 20:46:48 by imisumi-wsl      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra
 
-OBJS_DIR = .obj
+OBJS_DIR = objs
 SRC_DIR = src
 
 GREEN := \033[1;32m
@@ -54,6 +54,7 @@ $(OBJS_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@echo "$(BLUE)[Compiling $<]$(NC)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@printf "\033[1A\033[K"
 
 clean:
 	@rm -rf $(OBJS_DIR)

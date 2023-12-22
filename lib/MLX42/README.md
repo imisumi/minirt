@@ -7,9 +7,6 @@
     <div align="center">
 	</br>
 	<img src="https://img.shields.io/github/license/codam-coding-college/MLX42" alt="License GPL2.0"> 
-	<img src="https://svgshare.com/i/Zhy.svg" alt="Linux">
-	<img src="https://svgshare.com/i/ZjP.svg" alt="MacOS">
-	<img src="https://svgshare.com/i/ZhY.sv" alt="Windows">
 	<img src="https://github.com/codam-coding-college/MLX42/actions/workflows/ci.yml/badge.svg" alt="Build">
 	<img src="https://img.shields.io/github/forks/codam-coding-college/MLX42" alt="Forks">
     </div>
@@ -45,7 +42,7 @@ This project is being actively maintained by Codam as well as students from the 
 ---
 
 ## Installation 🏗️
-### General compilation. 
+### General compilation
 
 Overall the building of this project is as follows for ALL systems. As long as CMake can make sense of it.
 
@@ -61,12 +58,21 @@ However if you can't do either CMake will still be able to fetch GLFW and build 
 
 > **Note**: During the linking stage, the flag to link GLFW can either be: -lglfw3 or -lglfw depending on your system.
 
-2. Compile your program with the library:
+1. Compile your program with the library:
 	- For: [MacOS](#for-macos)
 	- For: [Linux](#for-linux)
 	- For: [Windows](#for-windows)
 
-3. Profit!
+2. Profit!
+
+### Installing to the system
+
+To fully build the library and install it to your system run the following command:
+```bash
+cmake -B build && cmake --build build --parallel --config (Debug|Release|RelWithDebInfo|MinSizeRel) --target install
+```
+
+By default windows will place the installed lib into: `C:\Program Files (x86)\mlx42` and for MacOS / Linux it will be placed into `/usr/local/lib` and `/usr/local/include` respectively.
 
 ### Unit tests
 MLX42 comes with some unit tests to ensure the integrity of the library, to build them run the following command:
@@ -131,7 +137,7 @@ the compilation should be:
 ➜  ~ gcc main.c ... libmlx42.a -Iinclude -lglfw -L"/opt/homebrew/Cellar/glfw/3.3.8/lib/"
 
 # 42Homebrew
-➜  ~ gcc main.c ... libmlx42.a -Iinclude -lglfw -L"/Users/$USER/.brew/opt/glfw/lib/"
+➜  ~ gcc main.c ... libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
 ```
 
 #### MacOS Security:
@@ -175,6 +181,8 @@ OR (if you use sway/wlroots compositor or other wayland compositor)
 ----
 
 ## For Windows (with Windows Subsystem for Linux 2 (WSL2))
+
+> **Warning**: Before starting with all these steps, [read this](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps)
 
 1. Set these variables in your `.zshrc` or `.bashrc`:
 ```bash
