@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/20 17:29:02 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/12/22 23:48:06 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 			float intensity_scale = powf(bounce_attenuation, bounce);
 
 			t_vec3f emitted_light = {0};
-			// emitted_light = omni_dir_light_f(ray, scene, closest_hit);
+			emitted_light = omni_dir_light_f(ray, scene, closest_hit);
 
 			
 			// emitted_light += omni_dir_light_f2(ray, scene, closest_hit);
@@ -78,6 +78,8 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 			// incomming_light = vec3_add(incomming_light, vec3_mul(ray_color, sky));
 			// t_vec3f sky = {0.5f, 0.5f, 0.5f, 0.0f};
 			sky = texture(ray[DIR], scene.hdri);
+			sky = (t_vec3f){1, 1, 1, 1};
+			sky = (t_vec3f){0, 0, 0, 0};
 			incomming_light = incomming_light + (ray_color * sky);
 			break ;
 		}

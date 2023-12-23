@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/19 01:28:04 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/12/23 00:04:06 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void recalculat_ray_directions(t_data *d)
 void init_camera(t_camera *cam)
 {
 
-	cam->position = (t_vec3f){6.0f, 10.0, 25.0f, 0.0f};
-	cam->dir = (t_vec3f){0.0, -0.5, -1.0, 0.0};
+	cam->position = (t_vec3f){6.0f, 2.0, 30.0f, 0.0f};
+	cam->dir = (t_vec3f){0.0, 0.2, -1.0, 0.0};
 
 	// cam->position = (t_vec3f){0.0f, 2.0, 5.0f, 0.0f};
 	// cam->dir = (t_vec3f){0.0, 0.0, -1.0, 0.0};

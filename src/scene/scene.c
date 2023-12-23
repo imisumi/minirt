@@ -6,13 +6,15 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/19 20:59:40 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/12/22 23:56:02 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-const char *file = "assets/maps/map1.rt";
+const char *file = "assets/maps/owl.rt";
+// const char *file = "assets/maps/map1.rt";
+// const char *file = "assets/maps/lights.rt";
 
 void	parse_test(t_scene *scene)
 {

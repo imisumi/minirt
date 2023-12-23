@@ -6,7 +6,7 @@
 /*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/20 17:16:21 by ichiro           ###   ########.fr       */
+/*   Updated: 2023/12/22 23:51:18 by ichiro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,7 @@ t_vec3f omni_dir_light_f(t_rayf ray, t_scene scene, t_hitinfo closest_hit)
 			{
 				float attenuation = cosine / (distance_to_light * distance_to_light);
 				float falloff = calculateFalloff_f(sphere.pos_f, closest_hit.position);
-				float intensity = cosine * attenuation * scene.point_lights[0].intensity;;
+				float intensity = cosine * attenuation * scene.point_lights[i].intensity;;
 
 				diffuse_contribution_f += (scene.point_lights[i].color * intensity);
 			}
