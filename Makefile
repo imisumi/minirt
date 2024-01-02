@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+         #
+#    By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2023/12/21 22:10:13 by ichiro           ###   ########.fr        #
+#    Updated: 2024/01/02 16:49:48 by imisumi-wsl      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ NAME = minirt
 
 CFLAGS = -I$(INCDIR)
 # CFLAGS += -I./lib/MLX42/include/MLX42
-CFLAGS += -I./lib/libft/includes
-CFLAGS += -I./lib/lib3d/includes
+CFLAGS += -I./lib/libft/includes/
+CFLAGS += -I./lib/lib3d/includes/
 CFLAGS += -I./lib/MLX42/include/
 
 # CFLAGS = -I./includes
@@ -34,7 +34,7 @@ LIB3D = lib/lib3d/lib3d.a
 
 SOURCES		= $(wildcard $(SRCDIR)/**/*.c) $(wildcard $(SRCDIR)/*.c)
 SOURCES += ./lib/MLX42/lib/png/lodepng.c
-OBJECTS		:= $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
+OBJECTS		= $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
 
 RED=\033[1;31m
 PINK=\033[1;35m
@@ -42,21 +42,32 @@ CYAN=\033[1;36m
 GREEN=\033[0;32m
 NC=\033[0m
 
-
-
 #	MLX42
-LFLAGS = -L./lib/MLX42/build/ -lmlx42
+LFLAGS = -lglfw -L./lib/MLX42/build/ -lmlx42
 #	libft
 LFLAGS += -L./lib/libft/ -lft
 #	lib3d
 LFLAGS += -L./lib/lib3d/ -l3d
 
-LFLAGS += -framework Cocoa -framework OpenGl -framework IOKit -lglfw
+# LFLAGS += -framework Cocoa -framework OpenGl -framework IOKit -lglfw
 
 # LFLAGS += -lstdc++ -lm
 
+
+OS := $(shell uname -m)
+ifeq ($(OS), arm64)
+LFLAGS += -framework Cocoa -framework OpenGl -framework IOKit -lglfw
+else ifeq ($(OS),x86_64)
+LFLAGS += -ldl -lglfw -pthread -lm
+$(info x86_64)
+endif
+
+
 $(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D)
-	$(CC) $(CFLAGS) $(LFLAGS) $^ -o $@ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -lstdc++
+	$(CC) $(CFLAGS) $(LFLAGS) $^ -o $@ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -lstdc++ $(LFLAGS)
+
+# $(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D)
+# 	$(CC) $(CFLAGS) $(LFLAGS) $^ -o $@ $(LFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	mkdir -p $(dir $@)

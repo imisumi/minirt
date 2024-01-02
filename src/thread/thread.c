@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 23:09:09 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/13 23:12:10 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/01/02 15:22:49 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,14 @@ bool	create_thread(t_data *data)
 		pthread_create(&threads[i].tid, NULL, render, &threads[i]);
 		i++;
 	}
-	i = -1;
-	while (i++ < THREADS)
+	// i = -1;
+	// while (i++ < THREADS)
+	// 	pthread_join(threads[i].tid, NULL);
+	i = 0;
+	while (i < THREADS)
+	{
 		pthread_join(threads[i].tid, NULL);
+		i++;
+	}
 	return (true);
 }

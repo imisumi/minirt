@@ -1,2 +1,2 @@
 all:
-	gcc -O2 -c -I./ miniz.c
+	gcc -O2 -c -I./ miniz.c -lm

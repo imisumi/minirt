@@ -43,3 +43,26 @@ else()
 	set(glfw3_FOUND "NO")
 	message(WARNING "Unable to find dependency: GLFW\nDid you install it?")
 endif()
+
+
+
+
+
+
+# # Comment out the search paths to prevent GLFW from being found
+# # set(_glfw3_HEADER_SEARCH_DIRS
+# # "/usr/include"
+# # ...
+# # )
+
+# # set(_glfw3_LIB_SEARCH_DIRS
+# # "/usr/lib"
+# # ...
+# # )
+
+# # Set GLFW3_INCLUDE_PATH and GLFW3_LIBRARY to empty values
+# set(GLFW3_INCLUDE_PATH "")
+# set(GLFW3_LIBRARY "")
+
+# # Indicate that GLFW3 was not found
+# set(glfw3_FOUND "NO")
