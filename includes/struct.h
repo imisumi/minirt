@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/20 21:32:07 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/01/06 14:29:48 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@
 
 typedef struct s_data t_data;
 typedef struct s_bvh_node t_bvh_node;
+
+typedef enum error
+{
+	NO_ERROR = 0,
+	STOF,
+	VEC3_NAN,
+	VEC3_INF,
+	ERROR_COUNT
+}	t_error;
 
 typedef struct
 {
@@ -94,6 +103,7 @@ typedef struct s_utils
 typedef struct s_material
 {
 	t_vec3f		color;
+	float		roughness;
 	// t_vec3		emission;
 	// float		strength;
 }	t_material;
@@ -176,10 +186,10 @@ typedef struct s_data
 	mlx_image_t		*img;
 }				t_data;
 
-typedef enum e_type
-{
-	SPHERE = 0
-}	t_type;
+// typedef enum e_type
+// {
+// 	SPHERE = 0
+// }	t_type;
 
 typedef struct s_aabb
 {

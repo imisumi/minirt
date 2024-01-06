@@ -6,29 +6,29 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/01/02 16:39:06 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/05 23:54:09 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <math.h>
-#include <float.h>
-# include "tinyexr.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdbool.h>
+# include <stdint.h>
+# include <math.h>
+# include <float.h>
 
 # include <GLFW/glfw3.h>
 
-#include "MLX42/MLX42.h"
-#include "libft.h"
-#include "lib3d.h"
-#include "constants.h"
-#include "struct.h"
-#include "darray.h"
+# include "tinyexr.h"
+# include "MLX42/MLX42.h"
+# include "libft.h"
+# include "lib3d.h"
+# include "constants.h"
+# include "struct.h"
+# include "darray.h"
 
 
 float		randomFloat(uint32_t *state);
@@ -107,5 +107,46 @@ t_vec3f	texture(t_vec3f normal, t_hdri hdri);
 
 void	screenshot(t_data *data);
 
+
+
+
+//! PARSING
+bool	parse_map(t_scene *scene, const char *file);
+
+
+bool	ft_stof(const char *s, float *f);
+char	*str_replace_char(char *str, char find, char replace);
+size_t	ft_split_count(char **split);
+void	ft_split_free(char **split);
+
+bool	check_type(t_scene *scene, char **type);
+
+bool	ft_strcmp(const char *s1, const char *s2);
+
+//! sphere
+bool	parse_sphere(t_scene *scene, char **split);
+
+
+
+void	print_error(const char *msg);
+
+bool	parse_vec3(char *line, t_vec3f *vec);
+bool	parse_8bit_color(char *line, t_vec3f *col);
+
+
+t_error	*error(void);
+
+bool	ft_stoi(const char *s, int *i);
+bool	parse_vec3_normal(char *line, t_vec3f *vec);
+
+//! light
+bool	parse_ambient_light(char **split, t_scene *scene);
+bool	parse_light(char **split, t_scene *scene);
+
+//! camera
+bool	parse_camera(char **split, t_camera *camera);
+
+//! plane
+bool	parse_plane(char **split, t_scene *scene);
 
 #endif

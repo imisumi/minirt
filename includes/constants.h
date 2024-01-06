@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   constants.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/19 02:02:59 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/01/05 23:53:41 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONSTANTS_H
 # define CONSTANTS_H
 
-# define WIDTH 800
+# define WIDTH 1200
 # define HEIGHT 800
 
 # define PIXEL_SIZE 1
@@ -38,5 +38,7 @@
 // # define TWO_PI 6.28318530718
 
 # define EPSILON 0.00001f
+
+
 
 #endif
