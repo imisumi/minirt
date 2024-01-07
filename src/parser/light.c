@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/05 20:58:59 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/06 17:06:25 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,10 @@ bool	parse_light(char **split, t_scene *scene)
 		return (false);
 	}
 	array_push(&scene->point_lights, &point_light);
-	printf("--------------\n");
-	printf("%f, %f, %f\n", point_light.position[X], point_light.position[Y], point_light.position[Z]);
-	printf("%f\n", point_light.intensity);
-	printf("%f, %f, %f\n", point_light.color[R], point_light.color[G], point_light.color[B]);
-	// exit(1);
+	// printf("--------------\n");
+	// printf("%f, %f, %f\n", point_light.position[X], point_light.position[Y], point_light.position[Z]);
+	// printf("%f\n", point_light.intensity);
+	// printf("%f, %f, %f\n", point_light.color[R], point_light.color[G], point_light.color[B]);
 	return (true);
 }
 

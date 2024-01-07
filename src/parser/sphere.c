@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/05 18:14:25 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/06 17:06:11 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,10 @@ bool	parse_sphere(t_scene *scene, char **split)
 		print_error("sphere color");
 		return (false);
 	}
-	printf("--------------\n");
-	// printf("%f, %f, %f\n", center[X], center[Y], center[Z]);
-	printf("%f, %f, %f\n", sphere.pos_f[X], sphere.pos_f[Y], sphere.pos_f[Z]);
-	printf("%f\n", sphere.radius);
-	printf("%f, %f, %f\n", material.color[R], material.color[G], material.color[B]);
+	// printf("--------------\n");
+	// printf("%f, %f, %f\n", sphere.pos_f[X], sphere.pos_f[Y], sphere.pos_f[Z]);
+	// printf("%f\n", sphere.radius);
+	// printf("%f, %f, %f\n", material.color[R], material.color[G], material.color[B]);
 	
 	sphere.material = material;
 	array_push(&scene->spheres, &sphere);

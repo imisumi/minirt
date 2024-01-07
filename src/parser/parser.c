@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/05 21:14:23 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/06 15:52:12 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,7 @@
 #define PLANE     "pl"
 #define CYLINDER  "cy"
 
-t_error	*error(void)
-{
-	static t_error	error;
 
-	return (&error);
-}
-
-
-
-void	print_error(const char *msg)
-{
-	const char	*error_strings[ERROR_COUNT] = {
-	[NO_ERROR] = "NO_ERROR",
-	[STOF] = "String to float error",
-	[VEC3_NAN] = "Vec3 is not a number",
-	[VEC3_INF] = "Vec3 is infinite",
-	};
-
-	if (msg && *error() == NO_ERROR)
-		printf("%s\n", msg);
-	else
-		printf("%s: ", msg);
-	if (*error() != NO_ERROR)
-		printf("%s\n", error_strings[*error()]);
-}
 
 // bool	parse_sphere(t_scene *scene, char **split)
 // {
@@ -76,8 +52,8 @@ bool	check_type(t_scene *scene, char **type)
 		return (parse_camera(type, &scene->camera));
 	else if (ft_strcmp(type[0], PLANE))
 		return (parse_plane(type, scene));
-	// printf("--------------\n");
-	return (true);
+	*error() = MAP_INV_TYPE;
+	return (false);
 }
 
 
@@ -142,7 +118,7 @@ bool	parse_map(t_scene *scene, const char *file)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
-			return (close(fd), false);
+			return (close(fd), true);
 		if (line[0] != '#' && line[0] != '\n')
 		{
 			line = str_replace_char(line, '\t', ' ');
