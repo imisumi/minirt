@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mat4.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/15 00:04:26 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/01/06 15:04:00 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,33 @@ t_mat4 mat4_look_at(t_vec3 eye, t_vec3 center, t_vec3 up)
 	m.m[3][0] = -vec3_dot(s, eye);
 	m.m[3][1] = -vec3_dot(u, eye);
 	m.m[3][2] = -vec3_dot(f, eye);
+	m.m[0][3] = m.m[1][3] = m.m[2][3] = 0.0f;
+	m.m[3][3] = 1.0f;
+	return (m);
+}
+
+t_mat4 mat4_look_at_f(t_vec3f eye, t_vec3f center, t_vec3f up)
+{
+	t_vec3f f = center - eye;
+	f = vec3f_normalize(f);
+	
+	t_vec3f s = vec3f_cross(up, f);
+	s = vec3f_normalize(s);
+	t_vec3f u = vec3f_cross(f, s);
+	t_mat4 m;
+	
+	m.m[0][0] = s[X];
+	m.m[0][1] = u[X];
+	m.m[0][2] = f[X];
+	m.m[1][0] = s[Y];
+	m.m[1][1] = u[Y];
+	m.m[1][2] = f[Y];
+	m.m[2][0] = s[Z];
+	m.m[2][1] = u[Z];
+	m.m[2][2] = f[Z];
+	m.m[3][0] = -vec3f_dot(s, eye);
+	m.m[3][1] = -vec3f_dot(u, eye);
+	m.m[3][2] = -vec3f_dot(f, eye);
 	m.m[0][3] = m.m[1][3] = m.m[2][3] = 0.0f;
 	m.m[3][3] = 1.0f;
 	return (m);

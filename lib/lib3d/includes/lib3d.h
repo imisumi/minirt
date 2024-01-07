@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lib3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/18 23:52:51 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/01/06 15:02:29 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,6 @@ float	vec3f_dot(t_vec3f a, t_vec3f b);
 t_quat	quat_angle_axis_f(float angle, t_vec3f axis);
 t_vec3f quat_rotate_f(t_quat q, t_vec3f v);
 t_vec2f	random_point_in_circle_f(uint32_t *state);
-
+t_mat4 mat4_look_at_f(t_vec3f eye, t_vec3f center, t_vec3f up);
 
 #endif
