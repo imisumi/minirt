@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/06 15:07:27 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/06 15:45:00 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	recalculat_ray_directions(t_data *d)
 // cam->vertical_fov = 60.0f;
 void	init_camera(t_camera *cam)
 {
+	cam->position = (t_vec3f){0.0f, 2.0, 5.0f, 0.0f};
+	cam->dir = (t_vec3f){0.0, 0.0, -1.0, 0.0};
 	cam->mouse_delta[X] = 0;
 	cam->mouse_delta[Y] = 0;
 	cam->projection = mat4_identity();
@@ -70,6 +72,7 @@ void	init_camera(t_camera *cam)
 	cam->view = mat4_identity();
 	cam->inv_view = mat4_identity();
 	cam->aspectRatio = (float)WIDTH / (float)HEIGHT;
+	cam->vertical_fov = 60.0f;
 	cam->zNear = 0.1f;
 	cam->zFar = 1000.0f;
 	cam->prev_mouse_pos[X] = -1;
