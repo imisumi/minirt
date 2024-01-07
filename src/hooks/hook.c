@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:23:41 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/20 22:23:50 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/01/06 17:12:54 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,11 +227,11 @@ void	render_loop(void *param)
 
 	data = param;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
-		return mlx_close_window(data->mlx);
+		return (mlx_close_window(data->mlx));
 	resize_window(param);
 	movement(data);
 	if (render_zone(data) == false)
-		exit(EXIT_FAILURE);
+		return ;
 	frame_times(param);
 	// if (AA)
 		// anti_aliasing(data);
@@ -241,4 +241,5 @@ void	render_loop(void *param)
 	}
 	data->utils.accumulated_frames++;
 	global_frame++;
+	printf("\rframe: %d, %d, %f", data->utils.width, data->utils.height, data->scene.camera.aspectRatio);
 }
