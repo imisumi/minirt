@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   darray.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 00:44:47 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/09 00:39:53 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/01/05 21:33:16 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,32 +51,33 @@ void		*ft_realloc(void *ptr, size_t size)
 
 	if (ptr == NULL)
 		return (malloc(size));
-	if (!size)
+	if (size == 0)
 		return (ptr);
 	new_ptr = malloc(size);
 	if (new_ptr == NULL)
 		return (NULL);
-	memcpy(new_ptr, ptr, size);
+	ft_memcpy(new_ptr, ptr, size);
 	return (new_ptr);
 }
 
-void	vec_init(void *refvec, uint32_t capacity, size_t element_size)
+bool	vec_init(void *refvec, uint32_t capacity, size_t element_size)
 {
 	t_array	*info;
 
 	info = malloc(sizeof(t_array) + (capacity * element_size));
 	if (info == NULL)
 	{
-		printf("Error: malloc failed\n");
-		exit(1);
+		printf("Error: malloc failed vec_init\n");
+		return (false);
 	}
 	*(void **)refvec = info + 1;
 	info->capacity = capacity;
 	info->count = 0;
 	info->element_size = element_size;
+	return (true);
 }
 
-void	array_push(void *refvec, void *value)
+bool	array_push(void *refvec, void *value)
 {
 	t_array	*info;
 
@@ -87,20 +88,20 @@ void	array_push(void *refvec, void *value)
 		info = ft_realloc(info, sizeof(t_array) + (info->capacity * info->element_size));
 		if (info == NULL)
 		{
-			// free(info);
 			array_free(refvec);
-			printf("Error: realloc failed\n");
-			exit(1);
+			printf("Error: failed to add array element\n");
+			return (false);
 		}
 		array_free(refvec);
 		*(void **)refvec = info + 1;
 	}
-	memcpy(
+	ft_memcpy(
 		*(char **)refvec + (info->count * info->element_size),
 		value,
 		info->element_size
 	);
 	info->count++;
+	return (true);
 }
 
 // int	main(void)
