@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/22 23:51:18 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/01/05 23:26:56 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_vec3f	aa_update_dir(t_data *data, uint32_t *rng, uint32_t x, uint32_t y)
 	const float		off_1 = (randomFloat(rng) - 0.5f) / data->utils.width;
 	const float		off_2 = (randomFloat(rng) - 0.5f) / data->utils.height;
 
-	new_dir = data->scene.camera.ray_target[x + y * WIDTH] + \
+	new_dir = data->scene.camera.ray_target[x + y * data->utils.width] + \
 				(cam_right_f * off_1) + (cam_up_f * off_2);
 	return (vec3f_normalize(new_dir));
 }

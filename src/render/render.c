@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/22 23:48:06 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/01/04 13:44:29 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+t_vec3f	vec3f_reflect(t_vec3f v, t_vec3f n)
+{
+	return (v - (n * 2.0f * vec3f_dot(v, n)));
+}
+
+t_vec3f	vec3f_lerp(t_vec3f a, t_vec3f b, float t)
+{
+	return (a * (1.0f - t) + b * t);
+}
 
 t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 {
@@ -45,9 +55,12 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 			// t_vec3 diffuse_dir = vec3_normalize(vec3_add(closest_hit.normal, temp));
 			t_vec3f diffuse_dir = vec3f_normalize(closest_hit.normal + temp);
 
+			t_vec3f	specular_dir = vec3f_normalize(vec3f_reflect(ray[DIR], closest_hit.normal));
+
 
 			// ray.direction = diffuse_dir;
 			ray[DIR] = diffuse_dir;
+			ray[DIR] = specular_dir;
 
 
 			float intensity_scale = powf(bounce_attenuation, bounce);
@@ -78,8 +91,8 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 			// incomming_light = vec3_add(incomming_light, vec3_mul(ray_color, sky));
 			// t_vec3f sky = {0.5f, 0.5f, 0.5f, 0.0f};
 			sky = texture(ray[DIR], scene.hdri);
-			sky = (t_vec3f){1, 1, 1, 1};
-			sky = (t_vec3f){0, 0, 0, 0};
+			// sky = (t_vec3f){1, 1, 1, 1};
+			// sky = (t_vec3f){0, 0, 0, 0};
 			incomming_light = incomming_light + (ray_color * sky);
 			break ;
 		}
