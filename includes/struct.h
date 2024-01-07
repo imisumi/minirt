@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/06 14:29:48 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/06 15:40:01 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,21 @@ typedef enum error
 	STOF,
 	VEC3_NAN,
 	VEC3_INF,
+	MLX_INIT,
+	MLX_IMG,
+	MLX_IMG_TO_WIN,
+	MAP_INV_TYPE,
 	ERROR_COUNT
 }	t_error;
+
+// typedef enum error
+// {
+// 	NO_ERROR = 0,
+// 	STOF,
+// 	VEC3_NAN,
+// 	VEC3_INF,
+// 	ERROR_COUNT
+// }	t_error;
 
 typedef struct
 {
