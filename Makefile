@@ -6,7 +6,7 @@
 #    By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2024/01/02 16:49:48 by imisumi-wsl      ###   ########.fr        #
+#    Updated: 2024/01/05 23:36:12 by imisumi-wsl      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ CFLAGS = -I$(INCDIR)
 CFLAGS += -I./lib/libft/includes/
 CFLAGS += -I./lib/lib3d/includes/
 CFLAGS += -I./lib/MLX42/include/
+CFLAGS += -I./tinyEXR/
 
 # CFLAGS = -I./includes
 
@@ -49,28 +50,50 @@ LFLAGS += -L./lib/libft/ -lft
 #	lib3d
 LFLAGS += -L./lib/lib3d/ -l3d
 
-# LFLAGS += -framework Cocoa -framework OpenGl -framework IOKit -lglfw
-
-# LFLAGS += -lstdc++ -lm
+# c++ for tinyexr
+LFLAGS += -lstdc++
 
 
 OS := $(shell uname -m)
 ifeq ($(OS), arm64)
 LFLAGS += -framework Cocoa -framework OpenGl -framework IOKit -lglfw
+$(info arm64)
 else ifeq ($(OS),x86_64)
 LFLAGS += -ldl -lglfw -pthread -lm
 $(info x86_64)
 endif
 
+# tinyEXR:
+# 	$(MAKE) -C tinyEXR
 
-$(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D)
-	$(CC) $(CFLAGS) $(LFLAGS) $^ -o $@ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -lstdc++ $(LFLAGS)
+
+# include ./tinyEXR/Makefile
+
+# $(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D)
+# 	$(CC) $(CFLAGS) $(LFLAGS) $^ -o $@ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -lstdc++ $(LFLAGS)
+
+# OBJECTS += ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o
+
+TINYEXR = ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o
+
+$(TINYEXR):
+	$(MAKE) -C tinyEXR
+	$(MAKE) -C tinyEXR/dep
+	$(eval OBJECTS += ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o)
+
+# tinyEXR:
+# 	$(MAKE) -C tinyEXR
+
+$(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D) $(TINYEXR)
+	$(CC) $(CFLAGS) $^ -o $@ $(LFLAGS)
+# $(CC) $(CFLAGS) $^ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -o $@ -lstdc++ $(LFLAGS)
+
 
 # $(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D)
 # 	$(CC) $(CFLAGS) $(LFLAGS) $^ -o $@ $(LFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	mkdir -p $(dir $@)
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@ 
 	@echo "$(CYAN)[Compiled $@]$(NC)"
 
@@ -85,7 +108,7 @@ $(LIB3D):
 	@$(MAKE) -C lib/lib3d
 # -I./tinyEXR/ -I./tinyEXR/dep/ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -lstdc++
 all: $(NAME)
-	echo "$(GREEN)[Compiled $(NAME)]$(NC)"
+	@echo "$(GREEN)[Compiled $(NAME)]$(NC)"
 #	@$(CC) -O3 $(CFLAGS) $(LFLAGS) $(SOURCES)
 
 run: all

@@ -17,14 +17,15 @@ int main()
 	int ret = LoadEXR(&out, &width, &height, input, &err);
 	printf("width = %d, height = %d\n", width, height);
 
-	if (ret != TINYEXR_SUCCESS) {
-	  if (err) {
-	     fprintf(stderr, "ERR : %s\n", err);
-	     FreeEXRErrorMessage(err); // release memory of error message.
-	  }
-	} else {
-	//   ...
-	  free(out); // release memory of image data
+	if (ret != TINYEXR_SUCCESS)
+	{
+		if (err)
+		{
+			fprintf(stderr, "ERR : %s\n", err);
+			FreeEXRErrorMessage(err);
+		}
 	}
+	else
+		free(out);
 	return 0;
 }
