@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/06 17:06:11 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/09 13:54:38 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,13 @@
 
 bool	parse_sphere(t_scene *scene, char **split)
 {
-	// if (ft_split_count(split) != 4)
-	// 	return (false);
-	// printf("split count: %ld\n", ft_split_count(split));
 	t_sphere	sphere;
+
+	if (ft_split_count(split) != 4)
+	{
+		print_error("sphere arg count");
+		return (false);
+	}
 	if (parse_vec3(split[1], &sphere.pos_f) == false)
 	{
 		print_error("sphere position");
@@ -41,12 +44,12 @@ bool	parse_sphere(t_scene *scene, char **split)
 		print_error("sphere color");
 		return (false);
 	}
-	// printf("--------------\n");
-	// printf("%f, %f, %f\n", sphere.pos_f[X], sphere.pos_f[Y], sphere.pos_f[Z]);
-	// printf("%f\n", sphere.radius);
-	// printf("%f, %f, %f\n", material.color[R], material.color[G], material.color[B]);
-	
 	sphere.material = material;
 	array_push(&scene->spheres, &sphere);
 	return (true);
 }
+
+	// printf("--------------\n");
+	// printf("%f, %f, %f\n", sphere.pos_f[X], sphere.pos_f[Y], sphere.pos_f[Z]);
+	// printf("%f\n", sphere.radius);
+	// printf("%f, %f, %f\n", material.color[R], material.color[G], material.color[B]);

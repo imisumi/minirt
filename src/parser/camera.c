@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/05 20:58:03 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/09 13:54:56 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 bool	parse_camera(char **split, t_camera *camera)
 {
-	printf("Camera parser\n");
+	// printf("Camera parser\n");
 	if (ft_split_count(split) != 4)
 	{
 		print_error("camera arg count");
@@ -39,15 +39,9 @@ bool	parse_camera(char **split, t_camera *camera)
 		return (false);
 	}
 	if (ft_stof(split[3], &camera->vertical_fov) == false)
-	{
-		print_error("camera fov");
-		return (false);
-	}
+		return (print_error("camera fov"), false);
+	//TODO 0 - 180 weird redshift does 0.2 - 174
 	if (camera->vertical_fov < 0.0f || camera->vertical_fov > 180.0f)
-	{
-		print_error("camera fov range");
-		return (false);
-	}
-	// scene->camera = camera;
+		return (print_error("camera fov range"), false);
 	return (true);
 }

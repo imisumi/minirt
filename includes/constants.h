@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   constants.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/05 23:53:41 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/09 14:33:00 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define WIDTH 1200
 # define HEIGHT 800
 
-# define PIXEL_SIZE 1
+# define PIXEL_SIZE 2
 
 # define MAX_BOUNCES 8
 
@@ -25,7 +25,9 @@
 
 # define MAX_TRIS_LEAF 4
 # define RENDER_BVH 0
-# define MAX_SPHERES_LEAF 1
+# define MAX_SPHERES_LEAF 4
+
+# define USE_BVH 1
 
 # define AA 1
 

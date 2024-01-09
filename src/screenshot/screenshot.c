@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   screenshot.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 20:56:34 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/22 01:40:06 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/01/09 14:21:12 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 void	screenshot(t_data *data)
 {
-	const uint32_t	width = data->mlx->width;
-	const uint32_t	height = data->mlx->height;
+	const uint32_t	width = data->utils.width;
+	const uint32_t	height = data->utils.height;
 
 	size_t size = width * height * 4;
 
@@ -31,7 +31,9 @@ void	screenshot(t_data *data)
 		int col = j % width; // Calculate the column
 		
 		t_vec4f color = data->utils.accumulated_data[j];
+		// printf("accumulated frames: %d\n", data->utils.accumulated_frames);
 		color /= (float)data->utils.accumulated_frames;
+		
 		color = vec3f_tone_map(color);
 
 		int newIndex = (height - row - 1) * width + col;

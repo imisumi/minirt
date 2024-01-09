@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/06 17:11:05 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/09 14:24:12 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ int32_t main(int32_t argc, char* argv[])
 
 	data.utils.width = WIDTH;
 	data.utils.height = HEIGHT;
-	recalculate_view(&data);
-	recalculated_projection(&data);
-	recalculat_ray_directions(&data);
+	// recalculate_view(&data);
+	// recalculated_projection(&data);
+	// recalculat_ray_directions(&data);
 
 
 	// init_scene(&data.scene);
@@ -117,6 +117,10 @@ int32_t main(int32_t argc, char* argv[])
 		return (EXIT_FAILURE);
 	}
 	mlx_set_window_title(data.mlx, "Testing");
+
+	recalculate_view(&data);
+	recalculated_projection(&data);
+	recalculat_ray_directions(&data);
 
 	
 	t_vec3f v = data.scene.spheres[0].pos_f;

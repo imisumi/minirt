@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/04 13:44:29 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/09 15:10:48 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,17 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 		closest_hit.hit = false;
 		
 		// closest_hit = inv_plane_intersection(ray, scene, closest_hit);
-		closest_hit = inv_plane_intersection_f(ray, scene, closest_hit);
+		// closest_hit = inv_plane_intersection_f(ray, scene, closest_hit);
 		// closest_hit = sphere_intersection_f(ray, scene, closest_hit);
-		closest_hit = sphere_bvh_intersection_f(ray, scene.spheres, closest_hit, scene.bvh_spheres_f);
+		if (USE_BVH)
+			closest_hit = sphere_bvh_intersection_f(ray, scene.spheres, closest_hit, scene.bvh_spheres_f);
+		else
+			closest_hit = sphere_intersection_f(ray, scene, closest_hit);
+
+
+		closest_hit.material.roughness = 0.0f;
+		closest_hit = inv_plane_intersection_f(ray, scene, closest_hit);
+		
 		if (closest_hit.hit)
 		{
 			// ray.origin = vec3_add(closest_hit.position, vec3_mulf(closest_hit.normal, EPSILON));
@@ -60,7 +68,8 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 
 			// ray.direction = diffuse_dir;
 			ray[DIR] = diffuse_dir;
-			ray[DIR] = specular_dir;
+			if (closest_hit.material.roughness == 0.0f)
+				ray[DIR] = specular_dir;
 
 
 			float intensity_scale = powf(bounce_attenuation, bounce);

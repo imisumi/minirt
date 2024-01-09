@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/06 17:06:25 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/09 13:54:50 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 bool	parse_ambient_light(char **split, t_scene *scene)
 {
-	printf("Ambient light parser\n");
+	// printf("Ambient light parser\n");
 	if (ft_split_count(split) != 3)
 	{
 		print_error("ambient light arg count");
@@ -41,9 +41,7 @@ bool	parse_ambient_light(char **split, t_scene *scene)
 		return (false);
 	}
 	return (true);
-
 }
-
 
 //?	Light:
 //?		∗ identifier: L
@@ -56,14 +54,12 @@ bool	parse_light(char **split, t_scene *scene)
 {
 	t_point_light	point_light;
 
-	printf("Light parser\n");
+	// printf("Light parser\n");
 	if (ft_split_count(split) != 4)
 	{
 		print_error("light arg count");
 		return (false);
 	}
-	// for (size_t i = 0; i < ft_split_count(split); i++)
-	// 	printf("%s\n", split[i]);
 	if (parse_vec3(split[1], &point_light.position) == false)
 	{
 		print_error("light position");
@@ -80,12 +76,12 @@ bool	parse_light(char **split, t_scene *scene)
 		return (false);
 	}
 	array_push(&scene->point_lights, &point_light);
-	// printf("--------------\n");
-	// printf("%f, %f, %f\n", point_light.position[X], point_light.position[Y], point_light.position[Z]);
-	// printf("%f\n", point_light.intensity);
-	// printf("%f, %f, %f\n", point_light.color[R], point_light.color[G], point_light.color[B]);
 	return (true);
 }
 
-
-// bool	parse_sphere(t_scene *scene, char **split)
+	// printf("--------------\n");
+	// printf("%f, %f, %f\n", point_light.position[X], \
+//		point_light.position[Y], point_light.position[Z]);
+	// printf("%f\n", point_light.intensity);
+	// printf("%f, %f, %f\n", point_light.color[R], point_light.color[G], \
+//		point_light.color[B]);
