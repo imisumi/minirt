@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/09 13:54:50 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/10 15:54:54 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,3 +85,50 @@ bool	parse_light(char **split, t_scene *scene)
 	// printf("%f\n", point_light.intensity);
 	// printf("%f, %f, %f\n", point_light.color[R], point_light.color[G], \
 //		point_light.color[B]);
+
+
+bool	parse_load_hdri(const char *path, t_hdri *hdri)
+{
+	int			ret;
+	int			width;
+	int			height;
+	const char*	err;
+
+	ret = LoadEXR(&hdri->rgba, &hdri->width, &hdri->height, path, NULL);
+	if (ret != 0)
+	{
+		printf("Error: %s\n", err);
+		return (false);
+	}
+	printf("w: %d\n", hdri->width);
+	printf("h: %d\n", hdri->height);
+	return (true);
+}
+
+
+bool	parse_hdri(char **split, t_scene *scene)
+{
+	t_hdri		hdri;
+	static bool	once = false;
+
+	// printf("HDRI parser\n");
+	if (once == true)
+	{
+		printf("Warning: hdri already defined, only first definition will be used\n");
+		return (true);
+	}
+	if (ft_split_count(split) != 2)
+	{
+		print_error("hdri arg count");
+		return (false);
+	}
+	printf("split[1]: %s\n", split[1]);
+	if (parse_load_hdri(split[1], &hdri) == false)
+	{
+		print_error("hdri path");
+		return (false);
+	}
+	once = true;
+	scene->hdri = hdri;
+	return (true);
+}

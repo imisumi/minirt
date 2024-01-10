@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/09 13:54:38 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/10 16:18:51 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
 
 //?	Sphere:
 //?		∗ identifier: sp
@@ -23,7 +22,8 @@ bool	parse_sphere(t_scene *scene, char **split)
 {
 	t_sphere	sphere;
 
-	if (ft_split_count(split) != 4)
+	int arg_count = ft_split_count(split);
+	if (arg_count != 4 && arg_count != 5)
 	{
 		print_error("sphere arg count");
 		return (false);
@@ -38,13 +38,22 @@ bool	parse_sphere(t_scene *scene, char **split)
 		print_error("sphere radius");
 		return (false);
 	}
-	t_material	material;
-	if (parse_8bit_color(split[3], &material.color) == false)
+	if (sphere.radius <= 0.0f)
 	{
-		print_error("sphere color");
+		print_error("sphere radius range");
 		return (false);
 	}
-	sphere.material = material;
+
+	if (parse_material(&sphere.material, &split[3]) == false)
+		return (false);
+	// exit(0);
+	// t_material	material;
+	// if (parse_8bit_color(split[3], &material.color) == false)
+	// {
+	// 	print_error("sphere color");
+	// 	return (false);
+	// }
+	// sphere.material = material;
 	array_push(&scene->spheres, &sphere);
 	return (true);
 }

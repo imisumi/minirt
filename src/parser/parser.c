@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/06 15:52:12 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/10 16:02:15 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #define SPHERE    "sp"
 #define PLANE     "pl"
 #define CYLINDER  "cy"
+#define HDRI      "HDRI"
 
 
 
@@ -52,6 +53,8 @@ bool	check_type(t_scene *scene, char **type)
 		return (parse_camera(type, &scene->camera));
 	else if (ft_strcmp(type[0], PLANE))
 		return (parse_plane(type, scene));
+	else if (BONUS && ft_strcmp(type[0], HDRI))
+		return (parse_hdri(type, scene));
 	*error() = MAP_INV_TYPE;
 	return (false);
 }
