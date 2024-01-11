@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/09 15:10:48 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/10 16:31:49 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,21 @@ t_vec3f	vec3f_reflect(t_vec3f v, t_vec3f n)
 	return (v - (n * 2.0f * vec3f_dot(v, n)));
 }
 
-t_vec3f	vec3f_lerp(t_vec3f a, t_vec3f b, float t)
+// t_vec3f	vec3f_lerp(t_vec3f a, t_vec3f b, float t)
+// {
+// 	return (a * (1.0f - t) + b * t);
+// }
+
+t_vec3f vec3f_lerp(t_vec3f vec1, t_vec3f vec2, float t)
 {
-	return (a * (1.0f - t) + b * t);
+	// if (t == 1.0f)
+	// 	return vec1;
+	t_vec3f result;
+
+	result[X] = vec1[X] + (t * (vec2[X] - vec1[X]));
+	result[Y] = vec1[Y] + (t * (vec2[Y] - vec1[Y]));
+	result[Z] = vec1[Z] + (t * (vec2[Z] - vec1[Z]));
+	return result;
 }
 
 t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
@@ -49,7 +61,7 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 			closest_hit = sphere_intersection_f(ray, scene, closest_hit);
 
 
-		closest_hit.material.roughness = 0.0f;
+		// closest_hit.material.roughness = 0.0f;
 		closest_hit = inv_plane_intersection_f(ray, scene, closest_hit);
 		
 		if (closest_hit.hit)
@@ -67,9 +79,15 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 
 
 			// ray.direction = diffuse_dir;
-			ray[DIR] = diffuse_dir;
-			if (closest_hit.material.roughness == 0.0f)
-				ray[DIR] = specular_dir;
+			// ray[DIR] = diffuse_dir;
+			// if (closest_hit.material.roughness == 0.0f)
+			// 	ray[DIR] = specular_dir;
+
+			// lerp between diffuse and specular
+			// ray[DIR] = vec3f_lerp(diffuse_dir, specular_dir, closest_hit.material.roughness);
+			ray[DIR] = vec3f_lerp(specular_dir, diffuse_dir, closest_hit.material.roughness);
+			ray[DIR] = vec3f_normalize(ray[DIR]);
+			
 
 
 			float intensity_scale = powf(bounce_attenuation, bounce);
@@ -99,7 +117,12 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 			// sky = default_skyf(ray[DIR], scene);
 			// incomming_light = vec3_add(incomming_light, vec3_mul(ray_color, sky));
 			// t_vec3f sky = {0.5f, 0.5f, 0.5f, 0.0f};
-			sky = texture(ray[DIR], scene.hdri);
+			if (BONUS && scene.hdri.rgba != NULL)
+				sky = texture(ray[DIR], scene.hdri);
+			else if (scene.ambient_light > 0.0f)
+				sky = scene.ambient_color * scene.ambient_light;
+			else
+				sky = default_skyf(ray[DIR], scene);
 			// sky = (t_vec3f){1, 1, 1, 1};
 			// sky = (t_vec3f){0, 0, 0, 0};
 			incomming_light = incomming_light + (ray_color * sky);

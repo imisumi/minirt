@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/05 23:26:56 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/10 15:36:01 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,7 @@ t_vec3f omni_dir_light_f(t_rayf ray, t_scene scene, t_hitinfo closest_hit)
 {
 	t_sphere sphere;
 	sphere.radius = 0.01f;
+	// sphere.radius = 1.0f;
 	int	i;
 
 	t_rayf		shadow_ray;

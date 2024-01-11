@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:36:28 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/09 15:09:55 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/10 16:22:40 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_hitinfo	inv_plane_intersection_f(t_rayf ray, t_scene s, t_hitinfo hitinfo)
 				hitinfo.normal = s.inv_planes[i].normal;
 				hitinfo.material = s.inv_planes[i].material;
 				//! remove
-				hitinfo.material.roughness = 1.0f;
+				// hitinfo.material.roughness = 1.0f;
 			}
 		}
 		i++;

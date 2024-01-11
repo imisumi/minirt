@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/09 14:24:12 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/10 15:58:40 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ int32_t main(int32_t argc, char* argv[])
 	ft_memset(&data, 0, sizeof(t_data));
 	// parse_input(argc, argv, &data);
 	// Gotta error check this stuff
-
+	if (data.scene.hdri.rgba == NULL)
+		printf("NULL\n");
 
 	init_camera(&data.scene.camera);
 	data.utils.accumulated_frames = 1;
@@ -143,21 +144,6 @@ int32_t main(int32_t argc, char* argv[])
 	// mlx_loop_hook(data.mlx, render_loop, &data);
 
 
-	// char *skybox = "./assets/hdri/industrial_sunset_puresky_2k.exr";
-	char *skybox = "./assets/hdri/empty_workshop_2k.exr";
-	// char *skybox = "./assets/hdri/chinese_garden_4k.exr";
-	t_hdri hdri;
-	// char *skybox = "testing3.exr";
-	int w;
-	int h;
-	const char* err;
-	int ret = LoadEXR(&hdri.rgba, &hdri.width, &hdri.height, skybox, &err);
-	printf("w: %d\n", hdri.width);
-	printf("h: %d\n", hdri.height);
-	data.scene.hdri = hdri;
-	// return 1;
-	
-	
 	// mlx_loop_hook(data.mlx, frame_times, &data);
 
 	mlx_loop_hook(data.mlx, render_loop, &data);
