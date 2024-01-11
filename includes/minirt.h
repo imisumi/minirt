@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/01/05 23:54:09 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/10 16:18:44 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,11 +142,15 @@ bool	parse_vec3_normal(char *line, t_vec3f *vec);
 //! light
 bool	parse_ambient_light(char **split, t_scene *scene);
 bool	parse_light(char **split, t_scene *scene);
+bool	parse_hdri(char **split, t_scene *scene);
 
 //! camera
 bool	parse_camera(char **split, t_camera *camera);
 
 //! plane
 bool	parse_plane(char **split, t_scene *scene);
+
+//! Material
+bool	parse_material(t_material *mat, char **split);
 
 #endif

@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   constants.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/09 14:33:00 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/10 16:04:37 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONSTANTS_H
 # define CONSTANTS_H
 
+# define BONUS 1
+
 # define WIDTH 1200
 # define HEIGHT 800
 
-# define PIXEL_SIZE 2
+# define PIXEL_SIZE 1
 
 # define MAX_BOUNCES 8
 
