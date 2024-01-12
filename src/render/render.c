@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/10 16:31:49 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/12 16:47:15 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,39 @@ t_vec3f	vec3f_reflect(t_vec3f v, t_vec3f n)
 	return (v - (n * 2.0f * vec3f_dot(v, n)));
 }
 
-// t_vec3f	vec3f_lerp(t_vec3f a, t_vec3f b, float t)
-// {
-// 	return (a * (1.0f - t) + b * t);
-// }
 
-t_vec3f vec3f_lerp(t_vec3f vec1, t_vec3f vec2, float t)
+t_vec3f vec3f_lerp(const t_vec3f vec1, const t_vec3f vec2, const float t)
 {
-	// if (t == 1.0f)
-	// 	return vec1;
-	t_vec3f result;
+	const t_vec3f	result = (1.0f - t) * vec1 + t * vec2;
 
-	result[X] = vec1[X] + (t * (vec2[X] - vec1[X]));
-	result[Y] = vec1[Y] + (t * (vec2[Y] - vec1[Y]));
-	result[Z] = vec1[Z] + (t * (vec2[Z] - vec1[Z]));
-	return result;
+	return (result);
+}
+
+float	lerpf(float a, float b, float t)
+{
+	return (a + (b - a) * t);
+}
+
+float FresnelReflectAmount(float n1, float n2, t_vec3f incident, t_vec3f normal, float f0, float f90)
+{
+	// Schlick aproximation
+	float r0 = (n1-n2) / (n1+n2);
+	r0 *= r0;
+	float cosX = -vec3f_dot(normal, incident);
+	if (n1 > n2)
+	{
+	    float n = n1/n2;
+	    float sinT2 = n*n*(1.0-cosX*cosX);
+	    // Total internal reflection
+	    if (sinT2 > 1.0)
+	        return f90;
+	    cosX = sqrtf(1.0-sinT2);
+	}
+	float x = 1.0-cosX;
+	float ret = r0+(1.0-r0)*x*x*x*x*x;
+	
+	// adjust reflect multiplier for object reflectivity
+	return lerpf(f0, f90, ret);
 }
 
 t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
@@ -44,64 +62,70 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 	ray[ORIGIN] = scene.camera.position;
 	ray[DIR] = dir;
 
-	t_hitinfo closest_hit;
+	t_hitinfo hitinfo;
 	float	bounce_attenuation = 0.8f;
 	while (bounce <= MAX_BOUNCES)
 	{
 		//! check
-		closest_hit.distance = INFINITY;
-		closest_hit.hit = false;
+		hitinfo.distance = INFINITY;
+		hitinfo.hit = false;
 		
-		// closest_hit = inv_plane_intersection(ray, scene, closest_hit);
-		// closest_hit = inv_plane_intersection_f(ray, scene, closest_hit);
-		// closest_hit = sphere_intersection_f(ray, scene, closest_hit);
+		// hitinfo = inv_plane_intersection(ray, scene, hitinfo);
+		// hitinfo = inv_plane_intersection_f(ray, scene, hitinfo);
+		// hitinfo = sphere_intersection_f(ray, scene, hitinfo);
 		if (USE_BVH)
-			closest_hit = sphere_bvh_intersection_f(ray, scene.spheres, closest_hit, scene.bvh_spheres_f);
+			hitinfo = sphere_bvh_intersection_f(ray, scene.spheres, hitinfo, scene.bvh_spheres_f);
 		else
-			closest_hit = sphere_intersection_f(ray, scene, closest_hit);
+			hitinfo = sphere_intersection_f(ray, scene, hitinfo);
 
 
-		// closest_hit.material.roughness = 0.0f;
-		closest_hit = inv_plane_intersection_f(ray, scene, closest_hit);
+		hitinfo = inv_plane_intersection_f(ray, scene, hitinfo);
 		
-		if (closest_hit.hit)
+		if (hitinfo.hit)
 		{
-			// ray.origin = vec3_add(closest_hit.position, vec3_mulf(closest_hit.normal, EPSILON));
-			ray[ORIGIN] = closest_hit.position + (closest_hit.normal * EPSILON);
+			ray[ORIGIN] = hitinfo.position + (hitinfo.normal * EPSILON);
 
-			// return ((t_vec4f){1.0f, 0.0f, 0.0f, 1.0f});
-			// t_vec3 temp = random_direction(rngState);
-			t_vec3f temp = random_directionf(rngState);
-			// t_vec3 diffuse_dir = vec3_normalize(vec3_add(closest_hit.normal, temp));
-			t_vec3f diffuse_dir = vec3f_normalize(closest_hit.normal + temp);
+			t_vec3f diffuse_dir = vec3f_normalize(hitinfo.normal + random_directionf(rngState));
 
-			t_vec3f	specular_dir = vec3f_normalize(vec3f_reflect(ray[DIR], closest_hit.normal));
+			t_vec3f	specular_dir = vec3f_reflect(ray[DIR], hitinfo.normal);
+			// specular_dir = vec3f_normalize(vec3f_lerp(specular_dir, diffuse_dir, hitinfo.material.roughness));
+			specular_dir = vec3f_lerp(specular_dir, diffuse_dir, hitinfo.material.roughness);
 
-
-			// ray.direction = diffuse_dir;
-			// ray[DIR] = diffuse_dir;
-			// if (closest_hit.material.roughness == 0.0f)
-			// 	ray[DIR] = specular_dir;
-
-			// lerp between diffuse and specular
-			// ray[DIR] = vec3f_lerp(diffuse_dir, specular_dir, closest_hit.material.roughness);
-			ray[DIR] = vec3f_lerp(specular_dir, diffuse_dir, closest_hit.material.roughness);
-			ray[DIR] = vec3f_normalize(ray[DIR]);
 			
+			bool	is_specular = (hitinfo.material.specular >= randomFloat(rngState));
 
+			//? fresnel
+			float	specular_chance = hitinfo.material.specular;
+			if (specular_chance > 0.0f)
+			{
+				specular_chance = FresnelReflectAmount(1.0f, 1.5f, ray[DIR], hitinfo.normal, specular_chance, 1.0f);
+			}
+			is_specular = (specular_chance >= randomFloat(rngState));
 
+			ray[DIR] = vec3f_lerp(diffuse_dir, specular_dir, is_specular);
+			
 			float intensity_scale = powf(bounce_attenuation, bounce);
 
 			t_vec3f emitted_light = {0};
-			emitted_light = omni_dir_light_f(ray, scene, closest_hit);
+			emitted_light = omni_dir_light_f(ray, scene, hitinfo);
 
 			
-			// emitted_light += omni_dir_light_f2(ray, scene, closest_hit);
-			// emitted_light = omni_dir_light_f_comb(ray, scene, closest_hit);
+			// emitted_light += omni_dir_light_f2(ray, scene, hitinfo);
+			// emitted_light = omni_dir_light_f_comb(ray, scene, hitinfo);
 			emitted_light = emitted_light * intensity_scale;
 
-			ray_color = ray_color * closest_hit.material.color;
+			//! add emission
+			emitted_light += hitinfo.material.color * hitinfo.material.emission_strength;
+
+			// ray_color *= hitinfo.material.color;
+			ray_color *= vec3f_lerp(hitinfo.material.color, hitinfo.material.specular_color, is_specular);
 			incomming_light = incomming_light + (ray_color * emitted_light);
+			
+			float p = fmaxf(fmaxf(ray_color[X], ray_color[Y]), ray_color[Z]);
+			if (randomFloat(rngState) > p)
+				break ;
+			ray_color *= (1.0f / p);
+			
 		}
 		else
 		{
@@ -121,8 +145,8 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 				sky = texture(ray[DIR], scene.hdri);
 			else if (scene.ambient_light > 0.0f)
 				sky = scene.ambient_color * scene.ambient_light;
-			else
-				sky = default_skyf(ray[DIR], scene);
+			// else
+			// 	sky = default_skyf(ray[DIR], scene);
 			// sky = (t_vec3f){1, 1, 1, 1};
 			// sky = (t_vec3f){0, 0, 0, 0};
 			incomming_light = incomming_light + (ray_color * sky);
