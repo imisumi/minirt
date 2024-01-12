@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/08 14:30:13 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/11 18:49:16 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ bool	parse_plane(char **split, t_scene *scene)
 {
 	t_inv_plane	plane;
 
-	if (ft_split_count(split) != 4)
+	int arg_count = ft_split_count(split);
+	if (arg_count != 4 && arg_count != 6)
 	{
 		print_error("plane arg count");
 		return (false);
@@ -38,13 +39,15 @@ bool	parse_plane(char **split, t_scene *scene)
 		print_error("plane normal out of range [-1, 1]");
 		return (false);
 	}
-	t_material	material;
-	if (parse_8bit_color(split[3], &material.color) == false)
-	{
-		print_error("plane color");
+	// t_material	material;
+	// if (parse_8bit_color(split[3], &material.color) == false)
+	// {
+	// 	print_error("plane color");
+	// 	return (false);
+	// }
+	// plane.material = material;
+	if (parse_material(&plane.material, &split[3]) == false)
 		return (false);
-	}
-	plane.material = material;
 	array_push(&scene->inv_planes, &plane);
 	return (true);
 }

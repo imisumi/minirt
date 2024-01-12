@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/10 16:45:37 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/12 15:53:44 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_material	default_material(void)
 
 	material.color = (t_vec3f){1.0f, 0.0f, 1.0f, 0.0f};
 	material.roughness = 1.0f;
+	material.emission_strength = 0.0f;
 	return (material);
 }
 
@@ -33,21 +34,40 @@ bool	parse_material(t_material *mat, char **split)
 	if (!BONUS)
 		return (true);
 	// return (true);
-
+	//? color
 	if (parse_8bit_color(split[0], &mat->color) == false)
 	{
 		print_error("sphere color");
 		return (false);
 	}
+	//? roughness
 	if (ft_stof(split[1], &mat->roughness) == false)
 	{
 		print_error("sphere roughness");
 		return (false);
 	}
-	if (mat->roughness < 0.0f || mat->roughness > 1.0f)
+
+	//? specular
+	if (ft_stof(split[2], &mat->specular) == false)
 	{
-		print_error("sphere roughness range");
+		print_error("sphere emission strength");
 		return (false);
 	}
+
+	//? specular_color
+	if (parse_8bit_color(split[3], &mat->specular_color) == false)
+	{
+		print_error("sphere emission strength");
+		return (false);
+	}
+
+	
+	//? emission
+	if (ft_stof(split[4], &mat->emission_strength) == false)
+	{
+		print_error("sphere emission strength");
+		return (false);
+	}
+
 	return (true);
 }
