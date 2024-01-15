@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/01/10 16:18:44 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/15 16:28:52 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,5 +152,10 @@ bool	parse_plane(char **split, t_scene *scene);
 
 //! Material
 bool	parse_material(t_material *mat, char **split);
+t_material	default_material(void);
+
+
+
+t_vec3f	vec3f_lerp(const t_vec3f vec1, const t_vec3f vec2, const float t);
 
 #endif
