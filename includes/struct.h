@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/06 15:40:01 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/13 00:08:02 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,18 @@ typedef struct s_material
 {
 	t_vec3f		color;
 	float		roughness;
+	
+	float		specular;
+	t_vec3f		specular_color;
 	// t_vec3		emission;
-	// float		strength;
+
+	float		ior;
+	float		refraction;
+	float		refraction_roughness;
+	t_vec3f		refraction_color;
+	
+	float		emission_strength;
+	t_vec3f		emission_color;
 }	t_material;
 
 typedef struct s_sphere
@@ -234,6 +244,7 @@ typedef struct s_hitinfo
 	// t_vec3	normal;
 	t_vec3f	position;
 	t_vec3f	normal;
+	bool	inside;
 
 	t_material	material;
 	// t_vec3		color;
