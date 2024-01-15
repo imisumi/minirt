@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/12 15:53:44 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/13 00:00:52 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,37 @@ bool	parse_material(t_material *mat, char **split)
 		return (false);
 	}
 
+	//? ior
+	if (ft_stof(split[4], &mat->ior) == false)
+	{
+		print_error("sphere emission strength");
+		return (false);
+	}
+
+	//? refraction
+	if (ft_stof(split[5], &mat->refraction) == false)
+	{
+		print_error("sphere emission strength");
+		return (false);
+	}
+
+	//? refraction_roughness
+	if (ft_stof(split[6], &mat->refraction_roughness) == false)
+	{
+		print_error("sphere emission strength");
+		return (false);
+	}
+	
+	//? refraction_color
+	if (parse_8bit_color(split[7], &mat->refraction_color) == false)
+	{
+		print_error("sphere emission strength");
+		return (false);
+	}
+
 	
 	//? emission
-	if (ft_stof(split[4], &mat->emission_strength) == false)
+	if (ft_stof(split[8], &mat->emission_strength) == false)
 	{
 		print_error("sphere emission strength");
 		return (false);

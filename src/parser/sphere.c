@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/12 15:53:48 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/12 23:59:21 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	parse_sphere(t_scene *scene, char **split)
 	t_sphere	sphere;
 
 	int arg_count = ft_split_count(split);
-	if (arg_count != 4 && arg_count != 8)
+	if (arg_count != 4 && arg_count != 12)
 	{
 		print_error("sphere arg count");
 		return (false);
@@ -55,6 +55,8 @@ bool	parse_sphere(t_scene *scene, char **split)
 	// }
 	// sphere.material = material;
 	array_push(&scene->spheres, &sphere);
+
+	
 	return (true);
 }
 
