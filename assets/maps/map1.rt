@@ -1,7 +1,7 @@
-# A  0.0   255,255,255
+A  0.0   255,255,255
 # C  6,45,-100   0,-0.5,1   5
 
-C  0,1,5.5   0,0,-1   60
+C  0,0,3   0,0,-1   60
 
 
 # L  6,2,-6   50   255,255,255
@@ -14,7 +14,10 @@ C  0,1,5.5   0,0,-1   60
 
 # .EXR only
 # HDRI      assets/hdri/empty_workshop_2k.exr
-HDRI      assets/hdri/empty_workshop_2k.exr
+HDRI      assets/hdri/pine_attic_4k.exr
+# HDRI	assets/hdri/uffizi-large.exr
+# HDRI	/home/imisumi-wsl/Github/minirt/assets/hdri/uffizi-large.exr
+# HDRI		assets/hdri/sun_sky.exr
 
 
 # pl 0,-2,0   0,1,0  140,118,206
@@ -30,7 +33,7 @@ HDRI      assets/hdri/empty_workshop_2k.exr
 
 
 #?
-# pl 0,-1,0   0,1,0   255,255,255
+# pl 0,-1,0   0,1,0   122,122,122      1.0      0.0
 
 
 
@@ -43,14 +46,25 @@ HDRI      assets/hdri/empty_workshop_2k.exr
 # sp   0,2,0   0.8   216,56,136
 # sp
 
-#?   position     diameter   color          roughness
-sp   0,0,0        0.8        216,56,136     0.2
-sp   0,0,-2       0.8        10,176,240   0.2
-sp   0,0,-4       0.8        68,194,164   0.2
-sp   0,0,-6       0.8        255,204,10   0.2
-sp   0,0,-8       0.8        216,56,136	 0.2
-sp   0,0,-10      0.8        10,176,240	 0.2
-sp   0,0,-12      0.8        68,194,164	 0.2
+# sp   0,4,-6        0.8        255,255,255     1.0          20.0
+
+# sp   0,0,-6       0.8        222,222,222     0.1         0.0
+# sp   0,0,-8       0.8        222,222,222     0.2         0.0
+
+sp   0,0,0      1          255,22,22      0.0         0.1        255,255,255     1.4  1.0          0.0                   0,0,0             0.0
+# sp   2,0,0      1          255,255,255      0.0         0.1        255,255,255     1.1  1.0          0.0                   0,0,0             0.0
+
+# sp   0,0,0      1          255,22,22      0.0         0.1        255,255,255     1.1  0.0          0.0                   0,0,0             0.0
+
+
+#?   position   diameter   color          roughness   specular   specular_color   ior   refraction   refraction_rougness   refraction_color   emission_strength
+# sp   0,0,0        0.8        216,56,136     1.0          1.0       255,255,255       0.0
+# sp   0,0,-2       0.8        10,176,240     1.0          1.0       255,255,255       0.0
+# sp   0,0,-4       0.8        68,194,164     1.0          1.0       255,255,255       0.0
+# sp   0,0,-6       0.8        255,204,10     1.0          1.0       255,255,255       0.0
+# sp   0,0,-8       0.8        216,56,136     1.0          1.0       255,255,255       0.0
+# sp   0,0,-10      0.8        10,176,240     1.0          1.0       255,255,255       0.0
+# sp   0,0,-12      0.8        68,194,164     1.0          1.0       255,255,255       0.0
 
 # sp   2,0,-2   0.8   216,56,136
 # sp   2,0,-4   0.8   10,176,240
