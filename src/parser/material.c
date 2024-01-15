@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   material.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/13 00:00:52 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/15 15:06:36 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ t_material	default_material(void)
 
 	material.color = (t_vec3f){1.0f, 0.0f, 1.0f, 0.0f};
 	material.roughness = 1.0f;
+	material.specular = 0.0f;
+	material.specular_color = (t_vec3f){1.0f, 1.0f, 1.0f, 0.0f};
+	material.ior = 1.4f;
+	material.refraction = 0.0f;
+	material.refraction_roughness = 0.0f;
+	material.refraction_color = (t_vec3f){1.0f, 1.0f, 1.0f, 0.0f};
 	material.emission_strength = 0.0f;
 	return (material);
 }
@@ -33,6 +39,8 @@ bool	parse_material(t_material *mat, char **split)
 	*mat = default_material();
 	if (!BONUS)
 		return (true);
+	// if (*split == NULL)
+	// 	return true;
 	// return (true);
 	//? color
 	if (parse_8bit_color(split[0], &mat->color) == false)

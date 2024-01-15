@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:23:41 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/06 17:12:54 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/15 14:53:45 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,8 @@ void	render_loop(void *param)
 	{
 		screenshot(data);
 	}
+	// if (global_frame == 10)
+	// 	screenshot(data);
 	data->utils.accumulated_frames++;
 	global_frame++;
 	printf("\rframe: %d, %d, %f", data->utils.width, data->utils.height, data->scene.camera.aspectRatio);

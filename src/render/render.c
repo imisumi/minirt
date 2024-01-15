@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/15 03:15:56 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/15 17:22:55 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,15 +185,15 @@ t_vec3f	vec3f_exp(t_vec3f v)
 //     return r_out_perp + r_out_parallel;
 // }
 
-t_vec3f	vec3f_refract(t_vec3f incidentVec, t_vec3f normal, float eta)
+t_vec3f	vec3f_refract(t_vec3f incident, t_vec3f normal, float eta)
 {
 	t_vec3f out;
-	float N_dot_I = vec3f_dot(normal, incidentVec);
+	float N_dot_I = vec3f_dot(normal, incident);
 	float k = 1.f - eta * eta * (1.f - N_dot_I * N_dot_I);
 	if (k < 0.f)
 		out = (t_vec3f){0.f, 0.f, 0.f, 0.0f};
 	else
-		out = eta * incidentVec - (eta * N_dot_I + sqrtf(k)) * normal;
+		out = eta * incident - (eta * N_dot_I + sqrtf(k)) * normal;
 
 	return (out);
 }
@@ -225,7 +225,7 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 	ray[DIR] = dir;
 
 	t_hitinfo hitinfo;
-	float	bounce_attenuation = 0.8f;
+	float	bounce_attenuation = 0.6f;
 	while (bounce <= MAX_BOUNCES)
 	{
 		//! check
@@ -238,7 +238,9 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 		else
 			hitinfo = sphere_intersection_f(ray, scene, hitinfo);
 
-		// hitinfo = inv_plane_intersection_f(ray, scene, hitinfo);
+		hitinfo = inv_plane_intersection_f(ray, scene, hitinfo);
+		if (!hitinfo.hit && !RENDER_SKYBOX && bounce == 0)
+			return ((t_vec4f){0.0f, 0.0f, 0.0f, 1.0f});
 		if (hitinfo.hit == false)
 			return (apply_enviorment(ray, scene, incomming_light, ray_color));
 
@@ -304,6 +306,7 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 		float p = fmaxf(fmaxf(ray_color[X], ray_color[Y]), ray_color[Z]);
 		if (randomFloat(rngState) > p)
 			break ;
+		//??????
 		ray_color *= (1.0f / p);
 
 		float intensity_scale = powf(bounce_attenuation, bounce);

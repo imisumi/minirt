@@ -3,14 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   render_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/10 15:36:01 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/15 17:02:55 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+
+t_vec4f vec4f_clamp(t_vec4f vec, float min, float max)
+{
+	vec[X] = fmaxf(min, fminf(max, vec[X]));
+	vec[Y] = fmaxf(min, fminf(max, vec[Y]));
+	vec[Z] = fmaxf(min, fminf(max, vec[Z]));
+	vec[W] = fmaxf(min, fminf(max, vec[W]));
+	return (vec);
+}
+
+t_vec3f	vec3f_pow(t_vec3f vec, float exp)
+{
+	vec[X] = powf(vec[X], exp);
+	vec[Y] = powf(vec[Y], exp);
+	vec[Z] = powf(vec[Z], exp);
+	vec[W] = powf(vec[W], exp);
+	return (vec);
+}
 
 t_vec3f	aa_update_dir(t_data *data, uint32_t *rng, uint32_t x, uint32_t y)
 {
@@ -30,8 +49,84 @@ t_vec3f	aa_update_dir(t_data *data, uint32_t *rng, uint32_t x, uint32_t y)
 	return (vec3f_normalize(new_dir));
 }
 
+t_vec3f	vec3f_less_than(t_vec3f vec, float value)
+{
+	vec[X] = vec[X] < value ? vec[X] : value;
+	vec[Y] = vec[Y] < value ? vec[Y] : value;
+	vec[Z] = vec[Z] < value ? vec[Z] : value;
+	vec[W] = vec[W] < value ? vec[W] : value;
+	return (vec);
+}
+
+t_vec4f LessThan_vec4f(t_vec4f v, t_vec4f threshold) {
+    t_vec4f result;
+    result[X] = v[X] < threshold[X] ? 1.0f : 0.0f;
+    result[Y] = v[Y] < threshold[Y] ? 1.0f : 0.0f;
+    result[Z] = v[Z] < threshold[Z] ? 1.0f : 0.0f;
+    result[W] = v[W] < threshold[W] ? 1.0f : 0.0f;
+    return result;
+}
+
+t_vec4f mix_vec4f(t_vec4f x, t_vec4f y, t_vec4f mask)
+{
+    t_vec4f result;
+    result[X] = mask[X] * y[X] + (1.0f - mask[X]) * x[X];
+    result[Y] = mask[Y] * y[Y] + (1.0f - mask[Y]) * x[Y];
+    result[Z] = mask[Z] * y[Z] + (1.0f - mask[Z]) * x[Z];
+    result[W] = mask[W] * y[W] + (1.0f - mask[W]) * x[W];
+    return result;
+}
+
+t_vec3f LinearToSRGB(t_vec3f rgb)
+{
+    rgb = vec4f_clamp(rgb, 0.0f, 1.0f);
+
+    t_vec3f condition = {0.0031308f, 0.0031308f, 0.0031308f};
+    t_vec3f pow_result = vec3f_pow(rgb, 1.0f / 2.4f);
+    
+    t_vec3f mix_result = mix_vec4f(
+        pow_result * 1.055f - 0.055f,
+        rgb * 12.92f,
+        LessThan_vec4f(rgb, condition)
+    );
+
+    return mix_result;
+}
+
+t_vec4f	ACESFilm(t_vec4f x)
+{
+    float a = 2.51f;
+    float b = 0.03f;
+    float c = 2.43f;
+    float d = 0.59f;
+    float e = 0.14f;
+
+    t_vec4f numerator = {x[X] * (a * x[X] + b), x[Y] * (a * x[Y] + b), x[Z] * (a * x[Z] + b), x[W] * (a * x[W] + b)};
+    t_vec4f denominator = {x[X] * (c * x[X] + d) + e, x[Y] * (c * x[Y] + d) + e, x[Z] * (c * x[Z] + d) + e, x[W] * (c * x[W] + d) + e};
+
+    t_vec4f result;
+    result[X] = numerator[X] / denominator[X];
+    result[Y] = numerator[Y] / denominator[Y];
+    result[Z] = numerator[Z] / denominator[Z];
+    result[W] = numerator[W] / denominator[W];
+
+    // Clamp the result to the range [0.0, 1.0]
+    result[X] = fmax(0.0f, fmin(1.0f, result[X]));
+    result[Y] = fmax(0.0f, fmin(1.0f, result[Y]));
+    result[Z] = fmax(0.0f, fmin(1.0f, result[Z]));
+    result[W] = fmax(0.0f, fmin(1.0f, result[W]));
+
+	result[W] = 1.0f;
+
+    return result;
+}
+
 t_vec4f	vec3f_tone_map(t_vec3f color)
 {
+	color = ACESFilm(color);
+	color = LinearToSRGB(color);
+	color[W] = 1.0f;
+	return color;
 	float	gamma = 2.2f;
 	float	exposure = 1.0f;
 	color = color * exposure;
@@ -48,6 +143,39 @@ t_vec4f	vec3f_tone_map(t_vec3f color)
 	return((t_vec4f){result[X], result[Y], result[Z], 1.0f});
 	// return (vec4_new(result.x, result.y, result.z, 1.0f));
 }
+
+
+
+
+
+
+// t_vec4f	linear_to_srgb(t_vec4f color)
+// {
+// 	color = vec4f_clamp(color, 0.0f, 1.0f);
+// 	return	vec3f_lerp(
+// 		vec3f_pow(((color + 0.055f) / 1.055f), 2.4f),
+// 		color / 12.92f,
+// 		vec3f_less_than(color, 0.04045f));
+
+// 	// return	vec3f_lerp(
+// 	// 	vec3f_pow(((color + 0.055f) / 1.055f), 2.4f),
+// 	// 	color / 12.92f,
+// 	// 	vec3f_less_than(color, 0.04045f)
+// 	// );
+// }
+
+// t_vec4f	ACESFilm(t_vec4f x)
+// {
+// 	float a = 2.51f;
+// 	float b = 0.03f;
+// 	float c = 2.43f;
+// 	float d = 0.59f;
+// 	float e = 0.14f;
+// 	return clamp((x*(a*x + b)) / (x*(c*x + d) + e), 0.0f, 1.0f);
+// }
+
+
+
 
 t_vec3f	default_skyf(t_vec3f direction, t_scene scene)
 {
@@ -252,6 +380,52 @@ t_vec3f omni_dir_light_f(t_rayf ray, t_scene scene, t_hitinfo closest_hit)
 	return (diffuse_contribution_f);
 }
 
+t_vec3f interpolate(t_vec3f c00, t_vec3f c01, t_vec3f c10, t_vec3f c11, float u, float v) {
+    t_vec3f top = c00 * (1 - u) + c01 * u;
+    t_vec3f bottom = c10 * (1 - u) + c11 * u;
+    return top * (1 - v) + bottom * v;
+}
+
+
+t_vec3f sampleBilinearTexture(float u, float v, t_hdri hdri)
+{
+    int width = hdri.width;
+    int height = hdri.height;
+
+    // Calculate texel coordinates
+    float x = u * (width - 1);
+	float y = (1.0f - v) * (height - 1);
+
+    // Calculate integer coordinates of the texel
+    int x0 = floor(x);
+    int y0 = floor(y);
+    int x1 = fmin(x0 + 1, width - 1);
+    int y1 = fmin(y0 + 1, height - 1);
+
+    // Sample texels
+    t_vec3f c00;
+    c00[X] = hdri.rgba[(y0 * width + x0) * 4 + 0];
+    c00[Y] = hdri.rgba[(y0 * width + x0) * 4 + 1];
+    c00[Z] = hdri.rgba[(y0 * width + x0) * 4 + 2];
+
+    t_vec3f c01;
+    c01[X] = hdri.rgba[(y0 * width + x1) * 4 + 0];
+    c01[Y] = hdri.rgba[(y0 * width + x1) * 4 + 1];
+    c01[Z] = hdri.rgba[(y0 * width + x1) * 4 + 2];
+
+    t_vec3f c10;
+    c10[X] = hdri.rgba[(y1 * width + x0) * 4 + 0];
+    c10[Y] = hdri.rgba[(y1 * width + x0) * 4 + 1];
+    c10[Z] = hdri.rgba[(y1 * width + x0) * 4 + 2];
+
+    t_vec3f c11;
+    c11[X] = hdri.rgba[(y1 * width + x1) * 4 + 0];
+    c11[Y] = hdri.rgba[(y1 * width + x1) * 4 + 1];
+    c11[Z] = hdri.rgba[(y1 * width + x1) * 4 + 2];
+
+    // Interpolate between texels
+    return interpolate(c00, c01, c10, c11, x - x0, y - y0);
+}
 
 
 
@@ -295,5 +469,6 @@ t_vec3f	texture(t_vec3f normal, t_hdri hdri)
 	u = 1.0f - (phi + PI) / TWO_PI;
 	v = (theta + PI / 2.0f) / PI;
 	color = sampleEXRTexture(u, v, hdri);
+	// color = sampleBilinearTexture(u, v, hdri);
 	return (color);
 }
