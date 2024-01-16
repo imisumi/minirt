@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/15 17:02:55 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/15 21:30:02 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -380,53 +380,6 @@ t_vec3f omni_dir_light_f(t_rayf ray, t_scene scene, t_hitinfo closest_hit)
 	return (diffuse_contribution_f);
 }
 
-t_vec3f interpolate(t_vec3f c00, t_vec3f c01, t_vec3f c10, t_vec3f c11, float u, float v) {
-    t_vec3f top = c00 * (1 - u) + c01 * u;
-    t_vec3f bottom = c10 * (1 - u) + c11 * u;
-    return top * (1 - v) + bottom * v;
-}
-
-
-t_vec3f sampleBilinearTexture(float u, float v, t_hdri hdri)
-{
-    int width = hdri.width;
-    int height = hdri.height;
-
-    // Calculate texel coordinates
-    float x = u * (width - 1);
-	float y = (1.0f - v) * (height - 1);
-
-    // Calculate integer coordinates of the texel
-    int x0 = floor(x);
-    int y0 = floor(y);
-    int x1 = fmin(x0 + 1, width - 1);
-    int y1 = fmin(y0 + 1, height - 1);
-
-    // Sample texels
-    t_vec3f c00;
-    c00[X] = hdri.rgba[(y0 * width + x0) * 4 + 0];
-    c00[Y] = hdri.rgba[(y0 * width + x0) * 4 + 1];
-    c00[Z] = hdri.rgba[(y0 * width + x0) * 4 + 2];
-
-    t_vec3f c01;
-    c01[X] = hdri.rgba[(y0 * width + x1) * 4 + 0];
-    c01[Y] = hdri.rgba[(y0 * width + x1) * 4 + 1];
-    c01[Z] = hdri.rgba[(y0 * width + x1) * 4 + 2];
-
-    t_vec3f c10;
-    c10[X] = hdri.rgba[(y1 * width + x0) * 4 + 0];
-    c10[Y] = hdri.rgba[(y1 * width + x0) * 4 + 1];
-    c10[Z] = hdri.rgba[(y1 * width + x0) * 4 + 2];
-
-    t_vec3f c11;
-    c11[X] = hdri.rgba[(y1 * width + x1) * 4 + 0];
-    c11[Y] = hdri.rgba[(y1 * width + x1) * 4 + 1];
-    c11[Z] = hdri.rgba[(y1 * width + x1) * 4 + 2];
-
-    // Interpolate between texels
-    return interpolate(c00, c01, c10, c11, x - x0, y - y0);
-}
-
 
 
 t_vec3f	sampleEXRTexture(float u, float v, t_hdri hdri)
@@ -469,6 +422,5 @@ t_vec3f	texture(t_vec3f normal, t_hdri hdri)
 	u = 1.0f - (phi + PI) / TWO_PI;
 	v = (theta + PI / 2.0f) / PI;
 	color = sampleEXRTexture(u, v, hdri);
-	// color = sampleBilinearTexture(u, v, hdri);
 	return (color);
 }
