@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_intersec.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/15 01:53:14 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/16 15:29:58 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,23 +128,16 @@ t_hitinfo	sphere_intersection_f(t_rayf ray, t_scene s, t_hitinfo hitinfo)
 	while (i < array_length(&s.spheres))
 	{
 		t_vec3f	offset_originf = ray[ORIGIN] - s.spheres[i].pos_f;
-		// print ray origin
-		// printf("ray origin = %f, %f, %f\n", ray[ORIGIN][X], ray[ORIGIN][Y], ray[ORIGIN][Z]);
 	
-		// float	a = vec3_dot(ray.direction, ray.direction);
 		float	a = vec3f_dot(ray[DIR], ray[DIR]);
-		// float	b = 2.0f * vec3_dot(offset_origin, ray.direction);
 		float	b = 2.0f * vec3f_dot(offset_originf, ray[DIR]);
-		// float	c = vec3_dot(offset_origin, offset_origin) - s.spheres[i].radius * s.spheres[i].radius;
 		float	c = vec3f_dot(offset_originf, offset_originf) - s.spheres[i].radius * s.spheres[i].radius;
 	
 		float	discriminant = b * b - 4 * a * c;
 	
 		if (discriminant >= 0.0f)
 		{
-			// printf("discriminant = %f\n", discriminant);
 			float	t = (-b - sqrtf(discriminant)) / (2.0f * a);
-			// printf("t = %f\n", t);
 			if (t > 0.0f && t < hitinfo.distance)
 			{
 				hitinfo.hit = true;
@@ -159,43 +152,43 @@ t_hitinfo	sphere_intersection_f(t_rayf ray, t_scene s, t_hitinfo hitinfo)
 	return (hitinfo);
 }
 
-// t_hitinfo	single_sphere_intersection_f(t_rayf ray, t_sphere sphere, t_hitinfo hitinfo)
-// {
-// 	t_vec3f	offset_origin = ray[ORIGIN] - sphere.pos_f;
+t_hitinfo	single_sphere_intersection_f(t_rayf ray, t_sphere sphere, t_hitinfo hitinfo)
+{
+	t_vec3f	offset_origin = ray[ORIGIN] - sphere.pos_f;
 
-// 	float a = vec3f_dot(ray[DIR], ray[DIR]);
-// 	float b = 2.0f * vec3f_dot(offset_origin, ray[DIR]);
-// 	float c = vec3f_dot(offset_origin, offset_origin) - sphere.radius * sphere.radius;
+	float a = vec3f_dot(ray[DIR], ray[DIR]);
+	float b = 2.0f * vec3f_dot(offset_origin, ray[DIR]);
+	float c = vec3f_dot(offset_origin, offset_origin) - sphere.radius * sphere.radius;
 
-// 	float	discriminant = b * b - 4 * a * c;
+	float	discriminant = b * b - 4 * a * c;
 
-// 	bool inside = false;
+	bool inside = false;
 
-// 	if (discriminant >= 0.0f)
-// 	{
-// 		float	t = (-b - sqrtf(discriminant)) / (2.0f * a);
-// 		if (t < 0.0f)
-// 		{
-// 			inside = true;
-// 			// t = -b + sqrtf(discriminant) / (2.0f * a);
-// 			t = (-b + sqrtf(discriminant)) / (2.0f * a);
-// 			// t = -b + sqrtf(discriminant);
-// 		}
+	if (discriminant >= 0.0f)
+	{
+		float	t = (-b - sqrtf(discriminant)) / (2.0f * a);
+		if (t < 0.0f)
+		{
+			inside = true;
+			// t = -b + sqrtf(discriminant) / (2.0f * a);
+			t = (-b + sqrtf(discriminant)) / (2.0f * a);
+			// t = -b + sqrtf(discriminant);
+		}
 		
-// 		if (t > EPSILON && t < hitinfo.distance)
-// 		{
-// 			hitinfo.hit = true;
-// 			hitinfo.distance = t;
-// 			hitinfo.material = sphere.material;
-// 			hitinfo.position = ray[ORIGIN] + (ray[DIR] * t);
-// 			// hitinfo.normal = vec3f_normalize(hitinfo.position - sphere.pos_f);
-// 			hitinfo.normal = vec3f_normalize(hitinfo.position - sphere.pos_f) * (inside ? -1.0f : 1.0f);
+		if (t > EPSILON && t < hitinfo.distance)
+		{
+			hitinfo.hit = true;
+			hitinfo.distance = t;
+			hitinfo.material = sphere.material;
+			hitinfo.position = ray[ORIGIN] + (ray[DIR] * t);
+			// hitinfo.normal = vec3f_normalize(hitinfo.position - sphere.pos_f);
+			hitinfo.normal = vec3f_normalize(hitinfo.position - sphere.pos_f) * (inside ? -1.0f : 1.0f);
 
-// 			hitinfo.inside = inside;
-// 		}
-// 	}
-// 	return (hitinfo);
-// }
+			hitinfo.inside = inside;
+		}
+	}
+	return (hitinfo);
+}
 
 
 
@@ -245,36 +238,32 @@ t_hitinfo	sphere_bvh_intersection_f(t_rayf ray, t_sphere *spheres, t_hitinfo hit
 
 
 
-
-
-
-
-
 // bool TestSphereTrace(in vec3 rayPos, in vec3 rayDir, inout SRayHitInfo info, in vec4 sphere)
+
+
 // t_hitinfo	single_sphere_intersection_f(t_rayf ray, t_sphere sphere, t_hitinfo hitinfo)
-// {    
-// 	//get the vector from the center of this sphere to where the ray begins.
-// 	t_vec3f	offset_origin = ray[ORIGIN] - sphere.pos_f;
+// {
+// 	// vec3 m = rayPos - sphere.xyz;
+// 	t_vec3f	m = ray[ORIGIN] - sphere.pos_f;
 
-// 	//get the dot product of the above vector and the ray's vector
-// 	float b = vec3f_dot(offset_origin, ray[DIR]);
+// 	// float b = dot(m, rayDir);
+// 	float b = vec3f_dot(m, ray[DIR]);
 
-// 	float c = vec3f_dot(offset_origin, offset_origin) - sphere.radius * sphere.radius;
+// 	// float c = dot(m, m) - sphere.w * sphere.w;
+// 	float c = vec3f_dot(m, m) - sphere.radius * sphere.radius;
 
-// 	//exit if r's origin outside s (c > 0) and r pointing away from s (b > 0)
 // 	if(c > 0.0 && b > 0.0)
 // 		return hitinfo;
+// 		// return false;
 
-// 	//calculate discriminant
 // 	float discr = b * b - c;
 
-// 	//a negative discriminant corresponds to ray missing sphere
 // 	if(discr < 0.0)
 // 		return hitinfo;
-    
-// 	//ray now found to intersect sphere, compute smallest t value of intersection
+// 		// return false;
+
 //     bool fromInside = false;
-// 	float dist = -b - sqrtf(discr);
+// 	float dist = -b - sqrt(discr);
 //     if (dist < 0.0f)
 //     {
 //         fromInside = true;
@@ -282,66 +271,17 @@ t_hitinfo	sphere_bvh_intersection_f(t_rayf ray, t_sphere *spheres, t_hitinfo hit
 //     }
     
 // 	if (dist > EPSILON && dist < hitinfo.distance)
-// 	{
-// 	    // info.fromInside = fromInside;
-// 	    // info.dist = dist;        
-// 	    // info.normal = normalize((rayPos+rayDir*dist) - sphere.xyz) * (fromInside ? -1.0f : 1.0f);
-// 	    // return true;
-
+//     {
+//         // info.fromInside = fromInside;
+//         // info.dist = dist;        
+//         // info.normal = normalize((rayPos+rayDir*dist) - sphere.xyz) * (fromInside ? -1.0f : 1.0f);
 // 		hitinfo.hit = true;
 // 		hitinfo.distance = dist;
 // 		hitinfo.material = sphere.material;
 // 		hitinfo.position = ray[ORIGIN] + (ray[DIR] * dist);
-// 		hitinfo.normal = vec3f_normalize(hitinfo.position - sphere.pos_f);
-		
+// 		hitinfo.normal = vec3f_normalize(hitinfo.position - sphere.pos_f) * (fromInside ? -1.0f : 1.0f);
 // 		hitinfo.inside = fromInside;
 // 	}
-		
+
 // 	return hitinfo;
 // }
-
-// bool TestSphereTrace(in vec3 rayPos, in vec3 rayDir, inout SRayHitInfo info, in vec4 sphere)
-t_hitinfo	single_sphere_intersection_f(t_rayf ray, t_sphere sphere, t_hitinfo hitinfo)
-{
-	// vec3 m = rayPos - sphere.xyz;
-	t_vec3f	m = ray[ORIGIN] - sphere.pos_f;
-
-	// float b = dot(m, rayDir);
-	float b = vec3f_dot(m, ray[DIR]);
-
-	// float c = dot(m, m) - sphere.w * sphere.w;
-	float c = vec3f_dot(m, m) - sphere.radius * sphere.radius;
-
-	if(c > 0.0 && b > 0.0)
-		return hitinfo;
-		// return false;
-
-	float discr = b * b - c;
-
-	if(discr < 0.0)
-		return hitinfo;
-		// return false;
-
-    bool fromInside = false;
-	float dist = -b - sqrt(discr);
-    if (dist < 0.0f)
-    {
-        fromInside = true;
-        dist = -b + sqrt(discr);
-    }
-    
-	if (dist > EPSILON && dist < hitinfo.distance)
-    {
-        // info.fromInside = fromInside;
-        // info.dist = dist;        
-        // info.normal = normalize((rayPos+rayDir*dist) - sphere.xyz) * (fromInside ? -1.0f : 1.0f);
-		hitinfo.hit = true;
-		hitinfo.distance = dist;
-		hitinfo.material = sphere.material;
-		hitinfo.position = ray[ORIGIN] + (ray[DIR] * dist);
-		hitinfo.normal = vec3f_normalize(hitinfo.position - sphere.pos_f) * (fromInside ? -1.0f : 1.0f);
-		hitinfo.inside = fromInside;
-	}
-
-	return hitinfo;
-}

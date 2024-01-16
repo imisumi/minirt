@@ -6,7 +6,7 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/15 17:22:55 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/16 17:28:04 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 	ray[DIR] = dir;
 
 	t_hitinfo hitinfo;
-	float	bounce_attenuation = 0.6f;
+	float	bounce_attenuation = 0.7f;
 	while (bounce <= MAX_BOUNCES)
 	{
 		//! check
@@ -314,11 +314,13 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 		t_vec3f emitted_light = {0};
 		emitted_light = omni_dir_light_f(ray, scene, hitinfo);
 
-		emitted_light = emitted_light * intensity_scale;
 
 		//! add emission
 		emitted_light += hitinfo.material.color * hitinfo.material.emission_strength;
 
+		//????
+		// emitted_light *= intensity_scale;
+		
 		// ray_color *= vec3f_lerp(hitinfo.material.color, hitinfo.material.specular_color, is_specular);
 		incomming_light = incomming_light + (ray_color * emitted_light);
 		bounce++;
