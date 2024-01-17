@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/10 15:58:40 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/17 04:05:00 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	print_error(const char *msg)
 	[MLX_IMG] = "Mlx new image error",
 	[MLX_IMG_TO_WIN] = "Mlx image to window error",
 	[MAP_INV_TYPE] = "Invalid type in map",
+	[MALLOC_BVH] = "Malloc error in bvh",
 	};
 
 	if (msg && *error() == NO_ERROR)
@@ -103,14 +104,48 @@ int32_t main(int32_t argc, char* argv[])
 	// recalculated_projection(&data);
 	// recalculat_ray_directions(&data);
 
-
-	// init_scene(&data.scene);
+	
 	if (parse_map(&data.scene, file) == false)
 	{
+		// array_free(&data.scene.spheres);
 		print_error("Error");
 		cleanup_scene(&data.scene);
+		free(data.scene.camera.ray_target);
+		free(data.scene.camera.ray_dir);
+		free(data.utils.accumulated_data);
+		free(data.scene.hdri.rgba);
 		return (EXIT_FAILURE);
 	}
+	if (array_length(&data.scene.spheres) > 0)
+		data.scene.bvh_spheres_f = build_bvh_sphere_f(data.scene.spheres, 0, array_length(&data.scene.spheres), 100);
+	if (*error() == MALLOC_BVH)
+	{
+		print_error("Error bvh");
+		free_bvh_tree(data.scene.bvh_spheres_f);
+		cleanup_scene(&data.scene);
+		free(data.scene.camera.ray_target);
+		free(data.scene.camera.ray_dir);
+		free(data.utils.accumulated_data);
+		free(data.scene.hdri.rgba);
+		return (EXIT_FAILURE);
+	}
+	*error() = MALLOC_BVH;
+	printf("%d\n", *error());
+	// printf("start = %d, end = %d\n", data.scene.bvh_spheres_f->start, data.scene.bvh_spheres_f->end);
+	// printf("aabb min = %f, %f, %f\n", data.scene.bvh_spheres_f->aabb.min_f[X], data.scene.bvh_spheres_f->aabb.min_f[Y], data.scene.bvh_spheres_f->aabb.min_f[Z]);
+	// printf("aabb max = %f, %f, %f\n", data.scene.bvh_spheres_f->aabb.max_f[X], data.scene.bvh_spheres_f->aabb.max_f[Y], data.scene.bvh_spheres_f->aabb.max_f[Z]);
+	recalculate_view(&data);
+	recalculated_projection(&data);
+	recalculat_ray_directions(&data);
+
+	// free_bvh_tree(data.scene.bvh_spheres_f);
+	// cleanup_scene(&data.scene);
+	// free(data.scene.camera.ray_target);
+	// free(data.scene.camera.ray_dir);
+	// free(data.utils.accumulated_data);
+	// free(data.scene.hdri.rgba);
+	// return (EXIT_SUCCESS);
+
 	
 	if (setup_mlx(&data) == false)
 	{
@@ -118,28 +153,26 @@ int32_t main(int32_t argc, char* argv[])
 		return (EXIT_FAILURE);
 	}
 	mlx_set_window_title(data.mlx, "Testing");
+	
+	// return (EXIT_SUCCESS);
 
-	recalculate_view(&data);
-	recalculated_projection(&data);
-	recalculat_ray_directions(&data);
+	// recalculate_view(&data);
+	// recalculated_projection(&data);
+	// recalculat_ray_directions(&data);
 
 	
-	t_vec3f v = data.scene.spheres[0].pos_f;
-	printf("x = %f, y = %f, z = %f\n", v[X], v[Y], v[Z]);
-	v = data.scene.spheres[0].material.color;
-	printf("x = %f, y = %f, z = %f\n", v[X], v[Y], v[Z]);
-	v = data.scene.camera.position;
-	printf("cam x = %f, y = %f, z = %f\n", v[X], v[Y], v[Z]);
+	// t_vec3f v = data.scene.spheres[0].pos_f;
+	// printf("x = %f, y = %f, z = %f\n", v[X], v[Y], v[Z]);
+	// v = data.scene.spheres[0].material.color;
+	// printf("x = %f, y = %f, z = %f\n", v[X], v[Y], v[Z]);
+	// v = data.scene.camera.position;
+	// printf("cam x = %f, y = %f, z = %f\n", v[X], v[Y], v[Z]);
 
 
-	data.scene.bvh_spheres_f = build_bvh_sphere_f(data.scene.spheres, 0, array_length(&data.scene.spheres), 10);
-	printf("start = %d, end = %d\n", data.scene.bvh_spheres_f->start, data.scene.bvh_spheres_f->end);
-	printf("aabb min = %f, %f, %f\n", data.scene.bvh_spheres_f->aabb.min_f[X], data.scene.bvh_spheres_f->aabb.min_f[Y], data.scene.bvh_spheres_f->aabb.min_f[Z]);
-	printf("aabb max = %f, %f, %f\n", data.scene.bvh_spheres_f->aabb.max_f[X], data.scene.bvh_spheres_f->aabb.max_f[Y], data.scene.bvh_spheres_f->aabb.max_f[Z]);
-
+	
 	//print ray direction
-	printf("ray dir = %f, %f, %f\n", data.scene.camera.ray_dir[0][X], data.scene.camera.ray_dir[0][Y], data.scene.camera.ray_dir[0][Z]);
-	printf("ray dir = %f, %f, %f\n", data.scene.camera.ray_dir[1][X], data.scene.camera.ray_dir[1][Y], data.scene.camera.ray_dir[1][Z]);
+	// printf("ray dir = %f, %f, %f\n", data.scene.camera.ray_dir[0][X], data.scene.camera.ray_dir[0][Y], data.scene.camera.ray_dir[0][Z]);
+	// printf("ray dir = %f, %f, %f\n", data.scene.camera.ray_dir[1][X], data.scene.camera.ray_dir[1][Y], data.scene.camera.ray_dir[1][Z]);
 
 	// mlx_loop_hook(data.mlx, render_loop, &data);
 

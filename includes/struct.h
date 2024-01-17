@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/13 00:08:02 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/16 22:17:31 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef enum error
 	MLX_IMG,
 	MLX_IMG_TO_WIN,
 	MAP_INV_TYPE,
+	MALLOC_BVH,
 	ERROR_COUNT
 }	t_error;
 

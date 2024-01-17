@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/01/15 16:28:52 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/16 22:57:20 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,5 +157,9 @@ t_material	default_material(void);
 
 
 t_vec3f	vec3f_lerp(const t_vec3f vec1, const t_vec3f vec2, const float t);
+
+void free_bvh_tree(t_bvh_node* node);
+
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 21:53:27 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/06 17:07:59 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/17 01:56:33 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,31 +47,53 @@ t_aabb	merge_aabb_f(t_aabb a, t_aabb b)
 	return (result);
 }
 
+void	free_bvh_tree(t_bvh_node* node)
+{
+	if (node == NULL)
+		return;
+	// if (!node->is_leaf)
+	// {
+	// 	free_bvh_tree(node->left);
+	// 	free_bvh_tree(node->right);
+	// }
+	free_bvh_tree(node->left);
+	free_bvh_tree(node->right);
+	free(node);
+}
+
 //TODO: malloc protection
 t_bvh_node	*build_bvh_sphere_f(t_sphere *spheres, uint32_t start, \
 				uint32_t end, uint32_t max_depth)
 {
 	t_bvh_node	*node;
 	uint32_t	mid;
-	static int	sphere_count = 0;
+	static int mal = 0;
 
 	node = malloc(sizeof(t_bvh_node));
+	if (node == NULL)
+	{
+		*error() = MALLOC_BVH;
+		return (NULL);
+	}
 	node->start = start;
 	node->end = end;
+	node->left = NULL;
+	node->right = NULL;
 	if (end - start <= MAX_SPHERES_LEAF || max_depth == 0)
 	{
 		node->is_leaf = true;
 		node->aabb = calculate_sphere_aabb_f(spheres, node->start, node->end);
-		// printf("spheres = %d\n", sphere_count++);
 	}
 	else
 	{
-		// printf("start = %d, end = %d\n", start, end);
 		mid = (start + end) / 2;
 		node->left = build_bvh_sphere_f(spheres, start, mid, max_depth - 1);
 		node->right = build_bvh_sphere_f(spheres, mid, end, max_depth - 1);
 		node->aabb = merge_aabb_f(node->left->aabb, node->right->aabb);
 		node->is_leaf = false;
 	}
+	mal++;
+	// printf("malloc = %d\n", mal);
 	return (node);
 }
+
