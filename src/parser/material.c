@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   material.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/15 15:06:36 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/17 00:53:42 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_material	default_material(void)
 
 bool	parse_material(t_material *mat, char **split)
 {
-	printf("Material parser\n");
+	// printf("Material parser\n");
 	// print split
 	// printf("split count: %ld\n", ft_split_count(split));
 	// for (int i = 0; split[i]; i++)

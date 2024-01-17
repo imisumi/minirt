@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/10 16:02:15 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/17 03:01:47 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,10 @@ bool	check_type(t_scene *scene, char **type)
 void	init_scene_vec(t_scene *scene)
 {
 	vec_init(&scene->spheres, 1, sizeof(t_sphere));
-	vec_init(&scene->inv_planes, 1, sizeof(t_inv_plane));
-	vec_init(&scene->cylinders, 1, sizeof(t_cylinder));
-	vec_init(&scene->point_lights, 1, sizeof(t_point_light));
+	vec_init(&scene->inv_planes, 8, sizeof(t_inv_plane));
+	vec_init(&scene->cylinders, 8, sizeof(t_cylinder));
+	vec_init(&scene->point_lights, 8, sizeof(t_point_light));
+	// array_clear(&scene->spheres);
 }
 
 bool	parse_map(t_scene *scene, const char *file)
@@ -133,6 +134,13 @@ bool	parse_map(t_scene *scene, const char *file)
 				valid = false;
 			ft_split_free(split);
 		}
+		free(line);
+	}
+	while (true)
+	{
+		line = get_next_line(fd);
+		if (line == NULL)
+			break ;
 		free(line);
 	}
 	close(fd);
