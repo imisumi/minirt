@@ -15,6 +15,31 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <stdint.h>
+
+typedef float	t_vec3f __attribute__ ((vector_size ((sizeof(float) * 4))));
+
+// typedef uint32_t s_vert_indices[3] t_vert_indices
+typedef uint32_t t_vert_indices[3];
+typedef uint32_t t_vec3ui[3];
+
+typedef struct s_tri_mesh
+{
+	t_vec3f		*vertices;
+	t_vec3f		*normals;
+	// t_vec2f		*uvs;
+	t_vec3f		*colors;
+	t_vec3f		*vert_indices;
+
+}	t_tri_mesh;
+
+typedef struct vertex_index
+{
+	t_vec3ui		*v;
+	t_vec3f			*vn;
+	t_vec3ui		*vt;
+}	t_vertex_index;
+
 
 static char* mmap_file(size_t* len, const char* filename)
 {
@@ -118,22 +143,66 @@ int	main(int argc, char **argv)
 			&num_materials, filename, get_file_data, NULL, flags);
 	if (ret != TINYOBJ_SUCCESS)
 		return 0;
-	// printf("num_shapes: %lu\n", num_shapes);
-	// printf("num_materials: %zu\n", num_materials);
-	// printf("attrib.vertices: %p\n", attrib.vertices);
-	// printf("attrib.num_vertices: %u\n", attrib.num_vertices);
-	// printf("attrib.normals: %p\n", attrib.normals);
-	// printf("attrib.num_normals: %u\n", attrib.num_normals);
-	// printf("%s\n", shapes[0].name);
+	printf("num_shapes: %lu\n", num_shapes);
+	printf("num_materials: %zu\n", num_materials);
+	printf("attrib.vertices: %p\n", attrib.vertices);
+	printf("attrib.num_vertices: %u\n", attrib.num_vertices);
+	// printf("attrib.face_num_vert: %u\n", attrib.face_num_verts);
+	printf("attrib.num_face_num_vert: %u\n", attrib.num_face_num_verts);
+	printf("attrib.normals: %p\n", attrib.normals);
+	printf("attrib.num_normals: %u\n", attrib.num_normals);
+	printf("%s\n", shapes[0].name);
 	float *vertuces = attrib.vertices;
-	for (int i = 0; i < attrib.num_vertices; i++)
+	// for (int i = 0; i < attrib.num_vertices; i++)
+	// {
+	// 	printf("v %f %f %f\n", vertuces[i * 3], vertuces[i * 3 + 1], vertuces[i * 3 + 2]);
+	// }
+	// for (int i = 0; i < attrib.num_normals; i++)
+	// {
+	// 	printf("vn %f %f %f\n", attrib.normals[i * 3], attrib.normals[i * 3 + 1], attrib.normals[i * 3 + 2]);
+	// }
+	// printf("attrib.num_face_num_verts: %u\n", attrib.num_faces);
+	// // for (int i = 0; i < attrib.num_face_num_verts; i++)
+	// // {
+	// // 	printf("f %d %d %d\n", attrib.face_num_verts[i * 3], attrib.face_num_verts[i * 3 + 1], attrib.face_num_verts[i * 3 + 2]);
+	// // }
+	t_vec3f	vert_indices[12];
+	t_vert_indices *vert_indices2 = malloc(sizeof(t_vert_indices) * attrib.num_face_num_verts);
+	int normals = attrib.num_normals;
+	printf("normals: %d\n", normals);
+	t_vec3f *normals2 = malloc(sizeof(t_vec3f) * normals);
+	t_vertex_index indexes;
+	indexes.v = malloc(sizeof(t_vec3ui) * attrib.num_face_num_verts);
+	indexes.vn = malloc(sizeof(t_vec3f) * attrib.num_face_num_verts);
+	indexes.vt = malloc(sizeof(t_vec3ui) * attrib.num_face_num_verts);
+	for (int i = 0; i < attrib.num_face_num_verts; i++)
 	{
-		printf("v %f %f %f\n", vertuces[i * 3], vertuces[i * 3 + 1], vertuces[i * 3 + 2]);
+		for (int j = 0; j < attrib.face_num_verts[i]; j++)
+		{
+			// vert_indices[i][j] = attrib.faces[i * 3 + j].v_idx;
+			// vert_indices2[i][j] = attrib.faces[i * 3 + j].v_idx;
+			indexes.v[i][j] = attrib.faces[i * 3 + j].v_idx;
+			indexes.vn[i][j] = attrib.faces[i * 3 + j].vn_idx;
+			indexes.vt[i][j] = attrib.faces[i * 3 + j].vt_idx;
+			// printf("%d ", attrib.faces[i * 3 + j].vt_idx);
+		}
+		// printf("\n");
 	}
-	for (int i = 0; i < attrib.num_normals; i++)
+	for (int i = 0; i < attrib.num_face_num_verts; i++)
 	{
-		printf("vn %f %f %f\n", attrib.normals[i * 3], attrib.normals[i * 3 + 1], attrib.normals[i * 3 + 2]);
+		printf("f %d %d %d\n", indexes.v[i][0], indexes.v[i][1], indexes.v[i][2]);
 	}
-	// free memory
+	printf("\n");
+	for (int i = 0; i < attrib.num_face_num_verts; i++)
+	{
+		printf("vn %f %f %f\n", indexes.vn[i][0], indexes.vn[i][1], indexes.vn[i][2]);
+	}
+	printf("\n");
+	for (int i = 0; i < attrib.num_face_num_verts; i++)
+	{
+		printf("vt %d %d %d\n", indexes.vt[i][0], indexes.vt[i][1], indexes.vt[i][2]);
+	}
+
+
 	tinyobj_attrib_free(&attrib);
 }
