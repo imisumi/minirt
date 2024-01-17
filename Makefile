@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+         #
+#    By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2024/01/09 15:07:54 by imisumi          ###   ########.fr        #
+#    Updated: 2024/01/17 02:56:01 by imisumi-wsl      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ GREEN=\033[0;32m
 NC=\033[0m
 
 #	MLX42
-LFLAGS = -lglfw -L./lib/MLX42/build/ -lmlx42
+LFLAGS = -lglfw -L./lib/MLX42/build/ -lmlx42 -g
 #	libft
 LFLAGS += -L./lib/libft/ -lft
 #	lib3d
@@ -113,6 +113,9 @@ all: $(NAME)
 
 run: all
 	./$(NAME)
+
+val: all
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 
 rerun: re
 	./$(NAME)
