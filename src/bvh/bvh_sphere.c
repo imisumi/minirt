@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 21:53:27 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/17 01:56:33 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/21 18:12:26 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_aabb	calculate_sphere_aabb_f(t_sphere *spheres, uint32_t start, uint32_t end)
 
 	aabb.min_f = spheres[start].pos_f;
 	aabb.max_f = spheres[start].pos_f;
-	while (start < end && start < array_length(&spheres))
+	while (start < end && start < vec_length(&spheres))
 	{
 		temp = spheres[start].pos_f + spheres[start].radius;
 		aabb.max_f[X] = fmaxf(temp[X], aabb.max_f[X]);
@@ -79,6 +79,7 @@ t_bvh_node	*build_bvh_sphere_f(t_sphere *spheres, uint32_t start, \
 	node->end = end;
 	node->left = NULL;
 	node->right = NULL;
+	node->is_leaf = false;
 	if (end - start <= MAX_SPHERES_LEAF || max_depth == 0)
 	{
 		node->is_leaf = true;

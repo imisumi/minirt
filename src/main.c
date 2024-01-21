@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/17 04:05:00 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/21 17:56:49 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ bool	setup_mlx(t_data *data)
 
 void	cleanup_scene(t_scene *scene)
 {
-	array_free(&scene->spheres);
-	array_free(&scene->inv_planes);
-	array_free(&scene->cylinders);
-	array_free(&scene->point_lights);
+	vec_free(&scene->spheres);
+	vec_free(&scene->inv_planes);
+	vec_free(&scene->cylinders);
+	vec_free(&scene->point_lights);
 }
 
 int32_t main(int32_t argc, char* argv[])
@@ -83,7 +83,8 @@ int32_t main(int32_t argc, char* argv[])
 	t_data	data;
 	(void)argc;
 	(void)argv;
-	const char *file = "assets/maps/map1.rt";
+	// const char *file = "assets/maps/map1.rt";
+	const char *file = "assets/maps/obj.rt";
 
 	*error() = NO_ERROR;
 	ft_memset(&data, 0, sizeof(t_data));
@@ -107,7 +108,7 @@ int32_t main(int32_t argc, char* argv[])
 	
 	if (parse_map(&data.scene, file) == false)
 	{
-		// array_free(&data.scene.spheres);
+		// vec_free(&data.scene.spheres);
 		print_error("Error");
 		cleanup_scene(&data.scene);
 		free(data.scene.camera.ray_target);
@@ -116,8 +117,19 @@ int32_t main(int32_t argc, char* argv[])
 		free(data.scene.hdri.rgba);
 		return (EXIT_FAILURE);
 	}
-	if (array_length(&data.scene.spheres) > 0)
-		data.scene.bvh_spheres_f = build_bvh_sphere_f(data.scene.spheres, 0, array_length(&data.scene.spheres), 100);
+	if (vec_length(&data.scene.spheres) > 0)
+		data.scene.bvh_spheres_f = build_bvh_sphere_f(data.scene.spheres, 0, vec_length(&data.scene.spheres), 100);
+
+	if (build_bvh_triangle(&data.scene) == false)
+		exit(1);
+	
+	// t_aabb temp = data.scene.tri_meshes[0].aabb;
+	// printf("aabb min = %f, %f, %f\n", temp.min_f[X], temp.min_f[Y], temp.min_f[Z]);
+	// printf("aabb max = %f, %f, %f\n", temp.max_f[X], temp.max_f[Y], temp.max_f[Z]);
+	// exit(1);
+	printf("check\n");
+	int d = vec_length(&data.scene.tri_meshes);
+	printf("d = %d\n", d);
 	if (*error() == MALLOC_BVH)
 	{
 		print_error("Error bvh");
