@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/17 03:01:47 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/20 14:58:09 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #define PLANE     "pl"
 #define CYLINDER  "cy"
 #define HDRI      "HDRI"
+#define OBJ       "OBJ"
 
 
 
@@ -55,6 +56,8 @@ bool	check_type(t_scene *scene, char **type)
 		return (parse_plane(type, scene));
 	else if (BONUS && ft_strcmp(type[0], HDRI))
 		return (parse_hdri(type, scene));
+	else if (BONUS && ft_strcmp(type[0], OBJ))
+		return (parse_obj(scene, type[1]));
 	*error() = MAP_INV_TYPE;
 	return (false);
 }
@@ -103,7 +106,8 @@ void	init_scene_vec(t_scene *scene)
 	vec_init(&scene->inv_planes, 8, sizeof(t_inv_plane));
 	vec_init(&scene->cylinders, 8, sizeof(t_cylinder));
 	vec_init(&scene->point_lights, 8, sizeof(t_point_light));
-	// array_clear(&scene->spheres);
+	vec_init(&scene->tri_meshes, 8, sizeof(t_tri_mesh));
+	// vec_clear(&scene->spheres);
 }
 
 bool	parse_map(t_scene *scene, const char *file)
