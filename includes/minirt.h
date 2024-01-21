@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/01/16 22:57:20 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/21 20:21:59 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # include <stdint.h>
 # include <math.h>
 # include <float.h>
+# include <fcntl.h>
+# include <sys/mman.h>
+# include <sys/stat.h>
+# include <unistd.h>
 
 # include <GLFW/glfw3.h>
 
@@ -160,6 +164,20 @@ t_vec3f	vec3f_lerp(const t_vec3f vec1, const t_vec3f vec2, const float t);
 
 void free_bvh_tree(t_bvh_node* node);
 
+
+
+
+bool	parse_obj(t_scene *scene, const char *filename);
+
+
+
+bool	tri_mesh_intersection(t_rayf ray, t_scene *scene, t_hitinfo *obj_hit);
+bool	build_bvh_triangle(t_scene *scene);
+t_aabb	merge_aabb_f(t_aabb a, t_aabb b);
+
+t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_tri_mesh meshes, t_hitinfo hitinfo, t_bvh_node *node);
+t_bvh_node	*build_mesh_bvh(t_tri_mesh *meshes, uint32_t start, uint32_t end, uint32_t max_dept);
+t_hitinfo	mesh_bvh_intersection(t_rayf ray, t_tri_mesh *meshes, t_hitinfo hitinfo, t_bvh_node *node);
 
 
 #endif

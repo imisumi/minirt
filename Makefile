@@ -6,7 +6,7 @@
 #    By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2024/01/17 02:56:01 by imisumi-wsl      ###   ########.fr        #
+#    Updated: 2024/01/19 19:53:35 by imisumi-wsl      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,7 +85,7 @@ $(TINYEXR):
 # 	$(MAKE) -C tinyEXR
 
 $(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D) $(TINYEXR)
-	$(CC) $(CFLAGS) $^ -o $@ $(LFLAGS)
+	@$(CC) $(CFLAGS) $^ -o $@ $(LFLAGS)
 # $(CC) $(CFLAGS) $^ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -o $@ -lstdc++ $(LFLAGS)
 
 

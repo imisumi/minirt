@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   constants.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/15 17:14:50 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/21 19:52:08 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define WIDTH 500
 # define HEIGHT 500
 
-# define PIXEL_SIZE 3
+# define PIXEL_SIZE 2
 
 # define MAX_BOUNCES 8
 
@@ -26,10 +26,12 @@
 # define THREADS 8
 
 # define MAX_TRIS_LEAF 4
+# define MAX_OBJS_MESH 1
+
 # define RENDER_BVH 0
 # define MAX_SPHERES_LEAF 4
 
-# define RENDER_SKYBOX 0
+# define RENDER_SKYBOX 1
 
 # define USE_BVH 1
 

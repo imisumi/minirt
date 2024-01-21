@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/16 22:17:31 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/21 20:17:25 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,50 @@ typedef struct s_material
 	t_vec3f		emission_color;
 }	t_material;
 
+
+typedef struct s_aabb
+{
+	t_vec3	min;
+	t_vec3	max;
+
+	t_vec3f	min_f;
+	t_vec3f	max_f;
+}	t_aabb;
+
+typedef uint32_t	t_vert_indices[3];
+typedef uint32_t	t_vec3ui[3];
+
+typedef struct t_tri
+{
+	// t_vec3f			vertices;
+	t_vec3f			v[3];
+	t_vec3f			vt[3];
+	t_vec3f			vn;
+	// t_vec3f			a;
+	// t_vec3f			b;
+	// t_vec3f			c;
+	// uint32_t		v_idx[3];
+	// uint32_t		vn_idx;
+	// uint32_t		vt_idx[3];
+	t_aabb			aabb;
+	t_material		material;
+}	t_tri;
+
+typedef struct s_tri_mesh
+{
+	t_tri			*tris;
+
+	// t_vec3ui		*v_idx;
+	// t_vec3ui		*vn_idx;
+	// t_vec3ui		*vt_idx;
+	// float			*vertices;
+	// float			*normals;
+	t_aabb			aabb;
+	uint32_t		num_faces;
+	t_material		material;
+	t_bvh_node		*bvh;
+}	t_tri_mesh;
+
 typedef struct s_sphere
 {
 	t_vec3		position;
@@ -160,6 +204,16 @@ typedef struct s_cylinder
 	t_material	material;
 }	t_cylinder;
 
+// typedef struct s_tri_mesh
+// {
+// 	t_vec3f		*vertices;
+// 	t_vec3f		*normals;
+// 	t_vec2f		*uvs;
+// 	t_vec3f		*colors;
+// 	t_vec3f		*vert_indices;
+
+// }	t_tri_mesh;
+
 typedef struct s_point_light
 {
 	t_vec3f		position;
@@ -179,12 +233,16 @@ typedef struct s_scene
 	// t_ambient	ambient;
 
 	t_sphere	*spheres;
-	t_bvh_node	*bvh_spheres;
+	// t_bvh_node	*bvh_spheres;
 	t_bvh_node	*bvh_spheres_f;
+	t_bvh_node	*bvh_meshes;
 
 	t_inv_plane	*inv_planes;
 
 	t_cylinder	*cylinders;
+
+	t_tri_mesh	*tri_meshes;
+	uint32_t	num_tri_meshes;
 
 	t_point_light	*point_lights;
 
@@ -215,14 +273,14 @@ typedef struct s_data
 // 	SPHERE = 0
 // }	t_type;
 
-typedef struct s_aabb
-{
-	t_vec3	min;
-	t_vec3	max;
+// typedef struct s_aabb
+// {
+// 	t_vec3	min;
+// 	t_vec3	max;
 
-	t_vec3f	min_f;
-	t_vec3f	max_f;
-}	t_aabb;
+// 	t_vec3f	min_f;
+// 	t_vec3f	max_f;
+// }	t_aabb;
 
 typedef struct s_bvh_node
 {

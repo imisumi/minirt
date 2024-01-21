@@ -1,0 +1,21 @@
+# A  0.5   255,255,255
+
+C  0,0,3   0,0,-1   60
+HDRI      assets/hdri/sun_sky.exr
+
+# sp   0,0,6      1.3          255,22,22      0.0         0.1        255,255,255     1.1  0.0          0.0                   0,0,0             0.0
+
+# OBJ     assets/obj/triangulated_cube.obj
+# OBJ     assets/obj/color_cube.obj
+# OBJ     assets/obj/3_cubes.obj
+# OBJ     assets/obj/2_planes.obj
+# OBJ     assets/obj/cornell_box.obj
+
+
+# OBJ     assets/obj/cube_tri.obj
+# OBJ     assets/obj/5_colors.obj
+OBJ     assets/obj/monkey.obj
+# OBJ     assets/obj/platonic.obj
+# OBJ     assets/obj/love_heart.obj
+# OBJ     assets/obj/2_hearts.obj
+pl 0,-1,0   0,1,0   122,122,122
