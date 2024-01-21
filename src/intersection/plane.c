@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:36:28 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/10 16:22:40 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/20 14:58:29 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 // 	t_vec3	offset_origin;
 
 // 	i = 0;
-// 	while (i < array_length(&s.inv_planes))
+// 	while (i < vec_length(&s.inv_planes))
 // 	{
 // 		float demon = vec3_dot(s.inv_planes[i].normal, ray.direction);
 // 		if (fabs(demon) > EPSILON)
@@ -48,7 +48,7 @@ t_hitinfo	inv_plane_intersection_f(t_rayf ray, t_scene s, t_hitinfo hitinfo)
 	t_vec3f	offset_origin;
 
 	i = 0;
-	while (i < array_length(&s.inv_planes))
+	while (i < vec_length(&s.inv_planes))
 	{
 		demon = vec3f_dot(s.inv_planes[i].normal, ray[DIR]);
 		if (fabs(demon) > EPSILON)

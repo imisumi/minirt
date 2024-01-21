@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/10 15:54:54 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/20 14:56:46 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ bool	parse_light(char **split, t_scene *scene)
 		print_error("light color");
 		return (false);
 	}
-	array_push(&scene->point_lights, &point_light);
+	vec_push(&scene->point_lights, &point_light);
 	return (true);
 }
 

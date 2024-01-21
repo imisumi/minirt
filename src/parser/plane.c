@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/15 15:10:15 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/20 14:56:46 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ bool	parse_plane(char **split, t_scene *scene)
 	}
 	else if (parse_material(&plane.material, &split[3]) == false)
 		return (false);
-	array_push(&scene->inv_planes, &plane);
+	vec_push(&scene->inv_planes, &plane);
 	return (true);
 }

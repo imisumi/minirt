@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/16 16:17:49 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/20 14:58:29 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -348,7 +348,7 @@ t_vec3f omni_dir_light_f(t_rayf ray, t_scene scene, t_hitinfo closest_hit)
 	
 	i = 0;
 	diffuse_contribution_f = (t_vec3f){0.0f, 0.0f, 0.0f, 0.0f};
-	while (i < array_length(&scene.point_lights))
+	while (i < vec_length(&scene.point_lights))
 	{
 		light = new_hitinfo();
 		shadow_hit = new_hitinfo();

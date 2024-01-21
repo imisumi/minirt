@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_intersec.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/16 15:29:58 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/20 14:58:29 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 // 	int	i;
 
 // 	i = 0;
-// 	// printf("sphere_intersec = %d\n", array_length(&s.spheres));
-// 	while (i < array_length(&s.spheres))
+// 	// printf("sphere_intersec = %d\n", vec_length(&s.spheres));
+// 	while (i < vec_length(&s.spheres))
 // 	{
 // 		t_vec3	offset_origin = vec3_sub(ray.origin, s.spheres[i].position);
 	
@@ -124,8 +124,8 @@ t_hitinfo	sphere_intersection_f(t_rayf ray, t_scene s, t_hitinfo hitinfo)
 	int	i;
 
 	i = 0;
-	// printf("sphere_intersec = %d\n", array_length(&s.spheres));
-	while (i < array_length(&s.spheres))
+	// printf("sphere_intersec = %d\n", vec_length(&s.spheres));
+	while (i < vec_length(&s.spheres))
 	{
 		t_vec3f	offset_originf = ray[ORIGIN] - s.spheres[i].pos_f;
 	
