@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 00:44:47 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/17 04:06:42 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/20 14:58:29 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_array
 	size_t		element_size;
 }				t_array;
 
-void	array_clear(void *refvec)
+void	vec_clear(void *refvec)
 {
 	t_array	*info;
 
@@ -29,7 +29,7 @@ void	array_clear(void *refvec)
 	info->count = 0;
 }
 
-void	array_free(void *refvec)
+void	vec_free(void *refvec)
 {
 	t_array	*info;
 
@@ -38,7 +38,7 @@ void	array_free(void *refvec)
 	*(void **)refvec = NULL;
 }
 
-int		array_length(void *refvec)
+int		vec_length(void *refvec)
 {
 	t_array	*info;
 
@@ -99,7 +99,7 @@ bool	vec_init(void *refvec, uint32_t capacity, size_t element_size)
 	return (true);
 }
 
-bool	array_push(void *refvec, void *value)
+bool	vec_push(void *refvec, void *value)
 {
 	t_array	*info;
 
@@ -128,7 +128,7 @@ bool	array_push(void *refvec, void *value)
 	return (true);
 }
 //!!!!!!!!!!!!!!!!!!!!
-// bool array_push(void *refvec, void *value)
+// bool vec_push(void *refvec, void *value)
 // {
 //     t_array *info = *((t_array **)refvec) - 1;
 
@@ -142,7 +142,7 @@ bool	array_push(void *refvec, void *value)
 //             printf("Error: failed to add array element\n");
 //             return false;
 //         }
-// 		array_free(refvec);
+// 		vec_free(refvec);
 //         *(void **)refvec = new_info + 1;
 //         info = new_info;
 //     }
@@ -173,20 +173,20 @@ bool	array_push(void *refvec, void *value)
 // 	while (i < 11)
 // 	{
 // 		num = i + 0.5;
-// 		array_push(&array, &num);
+// 		vec_push(&array, &num);
 // 		i++;
 // 	}
-// 	// array_clear(&array);
+// 	// vec_clear(&array);
 // 	i = 0;
-// 	while (i < array_length(&array))
+// 	while (i < vec_length(&array))
 // 	{
 // 		printf("%f\n", array[i]);
 // 		i++;
 // 	}
-// 	// array_free(&array);
-// 	// array_free(&array);
+// 	// vec_free(&array);
+// 	// vec_free(&array);
 
-// 	printf("array_length: %d\n", array_length(&array));
+// 	printf("vec_length: %d\n", vec_length(&array));
 // 	return (0);
 // }
 
@@ -223,20 +223,20 @@ bool	array_push(void *refvec, void *value)
 // 	return (true);
 // }
 
-// void array_free(void* _refList) {
+// void vec_free(void* _refList) {
 //     t_array* info = *(t_array**)_refList - 1;
 
 //     free(info);
 //     *((void**)_refList) = NULL;
 // }
 
-// void array_clear(void* _refList) {
+// void vec_clear(void* _refList) {
 //     t_array* info = *(t_array**)_refList - 1;
 
 //     info->count = 0;
 // }
 
-// bool array_push(void* refvec, void* value) {
+// bool vec_push(void* refvec, void* value) {
 //     t_array* info = ((t_array*)(*((void**)refvec))) - 1;
 
 //     if (info->count >= info->capacity)
@@ -266,7 +266,7 @@ bool	array_push(void *refvec, void *value)
 // 	return true;
 // }
 
-// int array_length(void* refvec) {
+// int vec_length(void* refvec) {
 //     t_array* info = *(t_array**)refvec - 1;
 
 //     return info->count;
