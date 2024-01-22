@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/21 17:56:49 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/22 16:50:30 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,11 @@ int32_t main(int32_t argc, char* argv[])
 	if (vec_length(&data.scene.spheres) > 0)
 		data.scene.bvh_spheres_f = build_bvh_sphere_f(data.scene.spheres, 0, vec_length(&data.scene.spheres), 100);
 
-	if (build_bvh_triangle(&data.scene) == false)
-		exit(1);
+	if (data.scene.num_tri_meshes > 0)
+	{
+		if (build_bvh_triangle(&data.scene) == false)
+			exit(1);
+	}
 	
 	// t_aabb temp = data.scene.tri_meshes[0].aabb;
 	// printf("aabb min = %f, %f, %f\n", temp.min_f[X], temp.min_f[Y], temp.min_f[Z]);

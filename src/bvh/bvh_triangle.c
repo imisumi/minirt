@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bvh_triangle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/21 20:15:36 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/22 12:51:50 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,25 @@ t_aabb	get_mesh_aabb(t_tri *tris, int num_tris)
 	i = 0;
 	aabb.min_f = (t_vec3f){INFINITY, INFINITY, INFINITY};
 	aabb.max_f = (t_vec3f){-INFINITY, -INFINITY, -INFINITY};
+	t_aabb temp;
+	temp.min_f = (t_vec3f){INFINITY, INFINITY, INFINITY};
+	temp.max_f = (t_vec3f){-INFINITY, -INFINITY, -INFINITY};
 	while (i < num_tris)
 	{
-		aabb.min_f[X] = fminf(aabb.min_f[X], tris[i].aabb.min_f[X]);
-		aabb.min_f[Y] = fminf(aabb.min_f[Y], tris[i].aabb.min_f[Y]);
-		aabb.min_f[Z] = fminf(aabb.min_f[Z], tris[i].aabb.min_f[Z]);
-		aabb.max_f[X] = fmaxf(aabb.max_f[X], tris[i].aabb.max_f[X]);
-		aabb.max_f[Y] = fmaxf(aabb.max_f[Y], tris[i].aabb.max_f[Y]);
-		aabb.max_f[Z] = fmaxf(aabb.max_f[Z], tris[i].aabb.max_f[Z]);
+		temp = get_tri_aabb(tris[i].v);
+		aabb.min_f[X] = fminf(aabb.min_f[X], temp.min_f[X]);
+		aabb.min_f[Y] = fminf(aabb.min_f[Y], temp.min_f[Y]);
+		aabb.min_f[Z] = fminf(aabb.min_f[Z], temp.min_f[Z]);
+		aabb.max_f[X] = fmaxf(aabb.max_f[X], temp.max_f[X]);
+		aabb.max_f[Y] = fmaxf(aabb.max_f[Y], temp.max_f[Y]);
+		aabb.max_f[Z] = fmaxf(aabb.max_f[Z], temp.max_f[Z]);
+		
+		// aabb.min_f[X] = fminf(aabb.min_f[X], tris[i].aabb.min_f[X]);
+		// aabb.min_f[Y] = fminf(aabb.min_f[Y], tris[i].aabb.min_f[Y]);
+		// aabb.min_f[Z] = fminf(aabb.min_f[Z], tris[i].aabb.min_f[Z]);
+		// aabb.max_f[X] = fmaxf(aabb.max_f[X], tris[i].aabb.max_f[X]);
+		// aabb.max_f[Y] = fmaxf(aabb.max_f[Y], tris[i].aabb.max_f[Y]);
+		// aabb.max_f[Z] = fmaxf(aabb.max_f[Z], tris[i].aabb.max_f[Z]);
 		i++;
 	}
 	return (aabb);
@@ -63,12 +74,12 @@ void	setup_mesh_aabb(t_tri_mesh *meshes, int num_meshes)
 	i = 0;
 	while (i < num_meshes)
 	{
-		j = 0;
-		while (j < meshes[i].num_faces)
-		{
-			meshes[i].tris[j].aabb = get_tri_aabb(meshes[i].tris[j].v);
-			j++;
-		}
+		// j = 0;
+		// while (j < meshes[i].num_faces)
+		// {
+		// 	meshes[i].tris[j].aabb = get_tri_aabb(meshes[i].tris[j].v);
+		// 	j++;
+		// }
 		meshes[i].aabb = get_mesh_aabb(meshes[i].tris, meshes[i].num_faces);
 		i++;
 	}

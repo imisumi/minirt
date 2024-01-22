@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/21 20:17:25 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/22 16:59:47 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,15 +149,18 @@ typedef struct t_tri
 {
 	// t_vec3f			vertices;
 	t_vec3f			v[3];
-	t_vec3f			vt[3];
-	t_vec3f			vn;
+	// t_vec3f			vt[3];
+	// t_vec3f			vn;
+
+	
 	// t_vec3f			a;
 	// t_vec3f			b;
 	// t_vec3f			c;
 	// uint32_t		v_idx[3];
 	// uint32_t		vn_idx;
 	// uint32_t		vt_idx[3];
-	t_aabb			aabb;
+	// t_aabb			aabb;
+	
 	t_material		material;
 }	t_tri;
 
