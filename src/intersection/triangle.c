@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/21 20:21:27 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/22 01:26:26 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,36 +57,88 @@
 // 	return (true);
 // }
 
+//! working
 // t_hitinfo triangle_intersection(t_ray ray, t_hitinfo obj_hit, t_tri tri)
+// bool	single_triangle_intersection(t_rayf ray, t_tri_mesh *mesh, uint32_t i, t_hitinfo *hitinfo)
+// {
+// 	// if (vec3f_dot(ray[DIR], mesh->tris[i].vn) > 0)
+// 	// 	return (false);
+// 	t_vec3f e1 = mesh->tris[i].v[1] - mesh->tris[i].v[0];
+// 	t_vec3f e2 = mesh->tris[i].v[2] - mesh->tris[i].v[0];
+// 	// t_vec3f n = vec3_cross(e1, e2);
+// 	t_vec3f h = vec3f_cross(ray[DIR], e2);
+// 	float a = vec3f_dot(e1, h);
+
+// 	if (a > -EPSILON && a < EPSILON)
+// 		return (false);
+
+// 	float f = 1.0f / a;
+// 	t_vec3f s = ray[ORIGIN] - mesh->tris[i].v[0];
+// 	float u = f * vec3f_dot(s, h);
+
+// 	if (u < 0.0f || u > 1.0f)
+// 		return (false);
+
+// 	t_vec3f q = vec3f_cross(s, e1);
+// 	float v = f * vec3f_dot(ray[DIR], q);
+
+// 	if (v < 0.0f || u + v > 1.0f)
+// 		return (false);
+	
+// 	float t = f * vec3f_dot(e2, q);
+
+// 	float w = 1.0f - u - v;
+	
+// 	if (t > EPSILON && t < hitinfo->distance)
+// 	{
+// 		hitinfo->hit = true;
+// 		hitinfo->position = ray[ORIGIN] + ray[DIR] * t;
+// 		hitinfo->normal = vec3f_normalize(vec3f_cross(e1, e2));
+// 		// hitinfo->normal = vec3f_normalize(vec3f_cross(e1, e2));
+// 		hitinfo->distance = t;
+// 		// hitinfo->material = mesh->material;
+// 		hitinfo->material = mesh->tris[i].material;
+// 		// hitinfo->material.color = (t_vec3f){1.0f, 0.0f, 0.0f};
+// 		return (true);
+// 	}
+// 	return (false);
+// }
+
+// https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 bool	single_triangle_intersection(t_rayf ray, t_tri_mesh *mesh, uint32_t i, t_hitinfo *hitinfo)
 {
-	// if (vec3f_dot(ray[DIR], mesh->tris[i].vn) > 0)
-	// 	return (false);
 	t_vec3f e1 = mesh->tris[i].v[1] - mesh->tris[i].v[0];
 	t_vec3f e2 = mesh->tris[i].v[2] - mesh->tris[i].v[0];
-	// t_vec3f n = vec3_cross(e1, e2);
-	t_vec3f h = vec3f_cross(ray[DIR], e2);
-	float a = vec3f_dot(e1, h);
+	
+	t_vec3f ray_cross_e2 = vec3f_cross(ray[DIR], e2);
 
-	if (a > -EPSILON && a < EPSILON)
+	float det = vec3f_dot(e1, ray_cross_e2);
+
+	if (BACK_FACE_CULLING && det < 0)
 		return (false);
+	else if (det > -EPSILON && det < EPSILON)
+		return (false); // This ray is parallel to this triangle.
 
-	float f = 1.0f / a;
+	float inv_det = 1.0f / det;
 	t_vec3f s = ray[ORIGIN] - mesh->tris[i].v[0];
-	float u = f * vec3f_dot(s, h);
+	float u = inv_det * vec3f_dot(s, ray_cross_e2);
 
 	if (u < 0.0f || u > 1.0f)
 		return (false);
 
-	t_vec3f q = vec3f_cross(s, e1);
-	float v = f * vec3f_dot(ray[DIR], q);
+	t_vec3f s_cross_e1 = vec3f_cross(s, e1);
+	float v = inv_det * vec3f_dot(ray[DIR], s_cross_e1);
 
 	if (v < 0.0f || u + v > 1.0f)
 		return (false);
-	
-	float t = f * vec3f_dot(e2, q);
 
-	float w = 1.0f - u - v;
+	// if (u < 0 || u > 1 || v < 0 || u + v > 1)
+	// 	return (false);
+	// if ((u < 0) | (u > 1) | (v < 0) | (u + v > 1))
+	// 	return (false);
+
+	// At this stage we can compute t to find out where the intersection point is on the line.
+	float t = inv_det * vec3f_dot(e2, s_cross_e1);
 	
 	if (t > EPSILON && t < hitinfo->distance)
 	{
@@ -95,7 +147,7 @@ bool	single_triangle_intersection(t_rayf ray, t_tri_mesh *mesh, uint32_t i, t_hi
 		hitinfo->normal = vec3f_normalize(vec3f_cross(e1, e2));
 		// hitinfo->normal = vec3f_normalize(vec3f_cross(e1, e2));
 		hitinfo->distance = t;
-		// hitinfo->material = mesh->material;
+		hitinfo->material = mesh->material;
 		hitinfo->material = mesh->tris[i].material;
 		// hitinfo->material.color = (t_vec3f){1.0f, 0.0f, 0.0f};
 		return (true);

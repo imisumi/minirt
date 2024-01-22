@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/21 19:52:08 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/22 01:09:24 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define MAX_SPHERES_LEAF 4
 
 # define RENDER_SKYBOX 1
+
+# define BACK_FACE_CULLING 1
 
 # define USE_BVH 1
 
