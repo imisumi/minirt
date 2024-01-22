@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/22 16:59:47 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/22 20:27:14 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,26 +147,20 @@ typedef uint32_t	t_vec3ui[3];
 
 typedef struct t_tri
 {
-	// t_vec3f			vertices;
-	t_vec3f			v[3];
+	// t_vec3f			v[3];
+	
 	// t_vec3f			vt[3];
 	// t_vec3f			vn;
+	uint32_t		v_idx[3];
 
 	
-	// t_vec3f			a;
-	// t_vec3f			b;
-	// t_vec3f			c;
-	// uint32_t		v_idx[3];
-	// uint32_t		vn_idx;
-	// uint32_t		vt_idx[3];
-	// t_aabb			aabb;
-	
-	t_material		material;
+	// t_material		material;
 }	t_tri;
 
 typedef struct s_tri_mesh
 {
 	t_tri			*tris;
+	// float			*vertices;
 
 	// t_vec3ui		*v_idx;
 	// t_vec3ui		*vn_idx;
@@ -235,6 +229,7 @@ typedef struct s_scene
 {
 	// t_ambient	ambient;
 
+	float		*vertices;
 	t_sphere	*spheres;
 	// t_bvh_node	*bvh_spheres;
 	t_bvh_node	*bvh_spheres_f;

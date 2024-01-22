@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/21 16:45:43 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/22 20:27:04 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 #include "fast_obj.h"
 
 #include "minirt.h"
+
+// copy float array
+float *copy_float_array(float *arr, int len)
+{
+	float *new_arr = malloc(sizeof(float) * len);
+	for (int i = 0; i < len; i++)
+		new_arr[i] = arr[i];
+	return (new_arr);
+}
 
 bool	parse_obj(t_scene *scene, const char *filename)
 {
@@ -77,6 +86,7 @@ bool	parse_obj(t_scene *scene, const char *filename)
 	// tri_mesh.tris = tris;
 	// tri_mesh.material = default_material();
 	// vec_push(&scene->tri_meshes, &tri_mesh);
+	scene->vertices = copy_float_array(mesh->positions, mesh->position_count * 3);
 
 	int face_offset = 0;
 	int	mat_offset = 0;
@@ -91,19 +101,20 @@ bool	parse_obj(t_scene *scene, const char *filename)
 			for (int j = 0; j < 3; j++)
 			{
 				int index = mesh->indices[face_offset + i * 3 + j].p;
-				tri.v[j][0] = mesh->positions[index * 3 + 0];
-				tri.v[j][1] = mesh->positions[index * 3 + 1];
-				tri.v[j][2] = mesh->positions[index * 3 + 2];
+				// tri.v[j][0] = mesh->positions[index * 3 + 0];
+				// tri.v[j][1] = mesh->positions[index * 3 + 1];
+				// tri.v[j][2] = mesh->positions[index * 3 + 2];
+				tri.v_idx[j] = index;
 			}
-			if (mesh->material_count > 0)
-			{
-				tri.material = default_material();
-				int mat_idx = mesh->face_materials[mat_offset + i];
-				fastObjMaterial mat = mesh->materials[mat_idx];
-				tri.material.color[R] = mat.Kd[0];
-				tri.material.color[G] = mat.Kd[1];
-				tri.material.color[B] = mat.Kd[2];
-			}
+			// if (mesh->material_count > 0)
+			// {
+			// 	tri.material = default_material();
+			// 	int mat_idx = mesh->face_materials[mat_offset + i];
+			// 	fastObjMaterial mat = mesh->materials[mat_idx];
+			// 	tri.material.color[R] = mat.Kd[0];
+			// 	tri.material.color[G] = mat.Kd[1];
+			// 	tri.material.color[B] = mat.Kd[2];
+			// }
 			tris[i] = tri;
 		}
 		tri_mesh.num_faces = faces;

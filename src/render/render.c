@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/22 17:24:37 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/22 20:07:14 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 		// hitinfo = triangle_bvh_intersection(ray, scene.tri_meshes[1], hitinfo, scene.tri_meshes[1].bvh);
 
 		if (scene.num_tri_meshes > 0)
-			hitinfo = mesh_bvh_intersection(ray, scene.tri_meshes, hitinfo, scene.bvh_meshes);
+			hitinfo = mesh_bvh_intersection(ray, hitinfo, scene.bvh_meshes, &scene);
 		
 		if (!hitinfo.hit && !RENDER_SKYBOX && bounce == 0)
 			return ((t_vec4f){0.0f, 0.0f, 0.0f, 1.0f});

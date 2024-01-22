@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/01/21 20:21:59 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/22 20:12:59 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,9 +175,9 @@ bool	tri_mesh_intersection(t_rayf ray, t_scene *scene, t_hitinfo *obj_hit);
 bool	build_bvh_triangle(t_scene *scene);
 t_aabb	merge_aabb_f(t_aabb a, t_aabb b);
 
-t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_tri_mesh meshes, t_hitinfo hitinfo, t_bvh_node *node);
+t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node, t_scene *scene, int index);
 t_bvh_node	*build_mesh_bvh(t_tri_mesh *meshes, uint32_t start, uint32_t end, uint32_t max_dept);
-t_hitinfo	mesh_bvh_intersection(t_rayf ray, t_tri_mesh *meshes, t_hitinfo hitinfo, t_bvh_node *node);
+t_hitinfo	mesh_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node, t_scene *scene);
 
 
 #endif
