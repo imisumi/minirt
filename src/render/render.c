@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/22 20:07:14 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/22 21:06:12 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,28 +200,28 @@ t_vec3f	vec3f_refract(t_vec3f incident, t_vec3f normal, float eta)
 
 
 
-t_vec4f	apply_enviorment(t_rayf ray, t_scene scene, t_vec4f incomming_light, t_vec4f ray_color)
+t_vec4f	apply_enviorment(t_rayf ray, t_scene *scene, t_vec4f incomming_light, t_vec4f ray_color)
 {
 	t_vec3f	sky;
 
-	if (BONUS && scene.hdri.rgba != NULL)
-		sky = texture(ray[DIR], scene.hdri);
-	else if (scene.ambient_light > 0.0f)
-		sky = scene.ambient_color * scene.ambient_light;
+	if (BONUS && scene->hdri.rgba != NULL)
+		sky = texture(ray[DIR], scene->hdri);
+	else if (scene->ambient_light > 0.0f)
+		sky = scene->ambient_color * scene->ambient_light;
 	else
 		sky = (t_vec3f){0.0f, 0.0f, 0.0f, 0.0f};
 	incomming_light = incomming_light + (ray_color * sky);
 	return ((t_vec4f){incomming_light[X], incomming_light[Y], incomming_light[Z], 1.0f});
 }
 
-t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
+t_vec4f	per_pixel(t_vec3f dir, t_scene *scene, uint32_t *rngState)
 {
 	int bounce = 0;
 	t_vec3f incomming_light = {0.0f, 0.0f, 0.0f, 0.0f};
 	t_vec3f ray_color = {1.0f, 1.0f, 1.0f, 0.0f};
 
 	t_vec3f ray[2];
-	ray[ORIGIN] = scene.camera.position;
+	ray[ORIGIN] = scene->camera.position;
 	ray[DIR] = dir;
 
 	t_hitinfo hitinfo;
@@ -233,21 +233,21 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene scene, uint32_t *rngState)
 		hitinfo.hit = false;
 		hitinfo.inside = false;
 		
-		if (USE_BVH && vec_length(&scene.spheres) > 0)
-			hitinfo = sphere_bvh_intersection_f(ray, scene.spheres, hitinfo, scene.bvh_spheres_f);
+		if (USE_BVH && vec_length(&scene->spheres) > 0)
+			hitinfo = sphere_bvh_intersection_f(ray, scene->spheres, hitinfo, scene->bvh_spheres_f);
 		else
 			hitinfo = sphere_intersection_f(ray, scene, hitinfo);
 
-		hitinfo = inv_plane_intersection_f(ray, scene, hitinfo);
+		bool hit = inv_plane_intersection_f(ray, scene, &hitinfo);
 
-		// if (scene.num_tri_meshes > 0)
+		// if (scene->num_tri_meshes > 0)
 		// tri_mesh_intersection(ray, &scene, &hitinfo);
 
-		// hitinfo = triangle_bvh_intersection(ray, scene.tri_meshes[0], hitinfo, scene.tri_meshes[0].bvh);
-		// hitinfo = triangle_bvh_intersection(ray, scene.tri_meshes[1], hitinfo, scene.tri_meshes[1].bvh);
+		// hitinfo = triangle_bvh_intersection(ray, scene->tri_meshes[0], hitinfo, scene->tri_meshes[0].bvh);
+		// hitinfo = triangle_bvh_intersection(ray, scene->tri_meshes[1], hitinfo, scene->tri_meshes[1].bvh);
 
-		if (scene.num_tri_meshes > 0)
-			hitinfo = mesh_bvh_intersection(ray, hitinfo, scene.bvh_meshes, &scene);
+		if (scene->num_tri_meshes > 0)
+			hitinfo = mesh_bvh_intersection(ray, hitinfo, scene->bvh_meshes, scene);
 		
 		if (!hitinfo.hit && !RENDER_SKYBOX && bounce == 0)
 			return ((t_vec4f){0.0f, 0.0f, 0.0f, 1.0f});
@@ -498,7 +498,7 @@ void	*render(void *arg)
 			dir = data->scene.camera.ray_dir[x + y * data->utils.width];
 			if (AA)
 				dir = aa_update_dir(data, &rngState, x, y);
-			color = per_pixel(dir, data->scene, &rngState);
+			color = per_pixel(dir, &data->scene, &rngState);
 			data->utils.accumulated_data[x + y * data->utils.width] += color;
 			render_pixel(data, x, y);
 			x++;

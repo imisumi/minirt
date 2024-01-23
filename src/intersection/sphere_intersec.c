@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/20 14:58:29 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/22 21:03:42 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,19 +119,19 @@
 
 
 
-t_hitinfo	sphere_intersection_f(t_rayf ray, t_scene s, t_hitinfo hitinfo)
+t_hitinfo	sphere_intersection_f(t_rayf ray, t_scene *s, t_hitinfo hitinfo)
 {
 	int	i;
 
 	i = 0;
 	// printf("sphere_intersec = %d\n", vec_length(&s.spheres));
-	while (i < vec_length(&s.spheres))
+	while (i < vec_length(&s->spheres))
 	{
-		t_vec3f	offset_originf = ray[ORIGIN] - s.spheres[i].pos_f;
+		t_vec3f	offset_originf = ray[ORIGIN] - s->spheres[i].pos_f;
 	
 		float	a = vec3f_dot(ray[DIR], ray[DIR]);
 		float	b = 2.0f * vec3f_dot(offset_originf, ray[DIR]);
-		float	c = vec3f_dot(offset_originf, offset_originf) - s.spheres[i].radius * s.spheres[i].radius;
+		float	c = vec3f_dot(offset_originf, offset_originf) - s->spheres[i].radius * s->spheres[i].radius;
 	
 		float	discriminant = b * b - 4 * a * c;
 	
@@ -143,8 +143,8 @@ t_hitinfo	sphere_intersection_f(t_rayf ray, t_scene s, t_hitinfo hitinfo)
 				hitinfo.hit = true;
 				hitinfo.distance = t;
 				hitinfo.position = ray[ORIGIN] + (ray[DIR] * t);
-				hitinfo.normal = vec3f_normalize(hitinfo.position - s.spheres[i].pos_f);
-				hitinfo.material = s.spheres[i].material;
+				hitinfo.normal = vec3f_normalize(hitinfo.position - s->spheres[i].pos_f);
+				hitinfo.material = s->spheres[i].material;
 			}
 		}
 		i++;
@@ -152,13 +152,13 @@ t_hitinfo	sphere_intersection_f(t_rayf ray, t_scene s, t_hitinfo hitinfo)
 	return (hitinfo);
 }
 
-t_hitinfo	single_sphere_intersection_f(t_rayf ray, t_sphere sphere, t_hitinfo hitinfo)
+t_hitinfo	single_sphere_intersection_f(t_rayf ray, t_sphere *sphere, t_hitinfo hitinfo)
 {
-	t_vec3f	offset_origin = ray[ORIGIN] - sphere.pos_f;
+	t_vec3f	offset_origin = ray[ORIGIN] - sphere->pos_f;
 
 	float a = vec3f_dot(ray[DIR], ray[DIR]);
 	float b = 2.0f * vec3f_dot(offset_origin, ray[DIR]);
-	float c = vec3f_dot(offset_origin, offset_origin) - sphere.radius * sphere.radius;
+	float c = vec3f_dot(offset_origin, offset_origin) - sphere->radius * sphere->radius;
 
 	float	discriminant = b * b - 4 * a * c;
 
@@ -179,10 +179,10 @@ t_hitinfo	single_sphere_intersection_f(t_rayf ray, t_sphere sphere, t_hitinfo hi
 		{
 			hitinfo.hit = true;
 			hitinfo.distance = t;
-			hitinfo.material = sphere.material;
+			hitinfo.material = sphere->material;
 			hitinfo.position = ray[ORIGIN] + (ray[DIR] * t);
-			// hitinfo.normal = vec3f_normalize(hitinfo.position - sphere.pos_f);
-			hitinfo.normal = vec3f_normalize(hitinfo.position - sphere.pos_f) * (inside ? -1.0f : 1.0f);
+			// hitinfo.normal = vec3f_normalize(hitinfo.position - sphere->pos_f);
+			hitinfo.normal = vec3f_normalize(hitinfo.position - sphere->pos_f) * (inside ? -1.0f : 1.0f);
 
 			hitinfo.inside = inside;
 		}
@@ -213,7 +213,7 @@ t_hitinfo	sphere_bvh_intersection_f(t_rayf ray, t_sphere *spheres, t_hitinfo hit
 		else
 		{
 			for (int i = node->start; i < node->end; i++)
-				hitinfo = single_sphere_intersection_f(ray, spheres[i], hitinfo);
+				hitinfo = single_sphere_intersection_f(ray, &spheres[i], hitinfo);
 		}
 		return (hitinfo);
 	}

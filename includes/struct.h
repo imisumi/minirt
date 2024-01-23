@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/22 20:27:14 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/23 01:37:19 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,9 +157,14 @@ typedef struct t_tri
 	// t_material		material;
 }	t_tri;
 
+
+// typedef t_vec3ui uint32_t[3];
+
 typedef struct s_tri_mesh
 {
-	t_tri			*tris;
+	// t_tri			*tris;
+	t_vec3ui		*v_idx;
+	uint32_t		*mat_idx;
 	// float			*vertices;
 
 	// t_vec3ui		*v_idx;
@@ -169,7 +174,7 @@ typedef struct s_tri_mesh
 	// float			*normals;
 	t_aabb			aabb;
 	uint32_t		num_faces;
-	t_material		material;
+	// t_material		material;
 	t_bvh_node		*bvh;
 }	t_tri_mesh;
 
@@ -230,6 +235,7 @@ typedef struct s_scene
 	// t_ambient	ambient;
 
 	float		*vertices;
+	t_material	*materials;
 	t_sphere	*spheres;
 	// t_bvh_node	*bvh_spheres;
 	t_bvh_node	*bvh_spheres_f;

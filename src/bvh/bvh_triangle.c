@@ -6,150 +6,34 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/22 20:03:53 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/23 02:16:17 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// t_aabb	get_tri_aabb(t_scene *scene, uint32_t tris[3])
-// {
-// 	int		i;
-// 	t_aabb	aabb;
-
-// 	i = 0;
-// 	aabb.min_f = (t_vec3f){INFINITY, INFINITY, INFINITY};
-// 	aabb.max_f = (t_vec3f){-INFINITY, -INFINITY, -INFINITY};
-
-// 	// printf("tri aabb\n");
-// 	t_vec3f tri[3];
-// 	tri[0][0] = scene->vertices[tris[0] * 3];
-// 	tri[0][1] = scene->vertices[tris[0] * 3 + 1];
-// 	tri[0][2] = scene->vertices[tris[0] * 3 + 2];
-	
-// 	tri[1][0] = scene->vertices[tris[1] * 3];
-// 	tri[1][1] = scene->vertices[tris[1] * 3 + 1];
-// 	tri[1][2] = scene->vertices[tris[1] * 3 + 2];
-	
-// 	tri[2][0] = scene->vertices[tris[2] * 3];
-// 	tri[2][1] = scene->vertices[tris[2] * 3 + 1];
-// 	tri[2][2] = scene->vertices[tris[2] * 3 + 2];
-
-// 	while (i < 3)
-// 	{
-// 		aabb.min_f[X] = fminf(aabb.min_f[X], tri[i][X]);
-// 		aabb.min_f[Y] = fminf(aabb.min_f[Y], tri[i][Y]);
-// 		aabb.min_f[Z] = fminf(aabb.min_f[Z], tri[i][Z]);
-// 		aabb.max_f[X] = fmaxf(aabb.max_f[X], tri[i][X]);
-		
-// 		aabb.max_f[Y] = fmaxf(aabb.max_f[Y], tri[i][Y]);
-// 		aabb.max_f[Z] = fmaxf(aabb.max_f[Z], tri[i][Z]);
-		
-// 		i++;
-// 	}
-// 	return (aabb);
-// }
-
-t_aabb get_tri_aabb(t_scene *scene, uint32_t tris[3]) {
-    t_aabb aabb;
-    aabb.min_f = (t_vec3f){INFINITY, INFINITY, INFINITY};
-    aabb.max_f = (t_vec3f){-INFINITY, -INFINITY, -INFINITY};
-
-    for (int i = 0; i < 3; i++) {
-        t_vec3f vertex;
-        vertex[X] = scene->vertices[tris[i] * 3 + 0];
-        vertex[Y] = scene->vertices[tris[i] * 3 + 1];
-        vertex[Z] = scene->vertices[tris[i] * 3 + 2];
-
-        aabb.min_f[X] = fminf(aabb.min_f[X], vertex[X]);
-        aabb.min_f[Y] = fminf(aabb.min_f[Y], vertex[Y]);
-        aabb.min_f[Z] = fminf(aabb.min_f[Z], vertex[Z]);
-		
-        aabb.max_f[X] = fmaxf(aabb.max_f[X], vertex[X]);
-        aabb.max_f[Y] = fmaxf(aabb.max_f[Y], vertex[Y]);
-        aabb.max_f[Z] = fmaxf(aabb.max_f[Z], vertex[Z]);
-    }
-
-    return aabb;
-}
-
-
-t_aabb	get_mesh_aabb(t_tri *tris, int num_tris, t_scene *scene)
-{
-	int		i;
-	t_aabb	aabb;
-
-	i = 0;
-	aabb.min_f = (t_vec3f){INFINITY, INFINITY, INFINITY};
-	aabb.max_f = (t_vec3f){-INFINITY, -INFINITY, -INFINITY};
-	t_aabb temp;
-	temp.min_f = (t_vec3f){INFINITY, INFINITY, INFINITY};
-	temp.max_f = (t_vec3f){-INFINITY, -INFINITY, -INFINITY};
-	while (i < num_tris)
-	{
-		temp = get_tri_aabb(scene, tris[i].v_idx);
-		aabb.min_f[X] = fminf(aabb.min_f[X], temp.min_f[X]);
-		aabb.min_f[Y] = fminf(aabb.min_f[Y], temp.min_f[Y]);
-		aabb.min_f[Z] = fminf(aabb.min_f[Z], temp.min_f[Z]);
-		aabb.max_f[X] = fmaxf(aabb.max_f[X], temp.max_f[X]);
-		aabb.max_f[Y] = fmaxf(aabb.max_f[Y], temp.max_f[Y]);
-		aabb.max_f[Z] = fmaxf(aabb.max_f[Z], temp.max_f[Z]);
-		i++;
-	}
-	return (aabb);
-}
-
-void	setup_mesh_aabb(t_tri_mesh *meshes, int num_meshes, t_scene *scene)
-{
-	// meshes[0].aabb.min_f = (t_vec3f){1.0f, 2.0f, 3.0f};
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < num_meshes)
-	{
-		// j = 0;
-		// while (j < meshes[i].num_faces)
-		// {
-		// 	meshes[i].tris[j].aabb = get_tri_aabb(meshes[i].tris[j].v);
-		// 	j++;
-		// }
-		meshes[i].aabb = get_mesh_aabb(meshes[i].tris, meshes[i].num_faces, scene);
-		i++;
-	}
-}
-
-t_aabb	calc_tri_aabb(t_tri *tris, uint32_t start, uint32_t end, t_scene *scene)
+t_aabb	calc_tri_aabb(t_vec3ui *tri_idx, uint32_t start, uint32_t end, float *vertices)
 {
 	t_aabb	aabb;
-	t_vec3f	temp;
 	int		i;
+	int		j;
+	float	vertex;
 
-	aabb.min_f = (t_vec3f){INFINITY, INFINITY, INFINITY};
-	aabb.max_f = (t_vec3f){-INFINITY, -INFINITY, -INFINITY};
-
-	t_vec3f tri[3];
+	i = 0;
+	aabb = aabb_infinity();
 	while (start < end)
 	{
-		tri[0][0] = scene->vertices[tris[start].v_idx[0] * 3];
-		tri[0][1] = scene->vertices[tris[start].v_idx[0] * 3 + 1];
-		tri[0][2] = scene->vertices[tris[start].v_idx[0] * 3 + 2];
-		tri[1][0] = scene->vertices[tris[start].v_idx[1] * 3];
-		tri[1][1] = scene->vertices[tris[start].v_idx[1] * 3 + 1];
-		tri[1][2] = scene->vertices[tris[start].v_idx[1] * 3 + 2];
-		tri[2][0] = scene->vertices[tris[start].v_idx[2] * 3];
-		tri[2][1] = scene->vertices[tris[start].v_idx[2] * 3 + 1];
-		tri[2][2] = scene->vertices[tris[start].v_idx[2] * 3 + 2];
 		i = 0;
 		while (i < 3)
 		{
-			aabb.min_f[X] = fminf(aabb.min_f[X], tri[i][X]);
-			aabb.min_f[Y] = fminf(aabb.min_f[Y], tri[i][Y]);
-			aabb.min_f[Z] = fminf(aabb.min_f[Z], tri[i][Z]);
-
-			aabb.max_f[X] = fmaxf(aabb.max_f[X], tri[i][X]);
-			aabb.max_f[Y] = fmaxf(aabb.max_f[Y], tri[i][Y]);
-			aabb.max_f[Z] = fmaxf(aabb.max_f[Z], tri[i][Z]);
+			j = 0;
+			while (j < 3)
+			{
+				vertex = vertices[tri_idx[start][i] * 3 + j];
+				aabb.min_f[j] = fminf(aabb.min_f[j], vertex);
+				aabb.max_f[j] = fmaxf(aabb.max_f[j], vertex);
+				j++;
+			}
 			i++;
 		}
 		start++;
@@ -157,7 +41,8 @@ t_aabb	calc_tri_aabb(t_tri *tris, uint32_t start, uint32_t end, t_scene *scene)
 	return (aabb);
 }
 
-t_bvh_node	*bvh_triangle(t_tri *tris, uint32_t start, uint32_t end, uint32_t max_dept, t_scene *scene)
+//TODO: malloc error handling
+t_bvh_node	*bvh_triangle(t_vec3ui *tri_indexes, uint32_t start, uint32_t end, uint32_t max_dept, float *vertices)
 {
 	t_bvh_node	*node;
 	uint32_t	mid;
@@ -168,27 +53,27 @@ t_bvh_node	*bvh_triangle(t_tri *tris, uint32_t start, uint32_t end, uint32_t max
 		*error() = MALLOC_BVH;
 		return (NULL);
 	}
-	node->start = start;
-	node->end = end;
-	node->left = NULL;
-	node->right = NULL;
-	node->is_leaf = false;
+	bvh_starter_node(node, start, end);
 	if (end - start <= MAX_TRIS_LEAF || max_dept == 0)
 	{
 		node->is_leaf = true;
-		node->aabb = calc_tri_aabb(tris, node->start, node->end, scene);
+		node->aabb = calc_tri_aabb(tri_indexes, node->start, node->end, vertices);
 	}
 	else
 	{
 		mid = (start + end) / 2;
-		node->left = bvh_triangle(tris, start, mid, max_dept - 1, scene);
-		node->right = bvh_triangle(tris, mid, end, max_dept - 1, scene);
+		node->left = bvh_triangle(tri_indexes, start, mid, max_dept - 1, vertices);
+		if (node->left == NULL)
+			return (NULL);
+		node->right = bvh_triangle(tri_indexes, mid, end, max_dept - 1, vertices);
+		if (node->right == NULL)
+			return (NULL);
 		node->aabb = merge_aabb_f(node->left->aabb, node->right->aabb);
-		node->is_leaf = false;
 	}
 	return (node);
 }
 
+//TODO: malloc error handling
 t_bvh_node	*build_mesh_bvh(t_tri_mesh *meshes, uint32_t start, uint32_t end, uint32_t max_dept)
 {
 	t_bvh_node	*node;
@@ -200,11 +85,7 @@ t_bvh_node	*build_mesh_bvh(t_tri_mesh *meshes, uint32_t start, uint32_t end, uin
 		*error() = MALLOC_BVH;
 		return (NULL);
 	}
-	node->start = start;
-	node->end = end;
-	node->left = NULL;
-	node->right = NULL;
-	node->is_leaf = false;
+	bvh_starter_node(node, start, end);
 	if (end - start <= 1 || max_dept == 0)
 	{
 		node->is_leaf = true;
@@ -214,76 +95,87 @@ t_bvh_node	*build_mesh_bvh(t_tri_mesh *meshes, uint32_t start, uint32_t end, uin
 	{
 		mid = (start + end) / 2;
 		node->left = build_mesh_bvh(meshes, start, mid, max_dept - 1);
+		if (node->left == NULL)
+			return (NULL);
 		node->right = build_mesh_bvh(meshes, mid, end, max_dept - 1);
+		if (node->right == NULL)
+			return (NULL);
 		node->aabb = merge_aabb_f(node->left->aabb, node->right->aabb);
-		node->is_leaf = false;
 	}
 	return (node);
 }
 
-
-bool	build_bvh_triangle(t_scene *scene)
+t_aabb	get_tri_aabb(t_scene *scene, uint32_t tris[3])
 {
-	printf("Building BVH for triangles\n");
-	int meshs = scene->num_tri_meshes;
-	printf("Scene has %d meshes\n", meshs);
-	
+	t_aabb	aabb;
+	t_vec3f	vertex;
+	int		i;
+	int		j;
 
-	setup_mesh_aabb(scene->tri_meshes, meshs, scene);
-	t_aabb temp = scene->tri_meshes->aabb;
-	printf("aabb min = %f, %f, %f\n", temp.min_f[X], temp.min_f[Y], temp.min_f[Z]);
-	printf("aabb max = %f, %f, %f\n", temp.max_f[X], temp.max_f[Y], temp.max_f[Z]);
-	printf("\n");
+	i = 0;
+	aabb = aabb_infinity();
+	while (i < 3)
+	{
+		j = 0;
+		while (j < 3)
+		{
+			vertex[j] = scene->vertices[tris[i] * 3 + j];
+			aabb.min_f[j] = fminf(aabb.min_f[j], vertex[j]);
+			aabb.max_f[j] = fmaxf(aabb.max_f[j], vertex[j]);
+			j++;
+		}
+		i++;
+	}
+	return (aabb);
+}
+
+t_aabb	get_mesh_aabb(t_vec3ui *tri_index, int num_tris, t_scene *scene)
+{
+	int		i;
+	int		j;
+	t_aabb	aabb;
+	t_aabb	temp;
+
+	i = 0;
+	aabb = aabb_infinity();
+	while (i < num_tris)
+	{
+		temp = get_tri_aabb(scene, tri_index[i]);
+		j = 0;
+		while (j < 3)
+		{
+			aabb.min_f[j] = fminf(aabb.min_f[j], temp.min_f[j]);
+			aabb.max_f[j] = fmaxf(aabb.max_f[j], temp.max_f[j]);
+			j++;
+		}
+		i++;
+	}
+	return (aabb);
+}
+
+void	setup_mesh_aabb(t_tri_mesh *meshes, int num_meshes, t_scene *scene)
+{
 	int	i;
 
 	i = 0;
-	while (i < scene->num_tri_meshes)
+	while (i < num_meshes)
 	{
-		scene->tri_meshes[i].bvh = bvh_triangle(scene->tri_meshes[i].tris, 0, scene->tri_meshes[i].num_faces, 100, scene);
+		meshes[i].aabb = get_mesh_aabb(meshes[i].v_idx, meshes[i].num_faces, scene);
 		i++;
 	}
-	temp = scene->tri_meshes->bvh->aabb;
-	printf("aabb min = %f, %f, %f\n", temp.min_f[X], temp.min_f[Y], temp.min_f[Z]);
-	printf("aabb max = %f, %f, %f\n", temp.max_f[X], temp.max_f[Y], temp.max_f[Z]);
-	
-
-	scene->bvh_meshes = build_mesh_bvh(scene->tri_meshes, 0, scene->num_tri_meshes, 100);
-	
-	// exit(0);
-	return (true);
 }
 
+bool	build_bvh_triangle(t_scene *scene)
+{
+	int	i;
 
-// t_bvh_node	*build_bvh_mesh(t_tri_mesh *meshes, uint32_t start, uint32_t end, uint32_t max_depth)
-// {
-// 	t_bvh_node	*node;
-// 	uint32_t	mid;
-// 	static int mal = 0;
-
-// 	node = malloc(sizeof(t_bvh_node));
-// 	if (node == NULL)
-// 	{
-// 		*error() = MALLOC_BVH;
-// 		return (NULL);
-// 	}
-// 	node->start = start;
-// 	node->end = end;
-// 	node->left = NULL;
-// 	node->right = NULL;
-// 	if (end - start <= MAX_SPHERES_LEAF || max_depth == 0)
-// 	{
-// 		node->is_leaf = true;
-// 		node->aabb = calculate_sphere_aabb_f(spheres, node->start, node->end);
-// 	}
-// 	else
-// 	{
-// 		mid = (start + end) / 2;
-// 		node->left = build_bvh_sphere_f(spheres, start, mid, max_depth - 1);
-// 		node->right = build_bvh_sphere_f(spheres, mid, end, max_depth - 1);
-// 		node->aabb = merge_aabb_f(node->left->aabb, node->right->aabb);
-// 		node->is_leaf = false;
-// 	}
-// 	mal++;
-// 	// printf("malloc = %d\n", mal);
-// 	return (node);
-// }
+	i = 0;
+	setup_mesh_aabb(scene->tri_meshes, scene->num_tri_meshes, scene);
+	while (i < scene->num_tri_meshes)
+	{
+		scene->tri_meshes[i].bvh = bvh_triangle(scene->tri_meshes[i].v_idx, 0, scene->tri_meshes[i].num_faces, 100, scene->vertices);
+		i++;
+	}
+	scene->bvh_meshes = build_mesh_bvh(scene->tri_meshes, 0, scene->num_tri_meshes, 100);
+	return (true);
+}

@@ -6,99 +6,27 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/22 20:26:55 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/23 02:27:44 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
-// bool	single_triangle_intersection(t_rayf ray, t_tri_mesh *mesh, uint32_t i, t_hitinfo *hitinfo, t_scene *scene)
-// {
-// 	mesh->tris[i].v[0][0] = scene->vertices[mesh->tris[i].v_idx[0] * 3];
-// 	mesh->tris[i].v[0][1] = scene->vertices[mesh->tris[i].v_idx[0] * 3 + 1];
-// 	mesh->tris[i].v[0][2] = scene->vertices[mesh->tris[i].v_idx[0] * 3 + 2];
-// 	// mesh->tris[i].v[0][1] = mesh->vertices[mesh->tris[i].v_idx[0] + 1];
-// 	// mesh->tris[i].v[0][2] = mesh->vertices[mesh->tris[i].v_idx[0] + 2];
-	
-// 	t_vec3f e1 = mesh->tris[i].v[1] - mesh->tris[i].v[0];
-// 	t_vec3f e2 = mesh->tris[i].v[2] - mesh->tris[i].v[0];
-	
-// 	t_vec3f ray_cross_e2 = vec3f_cross(ray[DIR], e2);
-
-// 	float det = vec3f_dot(e1, ray_cross_e2);
-
-// 	if (BACK_FACE_CULLING && det < 0)
-// 		return (false);
-// 	else if (det > -EPSILON && det < EPSILON)
-// 		return (false); // This ray is parallel to this triangle.
-
-// 	float inv_det = 1.0f / det;
-// 	t_vec3f s = ray[ORIGIN] - mesh->tris[i].v[0];
-// 	float u = inv_det * vec3f_dot(s, ray_cross_e2);
-
-// 	if (u < 0.0f || u > 1.0f)
-// 		return (false);
-
-// 	t_vec3f s_cross_e1 = vec3f_cross(s, e1);
-// 	float v = inv_det * vec3f_dot(ray[DIR], s_cross_e1);
-
-// 	if (v < 0.0f || u + v > 1.0f)
-// 		return (false);
-
-// 	// if (u < 0 || u > 1 || v < 0 || u + v > 1)
-// 	// 	return (false);
-// 	// if ((u < 0) | (u > 1) | (v < 0) | (u + v > 1))
-// 	// 	return (false);
-
-// 	// At this stage we can compute t to find out where the intersection point is on the line.
-// 	float t = inv_det * vec3f_dot(e2, s_cross_e1);
-	
-// 	if (t > EPSILON && t < hitinfo->distance)
-// 	{
-// 		hitinfo->hit = true;
-// 		hitinfo->position = ray[ORIGIN] + ray[DIR] * t;
-// 		hitinfo->normal = vec3f_normalize(vec3f_cross(e1, e2));
-// 		// hitinfo->normal = vec3f_normalize(vec3f_cross(e1, e2));
-// 		hitinfo->distance = t;
-// 		hitinfo->material = mesh->material;
-// 		hitinfo->material = mesh->tris[i].material;
-// 		// hitinfo->material.color = (t_vec3f){1.0f, 0.0f, 0.0f};
-// 		return (true);
-// 	}
-// 	return (false);
-// }
-
 bool	single_triangle_intersection(t_rayf ray, uint32_t i, t_hitinfo *hitinfo, t_scene *scene, int index)
 {
-	// mesh->tris[i].v[0][0] = scene->vertices[mesh->tris[i].v_idx[0] * 3];
-	// mesh->tris[i].v[0][1] = scene->vertices[mesh->tris[i].v_idx[0] * 3 + 1];
-	// mesh->tris[i].v[0][2] = scene->vertices[mesh->tris[i].v_idx[0] * 3 + 2];
-	// mesh->tris[i].v[0][1] = mesh->vertices[mesh->tris[i].v_idx[0] + 1];
-	// mesh->tris[i].v[0][2] = mesh->vertices[mesh->tris[i].v_idx[0] + 2];
-
 	const t_vec3f tri_a = {
-		scene->vertices[scene->tri_meshes[index].tris[i].v_idx[0] * 3],
-		scene->vertices[scene->tri_meshes[index].tris[i].v_idx[0] * 3 + 1],
-		scene->vertices[scene->tri_meshes[index].tris[i].v_idx[0] * 3 + 2]};
+		scene->vertices[scene->tri_meshes[index].v_idx[i][0] * 3],
+		scene->vertices[scene->tri_meshes[index].v_idx[i][0] * 3 + 1],
+		scene->vertices[scene->tri_meshes[index].v_idx[i][0] * 3 + 2]};
 	const t_vec3f tri_b = {
-		scene->vertices[scene->tri_meshes[index].tris[i].v_idx[1] * 3],
-		scene->vertices[scene->tri_meshes[index].tris[i].v_idx[1] * 3 + 1],
-		scene->vertices[scene->tri_meshes[index].tris[i].v_idx[1] * 3 + 2]};
+		scene->vertices[scene->tri_meshes[index].v_idx[i][1] * 3],
+		scene->vertices[scene->tri_meshes[index].v_idx[i][1] * 3 + 1],
+		scene->vertices[scene->tri_meshes[index].v_idx[i][1] * 3 + 2]};
 	const t_vec3f tri_c= {
-		scene->vertices[scene->tri_meshes[index].tris[i].v_idx[2] * 3],
-		scene->vertices[scene->tri_meshes[index].tris[i].v_idx[2] * 3 + 1],
-		scene->vertices[scene->tri_meshes[index].tris[i].v_idx[2] * 3 + 2]};
-
-	// int j = 0;
-	// t_vec3f tris[3];
-	// while (j < 3)
-	// {
-	// 	tris[j][0] = scene->vertices[scene->tri_meshes[index].tris[i].v_idx[j] * 3];
-	// 	tris[j][1] = scene->vertices[scene->tri_meshes[index].tris[i].v_idx[j] * 3 + 1];
-	// 	tris[j][2] = scene->vertices[scene->tri_meshes[index].tris[i].v_idx[j] * 3 + 2];
-	// 	j++;
-	// }
+		scene->vertices[scene->tri_meshes[index].v_idx[i][2] * 3],
+		scene->vertices[scene->tri_meshes[index].v_idx[i][2] * 3 + 1],
+		scene->vertices[scene->tri_meshes[index].v_idx[i][2] * 3 + 2]};
 	
 	t_vec3f e1 = tri_b - tri_a;
 	t_vec3f e2 = tri_c - tri_a;
@@ -138,11 +66,10 @@ bool	single_triangle_intersection(t_rayf ray, uint32_t i, t_hitinfo *hitinfo, t_
 		hitinfo->hit = true;
 		hitinfo->position = ray[ORIGIN] + ray[DIR] * t;
 		hitinfo->normal = vec3f_normalize(vec3f_cross(e1, e2));
-		// hitinfo->normal = vec3f_normalize(vec3f_cross(e1, e2));
 		hitinfo->distance = t;
-		hitinfo->material = scene->tri_meshes[index].material;
-		// hitinfo->material = scene->tri_meshes[index].tris[i].material;
-		// hitinfo->material.color = (t_vec3f){1.0f, 0.0f, 0.0f};
+		
+		int mat_index = scene->tri_meshes[index].mat_idx[i];
+		hitinfo->material = scene->materials[mat_index];
 		return (true);
 	}
 	return (false);

@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/01/22 20:12:59 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/23 02:18:33 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,10 @@ void	*render(void *arg);
 
 //! new
 t_vec3f		random_directionf(uint32_t *state);
-t_hitinfo	inv_plane_intersection_f(t_rayf ray, t_scene s, t_hitinfo hitinfo);
+bool	inv_plane_intersection_f(t_rayf ray, t_scene *s, t_hitinfo *hitinfo);
 uint32_t	vec4f_to_color(t_vec4f c);
-t_hitinfo	sphere_intersection_f(t_rayf ray, t_scene s, t_hitinfo hitinfo);
-t_hitinfo	single_sphere_intersection_f(t_rayf ray, t_sphere sphere, t_hitinfo hitinfo);
+t_hitinfo	sphere_intersection_f(t_rayf ray, t_scene *s, t_hitinfo hitinfo);
+t_hitinfo	single_sphere_intersection_f(t_rayf ray, t_sphere *sphere, t_hitinfo hitinfo);
 uint32_t	get_rngstate(uint32_t width, uint32_t height, uint32_t x, uint32_t y);
 t_bvh_node	*build_bvh_sphere_f(t_sphere *spheres, uint32_t start, uint32_t end, uint32_t max_depth);
 t_aabb		calculate_sphere_aabb_f(t_sphere *spheres, uint32_t start, uint32_t end);
@@ -102,7 +102,7 @@ t_hitinfo	sphere_bvh_intersection_f(t_rayf ray, t_sphere *spheres, t_hitinfo hit
 t_vec3f	aa_update_dir(t_data *data, uint32_t *rng, uint32_t x, uint32_t y);
 t_vec4f	vec3f_tone_map(t_vec3f color);
 t_vec3f	default_skyf(t_vec3f direction, t_scene scene);
-t_vec3f omni_dir_light_f(t_rayf ray, t_scene scene, t_hitinfo closest_hit);
+t_vec3f omni_dir_light_f(t_rayf ray, t_scene *scene, t_hitinfo closest_hit);
 
 
 t_vec3f	texture(t_vec3f normal, t_hdri hdri);
@@ -179,5 +179,12 @@ t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *n
 t_bvh_node	*build_mesh_bvh(t_tri_mesh *meshes, uint32_t start, uint32_t end, uint32_t max_dept);
 t_hitinfo	mesh_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node, t_scene *scene);
 
+
+
+
+//? bvh_utils.c
+t_aabb	aabb_infinity(void);
+void	bvh_starter_node(t_bvh_node *node, uint32_t start, uint32_t end);
+void	free_bvh_tree(t_bvh_node* node);
 
 #endif
