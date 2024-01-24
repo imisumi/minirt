@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/01/23 02:18:33 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/24 00:53:59 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ void	*render(void *arg);
 t_vec3f		random_directionf(uint32_t *state);
 bool	inv_plane_intersection_f(t_rayf ray, t_scene *s, t_hitinfo *hitinfo);
 uint32_t	vec4f_to_color(t_vec4f c);
-t_hitinfo	sphere_intersection_f(t_rayf ray, t_scene *s, t_hitinfo hitinfo);
-t_hitinfo	single_sphere_intersection_f(t_rayf ray, t_sphere *sphere, t_hitinfo hitinfo);
+bool	sphere_intersection_f(t_rayf ray, t_scene *s, t_hitinfo *hitinfo);
+bool	single_sphere_intersection_f(t_rayf ray, t_sphere *sphere, t_hitinfo *hitinfo);
 uint32_t	get_rngstate(uint32_t width, uint32_t height, uint32_t x, uint32_t y);
 t_bvh_node	*build_bvh_sphere_f(t_sphere *spheres, uint32_t start, uint32_t end, uint32_t max_depth);
 t_aabb		calculate_sphere_aabb_f(t_sphere *spheres, uint32_t start, uint32_t end);
@@ -178,8 +178,6 @@ t_aabb	merge_aabb_f(t_aabb a, t_aabb b);
 t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node, t_scene *scene, int index);
 t_bvh_node	*build_mesh_bvh(t_tri_mesh *meshes, uint32_t start, uint32_t end, uint32_t max_dept);
 t_hitinfo	mesh_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node, t_scene *scene);
-
-
 
 
 //? bvh_utils.c

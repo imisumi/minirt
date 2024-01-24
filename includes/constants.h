@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/22 20:59:13 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/24 01:09:49 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 // # define MT
 
-# if BONUS
+# ifdef BONUS
 #  define MT 1
 #  define PIXEL_SIZE 2
 # else
@@ -33,7 +33,7 @@
 # define MAX_BOUNCES 8
 
 // # define MT 1
-# define THREADS 8
+# define THREADS 12
 
 # define MAX_TRIS_LEAF 4
 # define MAX_OBJS_MESH 1
@@ -43,7 +43,7 @@
 
 # define RENDER_SKYBOX 1
 
-# define BACK_FACE_CULLING 1
+# define BACK_FACE_CULLING 0
 
 # define USE_BVH 1
 

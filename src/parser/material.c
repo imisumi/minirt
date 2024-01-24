@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/17 00:53:42 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/24 00:42:15 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 t_material	default_material(void)
 {
-	t_material	material;
+	const t_material	material = {
+		.color = (t_vec3f){1.0f, 0.0f, 1.0f, 0.0f},
+		.roughness = 1.0f,
+		.specular = 0.0f,
+		.specular_color = (t_vec3f){1.0f, 1.0f, 1.0f, 0.0f},
+		.ior = 1.4f,
+		.refraction = 0.0f,
+		.refraction_roughness = 0.0f,
+		.refraction_color = (t_vec3f){1.0f, 1.0f, 1.0f, 0.0f},
+		.emission_strength = 0.0f};
 
-	material.color = (t_vec3f){1.0f, 0.0f, 1.0f, 0.0f};
-	material.roughness = 1.0f;
-	material.specular = 0.0f;
-	material.specular_color = (t_vec3f){1.0f, 1.0f, 1.0f, 0.0f};
-	material.ior = 1.4f;
-	material.refraction = 0.0f;
-	material.refraction_roughness = 0.0f;
-	material.refraction_color = (t_vec3f){1.0f, 1.0f, 1.0f, 0.0f};
-	material.emission_strength = 0.0f;
 	return (material);
 }
 
@@ -48,6 +48,8 @@ bool	parse_material(t_material *mat, char **split)
 		print_error("sphere color");
 		return (false);
 	}
+	if (ft_split_count(split) != 9)
+		return (true);
 	//? roughness
 	if (ft_stof(split[1], &mat->roughness) == false)
 	{

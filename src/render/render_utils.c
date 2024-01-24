@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/22 21:06:29 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/23 23:00:49 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,18 @@ t_vec4f mix_vec4f(t_vec4f x, t_vec4f y, t_vec4f mask)
 
 t_vec3f LinearToSRGB(t_vec3f rgb)
 {
-    rgb = vec4f_clamp(rgb, 0.0f, 1.0f);
+	rgb = vec4f_clamp(rgb, 0.0f, 1.0f);
 
-    t_vec3f condition = {0.0031308f, 0.0031308f, 0.0031308f};
-    t_vec3f pow_result = vec3f_pow(rgb, 1.0f / 2.4f);
-    
-    t_vec3f mix_result = mix_vec4f(
-        pow_result * 1.055f - 0.055f,
-        rgb * 12.92f,
-        LessThan_vec4f(rgb, condition)
-    );
+	t_vec3f condition = {0.0031308f, 0.0031308f, 0.0031308f};
+	t_vec3f pow_result = vec3f_pow(rgb, 1.0f / 2.2f);
+		
+	t_vec3f mix_result = mix_vec4f(
+		pow_result * 1.055f - 0.055f,
+		rgb * 12.92f,
+		LessThan_vec4f(rgb, condition)
+	);
 
-    return mix_result;
+	return mix_result;
 }
 
 t_vec4f	ACESFilm(t_vec4f x)
@@ -124,24 +124,14 @@ t_vec4f	ACESFilm(t_vec4f x)
 t_vec4f	vec3f_tone_map(t_vec3f color)
 {
 	color = ACESFilm(color);
+
+    // Clamp values to [0, 1]
+    color[X] = fmax(0.0f, fmin(1.0f, color[X]));
+    color[Y] = fmax(0.0f, fmin(1.0f, color[Y]));
+    color[Z] = fmax(0.0f, fmin(1.0f, color[Z]));
 	color = LinearToSRGB(color);
 	color[W] = 1.0f;
-	return color;
-	float	gamma = 2.2f;
-	float	exposure = 1.0f;
-	color = color * exposure;
-	t_vec3f	result = color / (color + 1.0f);
-	// t_vec3 result;
-
-	// result[X] = 1.0f - expf(-color[R] * exposure);
-	// result[Y] = 1.0f - expf(-color[G] * exposure);
-	// result[Z] = 1.0f - expf(-color[B] * exposure);
-
-	result[X] = powf(result[X], 1.0f / gamma);
-	result[Y] = powf(result[Y], 1.0f / gamma);
-	result[Z] = powf(result[Z], 1.0f / gamma);
-	return((t_vec4f){result[X], result[Y], result[Z], 1.0f});
-	// return (vec4_new(result.x, result.y, result.z, 1.0f));
+	return (color);
 }
 
 
