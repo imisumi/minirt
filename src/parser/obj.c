@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/24 01:56:16 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/24 15:11:30 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,41 +17,74 @@
 #include "minirt.h"
 
 // copy float array
-float *copy_float_array(float *arr, int len)
+float	*copy_float_array(float *arr, int len)
 {
-	float *new_arr = malloc(sizeof(float) * len);
-	for (int i = 0; i < len; i++)
+	int		i;
+	float	*new_arr;
+
+	new_arr = malloc(sizeof(float) * len);
+	if (!new_arr)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
 		new_arr[i] = arr[i];
+		i++;
+	}
 	return (new_arr);
 }
 
-bool	parse_obj(t_scene *scene, const char *filename)
+void	print_mesh_data(fastObjMesh *mesh)
 {
-	printf("Parsing obj file: %s\n", filename);
-	fastObjMesh *mesh = fast_obj_read(filename);
-	int len = mesh->object_count;
-	// printf("Mesh has %d groups\n", len);
+	printf("----------------------------------\n");
+	printf("Mesh has %d objects\n", mesh->object_count);
+	printf("Mesh has %d indices\n", mesh->index_count);
+	printf("Mesh has %d vertices\n", mesh->position_count);
+	printf("Mesh has %d texcoords\n", mesh->texcoord_count);
+	printf("Mesh has %d normals\n", mesh->normal_count);
+	printf("Mesh has %d faces\n", mesh->face_count);
+	printf("Mesh has %d materials\n", mesh->material_count);
+	printf("----------------------------------\n");
+}
 
-	int i = mesh->position_count;
-	printf("Mesh has %d vertices\n", i);
-	i = mesh->texcoord_count;
-	printf("Mesh has %d texcoords\n", i);
-	i = mesh->normal_count;
-	printf("Mesh has %d normals\n", i);
-	i = mesh->face_count;
-	printf("Mesh has %d faces\n", i);
-	i = mesh->material_count;
-	printf("Mesh has %d materials\n", i);
-
+bool	load_mesh_materials(t_scene *scene, fastObjMesh *mesh)
+{
 	if (mesh->material_count > 0)
 	{
 		scene->materials = malloc(sizeof(t_material) * mesh->material_count);
+		if (!scene->materials)
+			return (false);
 	}
 	else
 	{
 		scene->materials = malloc(sizeof(t_material));
+		if (!scene->materials)
+			return (false);
 		scene->materials[0] = default_material();
 	}
+	
+	
+	return (true);
+}
+
+bool	parse_obj(t_scene *scene, const char *filename)
+{
+	static int	obj_count = 0;
+	if (obj_count > 0)
+		return (false);
+	printf("Parsing obj file: %s\n", filename);
+	fastObjMesh *mesh = fast_obj_read(filename);
+	if (!mesh)
+	{
+		printf("Error: failed to load obj file\n");
+		return (false);
+	}
+
+	print_mesh_data(mesh);
+
+	if (load_mesh_materials(scene, mesh) == false)
+		return (false);
+
 	for (int i = 0; i < mesh->material_count; i++)
 	{
 		fastObjMaterial mat = mesh->materials[i];
@@ -59,6 +92,12 @@ bool	parse_obj(t_scene *scene, const char *filename)
 		scene->materials[i].color[R] = mat.Kd[0];
 		scene->materials[i].color[G] = mat.Kd[1];
 		scene->materials[i].color[B] = mat.Kd[2];
+
+		scene->materials[i].emission_color[R] = mat.Ke[0];
+		scene->materials[i].emission_color[G] = mat.Ke[1];
+		scene->materials[i].emission_color[B] = mat.Ke[2];
+		if (mat.Ke[0] > 0.0f || mat.Ke[1] > 0.0f || mat.Ke[2] > 0.0f)
+			scene->materials[i].emission_strength = 10.0f;
 
 		// if (scene->materials[i].color_tex == NULL)
 		// 	exit(1);
@@ -81,34 +120,10 @@ bool	parse_obj(t_scene *scene, const char *filename)
 		// char *normal = "assets/obj/tex/normal.png";
 		// scene->materials[i].normal_tex = mlx_load_png(normal);
 	}
-	t_vec3f m = scene->materials[0].color;
-	printf("Material color: %f %f %f\n", m[0], m[1], m[2]);
-
-	int faces = mesh->face_count;
-	// for (int i = 0; i < faces; i++)
-	// {
-		
-	// }
 
 
-	int pos = mesh->position_count;
-	for (int i = 0; i < pos; i++)
-	{
-		// printf("Vertex %d: %f %f %f\n", i, mesh->positions[i * 3 + 0], mesh->positions[i * 3 + 1], mesh->positions[i * 3 + 2]);
-	}
-	int index = mesh->index_count;
-	printf("Mesh has %d indices\n", index);
-	// for (int i = 0; i < index; i++)
-	// {
-	// 	fastObjIndex id = mesh->indices[i];
-	// 	printf("%d %d %d     ", id.p, id.t, id.n);
-	// 	if (i % 3 == 2)
-	// 		printf("\n");
-	// }
 
-	int count = mesh->object_count;
-	printf("Mesh has %d objects\n", count);
-	scene->num_tri_meshes = count;
+	scene->num_tri_meshes = mesh->object_count;
 
 	t_tri_mesh tri_mesh;
 	scene->vertices = copy_float_array(mesh->positions, mesh->position_count * 3);
@@ -119,7 +134,7 @@ bool	parse_obj(t_scene *scene, const char *filename)
 	int num_shapes = mesh->object_count;
 	for (int current = 0; current < num_shapes; current++)
 	{
-		faces = mesh->objects[current].face_count;
+		int faces = mesh->objects[current].face_count;
 		tri_mesh.mat_idx = malloc(sizeof(uint32_t) * faces);
 		tri_mesh.v_idx = malloc(sizeof(t_vec3ui) * faces);
 		tri_mesh.vt_idx = malloc(sizeof(t_vec3ui) * faces);
@@ -157,5 +172,6 @@ bool	parse_obj(t_scene *scene, const char *filename)
 	// 	if (i % 3 == 2)
 	// 		printf("\n");
 	// }
+	obj_count++;
 	return (true);
 }

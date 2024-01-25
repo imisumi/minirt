@@ -69,15 +69,15 @@ typedef struct
     int                         fallback;
 
     /* Texture maps */
-    fastObjTexture              map_Ka;
-    fastObjTexture              map_Kd;
-    fastObjTexture              map_Ks;
-    fastObjTexture              map_Ke;
-    fastObjTexture              map_Kt;
-    fastObjTexture              map_Ns;
-    fastObjTexture              map_Ni;
-    fastObjTexture              map_d;
-    fastObjTexture              map_bump;
+    fastObjTexture              map_Ka;   /* Ambient */
+    fastObjTexture              map_Kd;   /* Diffuse */
+    fastObjTexture              map_Ks;   /* Specular */
+    fastObjTexture              map_Ke;   /* Emission */
+    fastObjTexture              map_Kt;   /* Transmittance */
+    fastObjTexture              map_Ns;   /* Shininess */
+    fastObjTexture              map_Ni;   /* Index of refraction */
+    fastObjTexture              map_d;    /* Disolve (alpha) */
+    fastObjTexture              map_bump; /* Bump */
 
 } fastObjMaterial;
 
