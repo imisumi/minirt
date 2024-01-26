@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/24 15:11:30 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/01/26 00:39:59 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	print_mesh_data(fastObjMesh *mesh)
 
 bool	load_mesh_materials(t_scene *scene, fastObjMesh *mesh)
 {
+	scene->num_materials = mesh->material_count;
 	if (mesh->material_count > 0)
 	{
 		scene->materials = malloc(sizeof(t_material) * mesh->material_count);
@@ -173,5 +174,6 @@ bool	parse_obj(t_scene *scene, const char *filename)
 	// 		printf("\n");
 	// }
 	obj_count++;
+	fast_obj_destroy(mesh);
 	return (true);
 }

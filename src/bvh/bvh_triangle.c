@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/23 02:16:17 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/26 01:07:49 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void	setup_mesh_aabb(t_tri_mesh *meshes, int num_meshes, t_scene *scene)
 	}
 }
 
-bool	build_bvh_triangle(t_scene *scene)
+bool	init_mesh_bvh(t_scene *scene)
 {
 	int	i;
 
@@ -174,8 +174,12 @@ bool	build_bvh_triangle(t_scene *scene)
 	while (i < scene->num_tri_meshes)
 	{
 		scene->tri_meshes[i].bvh = bvh_triangle(scene->tri_meshes[i].v_idx, 0, scene->tri_meshes[i].num_faces, 100, scene->vertices);
+		if (scene->tri_meshes[i].bvh == NULL)
+			return (false);
 		i++;
 	}
 	scene->bvh_meshes = build_mesh_bvh(scene->tri_meshes, 0, scene->num_tri_meshes, 100);
+	if (scene->bvh_meshes == NULL)
+		return (false);
 	return (true);
 }
