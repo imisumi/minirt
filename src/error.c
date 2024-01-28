@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/26 01:09:41 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/26 17:39:52 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,10 @@ bool	print_error(const char *msg)
 		printf("%s\n", error_strings[*error()]);
 
 	return (false);
+}
+
+bool	print_warning(const char *msg)
+{
+	printf("Warning: %s\n", msg);
+	return (true);
 }

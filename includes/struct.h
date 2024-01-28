@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/24 01:25:39 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/26 17:47:47 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,31 @@ typedef enum error
 // 	VEC3_INF,
 // 	ERROR_COUNT
 // }	t_error;
+
+typedef struct s_tri_floats
+{
+	float	det;
+	float	inv_det;
+	float	u;
+	float	v;
+	float	t;
+}			t_tri_floats;
+
+typedef struct s_tri_vecs
+{
+	t_vec3f	tri[3];
+	t_vec3f	edge[2];
+	t_vec3f	ray_cross_e2;
+	t_vec3f	s;
+	t_vec3f	s_cross_e1;
+}			t_tri_vecs;
+
+typedef struct s_barycentric
+{
+	float	u;
+	float	v;
+	float	w;
+}	t_barycentric;
 
 typedef struct
 {
@@ -241,36 +266,35 @@ typedef struct s_scene
 	float		*vertices;
 	float		*tex_coords;
 	t_material	*materials;
+	uint32_t	num_materials;
+	
 	t_sphere	*spheres;
-	// t_bvh_node	*bvh_spheres;
+
 	t_bvh_node	*bvh_spheres_f;
 	t_bvh_node	*bvh_meshes;
 
+	t_tri_mesh	*tri_meshes;
+	uint32_t	num_tri_meshes;
+	
 	t_inv_plane	*inv_planes;
 
 	t_cylinder	*cylinders;
 
-	t_tri_mesh	*tri_meshes;
-	uint32_t	num_tri_meshes;
 
 	t_point_light	*point_lights;
 
-	// float			*hdri;
-	// int				hdri_width;
-	// int				hdri_height;
+
 	t_hdri			hdri;
 
-	// t_plane		*planes;
-	// t_material	*materials;
+
 	float	ambient_light;
-	// t_vec3		ambient_color;
+
 	t_vec3f		ambient_color;
 	t_camera	camera;
 }				t_scene;
 
 typedef struct s_data
 {
-	// pthread_mutex_t	mutex;
 	t_utils			utils;
 	t_scene			scene;
 	mlx_t			*mlx;

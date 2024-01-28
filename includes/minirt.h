@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/01/24 00:53:59 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/26 17:57:31 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,6 @@ bool	parse_sphere(t_scene *scene, char **split);
 
 
 
-void	print_error(const char *msg);
-
 bool	parse_vec3(char *line, t_vec3f *vec);
 bool	parse_8bit_color(char *line, t_vec3f *col);
 
@@ -172,7 +170,7 @@ bool	parse_obj(t_scene *scene, const char *filename);
 
 
 bool	tri_mesh_intersection(t_rayf ray, t_scene *scene, t_hitinfo *obj_hit);
-bool	build_bvh_triangle(t_scene *scene);
+bool	init_mesh_bvh(t_scene *scene);
 t_aabb	merge_aabb_f(t_aabb a, t_aabb b);
 
 t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node, t_scene *scene, int index);
@@ -184,5 +182,24 @@ t_hitinfo	mesh_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node,
 t_aabb	aabb_infinity(void);
 void	bvh_starter_node(t_bvh_node *node, uint32_t start, uint32_t end);
 void	free_bvh_tree(t_bvh_node* node);
+
+
+//? material.c
+t_vec3f	sample_texture(mlx_texture_t *tex, const t_barycentric *coord, const float *uvs);
+void	set_tri_material(t_hitinfo *hitinfo, t_scene *s, int m_f_idx[2], float uv[2]);
+
+
+//? mlx.c
+bool	setup_mlx(t_data *data);
+bool	run_mlx(t_data *data);
+
+//? error.c
+t_error	*error(void);
+bool	print_error(const char *msg);
+bool	print_warning(const char *msg);
+
+//? cleanup.c
+void	cleanup_scene(t_scene *scene);
+void	free_all_data(t_data *data);
 
 #endif

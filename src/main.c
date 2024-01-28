@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/26 01:12:12 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/01/29 00:42:44 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ bool	init_buffers(t_data *data)
 
 bool	init_bvh(t_data *data)
 {
+	// *error() = MALLOC_BVH;
+	// return false;
+	if (!BONUS || !USE_BVH)
+		return (print_warning("to use bvh, define BONUS and USE_BVH"));
 	if (vec_length(&data->scene.spheres) > 0)
 	{
 		data->scene.bvh_spheres_f = build_bvh_sphere_f(data->scene.spheres, 0, \
@@ -70,6 +74,11 @@ bool	valid_input(int argc, char *argv[])
 const char *file = "assets/maps/obj.rt";
 // const char *file = "assets/maps/map1.rt";
 
+void	temp(t_data *data)
+{
+	free_bvh_tree(data->scene.bvh_spheres_f);
+}
+
 int32_t main(int32_t argc, char* argv[])
 {
 	t_data	data;
@@ -85,7 +94,12 @@ int32_t main(int32_t argc, char* argv[])
 		free_all_data(&data);
 		return (print_error("Error"));
 	}
-	init_bvh(&data);
+	if (init_bvh(&data) == false)
+	{
+		free_all_data(&data);
+		return (print_error("Error"));
+	}
+	// return (EXIT_SUCCESS);
 	if (*error() == MALLOC_BVH)
 	{
 		free_all_data(&data);
@@ -96,5 +110,6 @@ int32_t main(int32_t argc, char* argv[])
 	recalculat_ray_directions(&data);
 	if (run_mlx(&data) == false)
 		return (print_error("Error"));
+	free_all_data(&data);
 	return (EXIT_SUCCESS);
 }
