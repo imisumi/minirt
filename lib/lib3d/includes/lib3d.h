@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/06 15:02:29 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/05 03:01:20 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,6 @@ typedef t_vec3f t_rayf[2];
 # define B 2
 # define A 3
 
-typedef struct s_vec2
-{
-	float		x;
-	float		y;
-}				t_vec2;
-
-typedef struct s_vec3
-{
-	float		x;
-	float		y;
-	float		z;
-}				t_vec3;
-
-typedef struct s_vec4
-{
-	float		x;
-	float		y;
-	float		z;
-	float		w;
-}				t_vec4;
-
-typedef struct s_ray
-{
-	t_vec3		origin;
-	t_vec3		direction;
-}				t_ray;
-
 typedef struct s_mat4
 {
 	float		m[4][4];
@@ -79,61 +52,28 @@ typedef struct s_quaternion
 /*                                    vec2                                    */
 /* ************************************************************************** */
 
-t_vec2		vec2_new(float x, float y);
-t_vec2		vec2_add(t_vec2 a, t_vec2 b);
-t_vec2		vec2_addf(t_vec2 a, float b);
-t_vec2		vec2_sub(t_vec2 a, t_vec2 b);
-t_vec2		vec2_subf(t_vec2 a, float b);
-t_vec2		vec2_mul(t_vec2 a, t_vec2 b);
-t_vec2		vec2_mulf(t_vec2 a, float b);
-t_vec2		vec2_div(t_vec2 a, t_vec2 b);
-t_vec2		vec2_divf(t_vec2 a, float b);
-
-float		vec2_dot(t_vec2 a, t_vec2 b);
-float		vec2_length(t_vec2 a);
-float		vec2_length2(t_vec2 a);
-t_vec2		vec2_normalize(t_vec2 a);
-t_vec2		vec2_lerp(t_vec2 a, t_vec2 b, float t);
-t_vec2		vec2_reflect(t_vec2 a, t_vec2 b);
-t_vec2		vec2_rotate(t_vec2 a, float angle);
-t_vec2		vec2_rotate_around(t_vec2 a, t_vec2 b, float angle);
-t_vec2		vec2_min(t_vec2 a, t_vec2 b);
-t_vec2		vec2_max(t_vec2 a, t_vec2 b);
-t_vec2		vec2_clamp(t_vec2 a, t_vec2 min, t_vec2 max);
-t_vec2		vec2_clampf(t_vec2 a, float min, float max);
-t_vec2		vec2_smoothstep(t_vec2 a, t_vec2 b, float t);
-t_vec2		vec2_smoothstepf(t_vec2 a, float b, float t);
 
 /* ************************************************************************** */
 /*                                    vec3                                    */
 /* ************************************************************************** */
+t_vec3f	vec3f_pow(t_vec3f vec, float exp);
+t_vec3f	vec3f_less_than(t_vec3f vec, float value);
+float vec3f_distance(t_vec3f point1, t_vec3f point2);
 
-t_vec3		vec3_add(t_vec3 a, t_vec3 b);
-t_vec3		vec3_addf(t_vec3 a, float b);
-t_vec3		vec3_sub(t_vec3 a, t_vec3 b);
-t_vec3		vec3_subf(t_vec3 a, float b);
-t_vec3		vec3_mul(t_vec3 a, t_vec3 b);
-t_vec3		vec3_mulf(t_vec3 a, float b);
-t_vec3		vec3_div(t_vec3 a, t_vec3 b);
-t_vec3		vec3_divf(t_vec3 a, float b);
-float		vec3_dot(t_vec3 a, t_vec3 b);
-t_vec3		vec3_cross(t_vec3 a, t_vec3 b);
-t_vec3		vec3_new(float x, float y, float z);
-t_vec3		vec3_normalize(t_vec3 v);
-float		vec3_length(t_vec3 v);
+t_vec3f	vec3f_reflect(t_vec3f v, t_vec3f n);
+t_vec3f	vec3f_lerp(const t_vec3f vec1, const t_vec3f vec2, const float t);
+t_vec3f	vec3f_exp(t_vec3f v);
+t_vec3f	vec3f_refract(t_vec3f incident, t_vec3f normal, float eta);
+t_vec3f	vec3f_to_vec4f(t_vec3f v, float f);
+
 
 /* ************************************************************************** */
 /*                                    vec4                                    */
 /* ************************************************************************** */
+t_vec4f	vec4f_clamp(t_vec4f vec, float min, float max);
+t_vec4f LessThan_vec4f(t_vec4f v, t_vec4f threshold);
+t_vec4f mix_vec4f(t_vec4f x, t_vec4f y, t_vec4f mask);
 
-t_vec4		vec4_new(float x, float y, float z, float w);
-float		vec4_length(t_vec4 v);
-t_vec4		vec4_add(t_vec4 v1, t_vec4 v2);
-t_vec4		vec4_divf(t_vec4 v, float scalar);
-t_vec4		vec4_normalize(t_vec4 v);
-t_vec4		vec4_mul(t_vec4 v1, t_vec4 v2);
-t_vec4		vec4_mulf(t_vec4 v, float scalar);
-t_vec4		vec4_clamp(t_vec4 v, float min, float max);
 
 /* ************************************************************************** */
 /*                                    mat4                                    */
@@ -144,23 +84,23 @@ t_mat4		mat4_identity(void);
 t_mat4		mat4_inverse(t_mat4 m);
 
 t_mat4		mat4_perspective(float fovy, float aspect, float nearZ, float farZ);
-t_mat4		mat4_look_at(t_vec3 eye, t_vec3 center, t_vec3 up);
+
 
 /* ************************************************************************** */
 /*                                    quat                                    */
 /* ************************************************************************** */
 
 t_quat		quat_new(float x, float y, float z, float w);
-t_quat		quat_angle_axis(float angle, t_vec3 axis);
+
 t_quat		quat_cross(t_quat q1, t_quat q2);
 float		t_quat_length(t_quat q);
 t_quat		quat_normalize(t_quat q);
 
-t_vec3		quat_rotate(t_quat q, t_vec3 v);
+
 
 float		fov_radians(float fov);
 
-t_vec4		mat4_mul_vec4(t_mat4 matrix, t_vec4 vector);
+// t_vec4		mat4_mul_vec4(t_mat4 matrix, t_vec4 vector);
 
 
 
@@ -168,15 +108,21 @@ t_vec4		mat4_mul_vec4(t_mat4 matrix, t_vec4 vector);
 
 
 // new
-t_vec3f vec3f_cross(t_vec3f a, t_vec3f b);
-t_vec4f mat4_mul_vec4f(t_mat4 matrix, t_vec4f vector);
-t_vec4f vec4f_normalize(t_vec4f v);
-float vec3f_length(t_vec3f v);
-t_vec3f vec3f_normalize(t_vec3f v);
-float	vec3f_dot(t_vec3f a, t_vec3f b);
-t_quat	quat_angle_axis_f(float angle, t_vec3f axis);
-t_vec3f quat_rotate_f(t_quat q, t_vec3f v);
-t_vec2f	random_point_in_circle_f(uint32_t *state);
-t_mat4 mat4_look_at_f(t_vec3f eye, t_vec3f center, t_vec3f up);
+t_vec3f		vec3f_cross(t_vec3f a, t_vec3f b);
+t_vec4f		mat4_mul_vec4f(t_mat4 matrix, t_vec4f vector);
+t_vec4f		vec4f_normalize(t_vec4f v);
+float		vec3f_length(t_vec3f v);
+t_vec3f		vec3f_normalize(t_vec3f v);
+float		vec3f_dot(t_vec3f a, t_vec3f b);
+t_quat		quat_angle_axis_f(float angle, t_vec3f axis);
+t_vec3f		quat_rotate_f(t_quat q, t_vec3f v);
+t_vec2f		random_point_in_circle_f(uint32_t *state);
+t_mat4		mat4_look_at_f(t_vec3f eye, t_vec3f center, t_vec3f up);
+
+
+
+
+
+
 
 #endif

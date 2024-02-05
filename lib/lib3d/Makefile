@@ -6,13 +6,13 @@
 #    By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#              #
-#    Updated: 2023/09/09 00:07:30 by imisumi-wsl      ###   ########.fr        #
+#    Updated: 2024/02/04 19:39:23 by imisumi-wsl      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:=	lib3d.a
 CC			:=	gcc
-CFLAGS 		:=	-g
+CFLAGS 		:=	-g -O2
 LFLAGS		:=	-lm
 
 HEADERS		:=	./includes/lib3d.h

@@ -3,60 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   vec3.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/15 00:33:44 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/02/05 03:01:01 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib3d.h"
 
-t_vec3	vec3_add(t_vec3 a, t_vec3 b)
-{
-	return ((t_vec3){a.x + b.x, a.y + b.y, a.z + b.z});
-}
-
-t_vec3	vec3_addf(t_vec3 a, float b)
-{
-	return ((t_vec3){a.x + b, a.y + b, a.z + b});
-}
-
-t_vec3	vec3_subf(t_vec3 a, float b)
-{
-	return ((t_vec3){a.x - b, a.y - b, a.z - b});
-}
-
-t_vec3	vec3_sub(t_vec3 a, t_vec3 b)
-{
-	return ((t_vec3){a.x - b.x, a.y - b.y, a.z - b.z});
-}
-
-t_vec3	vec3_mul(t_vec3 a, t_vec3 b)
-{
-	return ((t_vec3){a.x * b.x, a.y * b.y, a.z * b.z});
-}
-
-t_vec3	vec3_mulf(t_vec3 a, float b)
-{
-	return ((t_vec3){a.x * b, a.y * b, a.z * b});
-}
-
-float	vec3_dot(t_vec3 a, t_vec3 b)
-{
-	return (a.x * b.x + a.y * b.y + a.z * b.z);
-}
-
 float	vec3f_dot(t_vec3f a, t_vec3f b)
 {
-	return (a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z]);
-}
+	const float dot = (a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z]);
 
-t_vec3	vec3_cross(t_vec3 a, t_vec3 b)
-{
-	return ((t_vec3){a.y * b.z - a.z * b.y, \
-					a.z * b.x - a.x * b.z, \
-					a.x * b.y - a.y * b.x});
+	return (dot);
 }
 
 t_vec3f vec3f_cross(t_vec3f a, t_vec3f b)
@@ -69,27 +29,6 @@ t_vec3f vec3f_cross(t_vec3f a, t_vec3f b)
 	};
 
 	return (v);
-}
-
-
-
-
-t_vec3	vec3_new(float x, float y, float z)
-{
-	return ((t_vec3){x, y, z});
-}
-
-
-t_vec3	vec3_normalize(t_vec3 v)
-{
-	float length = vec3_length(v);
-	if (length > 0.0f) {
-		float invLength = 1.0f / length;
-		v.x *= invLength;
-		v.y *= invLength;
-		v.z *= invLength;
-	}
-	return v;
 }
 
 float vec3f_length(t_vec3f v)
@@ -109,19 +48,64 @@ t_vec3f vec3f_normalize(t_vec3f v)
 	return v;
 }
 
-float		vec3_length(t_vec3 v)
+t_vec3f	vec3f_pow(t_vec3f vec, float exp)
 {
-	return (sqrtf(v.x * v.x + v.y * v.y + v.z * v.z));
+	vec[X] = powf(vec[X], exp);
+	vec[Y] = powf(vec[Y], exp);
+	vec[Z] = powf(vec[Z], exp);
+	vec[W] = powf(vec[W], exp);
+	return (vec);
+}
+
+t_vec3f	vec3f_less_than(t_vec3f vec, float value)
+{
+	vec[X] = vec[X] < value ? vec[X] : value;
+	vec[Y] = vec[Y] < value ? vec[Y] : value;
+	vec[Z] = vec[Z] < value ? vec[Z] : value;
+	vec[W] = vec[W] < value ? vec[W] : value;
+	return (vec);
+}
+
+float vec3f_distance(t_vec3f point1, t_vec3f point2)
+{
+	const t_vec3f v = point2 - point1;
+
+	return (sqrtf(v[X] * v[X] + v[Y] * v[Y] + v[Z] * v[Z]));
 }
 
 
-t_vec3		vec3_div(t_vec3 a, t_vec3 b)
+t_vec3f	vec3f_reflect(t_vec3f v, t_vec3f n)
 {
-	return ((t_vec3){a.x / b.x, a.y / b.y, a.z / b.z});
+	return (v - (n * 2.0f * vec3f_dot(v, n)));
 }
 
-t_vec3		vec3_divf(t_vec3 a, float b)
+t_vec3f	vec3f_lerp(const t_vec3f vec1, const t_vec3f vec2, const float t)
 {
-	float f = sqrtf(b);
-	return ((t_vec3){a.x / b, a.y / b, a.z / b});
+	const t_vec3f	result = (1.0f - t) * vec1 + t * vec2;
+
+	return (result);
+}
+
+t_vec3f	vec3f_exp(t_vec3f v)
+{
+	return ((t_vec3f){expf(v[X]), expf(v[Y]), expf(v[Z]), 0.0f});
+}
+
+
+t_vec3f	vec3f_refract(t_vec3f incident, t_vec3f normal, float eta)
+{
+	t_vec3f out;
+	float N_dot_I = vec3f_dot(normal, incident);
+	float k = 1.f - eta * eta * (1.f - N_dot_I * N_dot_I);
+	if (k < 0.f)
+		out = (t_vec3f){0.f, 0.f, 0.f, 0.0f};
+	else
+		out = eta * incident - (eta * N_dot_I + sqrtf(k)) * normal;
+
+	return (out);
+}
+
+t_vec3f	vec3f_to_vec4f(t_vec3f v, float f)
+{
+	return ((t_vec3f){v[X], v[Y], v[Z], f});
 }

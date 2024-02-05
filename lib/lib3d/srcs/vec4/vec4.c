@@ -3,58 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   vec4.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/15 00:08:45 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/02/04 16:21:37 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib3d.h"
-
-t_vec4	vec4_new(float x, float y, float z, float w)
-{
-	return ((t_vec4){x, y, z, w});
-}
-
-t_vec4	vec4_mul(t_vec4 v1, t_vec4 v2)
-{
-	return ((t_vec4){v1.x * v2.x, v1.y * v2.y, v1.z * v2.z, v1.w * v2.w});
-}
-
-t_vec4	vec4_mulf(t_vec4 v, float scalar)
-{
-	return ((t_vec4){v.x * scalar, v.y * scalar, v.z * scalar, v.w * scalar});
-}
-
-
-t_vec4	vec4_add(t_vec4 v1, t_vec4 v2)
-{
-	return ((t_vec4){v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w});
-}
-
-float	vec4_length(t_vec4 v)
-{
-	return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w);
-}
-
-t_vec4	vec4_divf(t_vec4 v, float scalar)
-{
-	return ((t_vec4){v.x / scalar, v.y / scalar, v.z / scalar, v.w / scalar});
-}
-
-t_vec4	vec4_normalize(t_vec4 v)
-{
-	float length = vec4_length(v);
-	if (length > 0.0f) {
-		float invLength = 1.0f / length;
-		v.x *= invLength;
-		v.y *= invLength;
-		v.z *= invLength;
-		v.w *= invLength;
-	}
-	return v;
-}
 
 float	vec4f_length(t_vec4f v)
 {
@@ -74,40 +30,33 @@ t_vec4f vec4f_normalize(t_vec4f v)
 	return v;
 }
 
-
-// t_vec4	vec4_clamp(t_vec4 v1, float min, float max)
-// {
-// 	return ((t_vec4){fminf(fmaxf(v1.x, min), max), fminf(fmaxf(v1.y, min), max), fminf(fmaxf(v1.z, min), max), fminf(fmaxf(v1.w, min), max)});
-// }
-
-// t_vec4 vec4_clamp(t_vec4 v, float min, float max)
-// {
-// 	t_vec4 res;
-
-// 	res.x = fminf(fmaxf(v.x, min), max);
-// 	res.y = fminf(fmaxf(v.y, min), max);
-// 	res.z = fminf(fmaxf(v.z, min), max);
-// 	res.w = fminf(fmaxf(v.w, min), max);
-// 	return (res);
-// }
-
-t_vec4 vec4_clamp(t_vec4 v, float min, float max)
+t_vec4f	vec4f_clamp(t_vec4f vec, float min, float max)
 {
-	if (v.x < min)
-		v.x = min;
-	else if (v.x > max)
-		v.x = max;
-	if (v.y < min)
-		v.y = min;
-	else if (v.y > max)
-		v.y = max;
-	if (v.z < min)
-		v.z = min;
-	else if (v.z > max)
-		v.z = max;
-	if (v.w < min)
-		v.w = min;
-	else if (v.w > max)
-		v.w = max;
-	return (v);
+	vec[X] = fmaxf(min, fminf(max, vec[X]));
+	vec[Y] = fmaxf(min, fminf(max, vec[Y]));
+	vec[Z] = fmaxf(min, fminf(max, vec[Z]));
+	vec[W] = fmaxf(min, fminf(max, vec[W]));
+	return (vec);
+}
+
+t_vec4f LessThan_vec4f(t_vec4f v, t_vec4f threshold)
+{
+	t_vec4f result;
+
+	result[X] = v[X] < threshold[X] ? 1.0f : 0.0f;
+	result[Y] = v[Y] < threshold[Y] ? 1.0f : 0.0f;
+	result[Z] = v[Z] < threshold[Z] ? 1.0f : 0.0f;
+	result[W] = v[W] < threshold[W] ? 1.0f : 0.0f;
+	return result;
+}
+
+t_vec4f mix_vec4f(t_vec4f x, t_vec4f y, t_vec4f mask)
+{
+	t_vec4f result;
+
+	result[X] = mask[X] * y[X] + (1.0f - mask[X]) * x[X];
+	result[Y] = mask[Y] * y[Y] + (1.0f - mask[Y]) * x[Y];
+	result[Z] = mask[Z] * y[Z] + (1.0f - mask[Z]) * x[Z];
+	result[W] = mask[W] * y[W] + (1.0f - mask[W]) * x[W];
+	return result;
 }

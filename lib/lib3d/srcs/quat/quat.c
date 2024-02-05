@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quat.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/17 21:23:21 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/02/02 19:21:35 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,6 @@
 t_quat	quat_new(float x, float y, float z, float w)
 {
 	return ((t_quat){x, y, z, w});
-}
-
-t_quat	quat_angle_axis(float angle, t_vec3 axis)
-{
-	t_quat	result;
-
-	float halfAngle = angle * 0.5f;
-	float sinHalfAngle = sinf(halfAngle);
-	result.x = axis.x * sinHalfAngle;
-	result.y = axis.y * sinHalfAngle;
-	result.z = axis.z * sinHalfAngle;
-	result.w = cosf(halfAngle);
-	return (result);
 }
 
 t_quat	quat_angle_axis_f(float angle, t_vec3f axis)
@@ -74,33 +61,6 @@ t_quat quat_normalize(t_quat q)
 
 
 
-
-
-
-
-
-
-
-
-
-t_vec3 quat_rotate(t_quat q, t_vec3 v) {
-    t_vec3 result;
-    float qxx = q.x * q.x;
-    float qyy = q.y * q.y;
-    float qzz = q.z * q.z;
-    float qxz = q.x * q.z;
-    float qxy = q.x * q.y;
-    float qyz = q.y * q.z;
-    float qwx = q.w * q.x;
-    float qwy = q.w * q.y;
-    float qwz = q.w * q.z;
-
-    result.x = (1.0f - 2.0f * (qyy + qzz)) * v.x + (2.0f * (qxy - qwz)) * v.y + (2.0f * (qxz + qwy)) * v.z;
-    result.y = (2.0f * (qxy + qwz)) * v.x + (1.0f - 2.0f * (qxx + qzz)) * v.y + (2.0f * (qyz - qwx)) * v.z;
-    result.z = (2.0f * (qxz - qwy)) * v.x + (2.0f * (qyz + qwx)) * v.y + (1.0f - 2.0f * (qxx + qyy)) * v.z;
-
-    return result;
-}
 
 t_vec3f quat_rotate_f(t_quat q, t_vec3f v)
 {
