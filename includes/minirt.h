@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/01/26 17:57:31 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/05 02:37:33 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,8 @@
 
 
 float		randomFloat(uint32_t *state);
-t_vec2		random_point_in_circle(uint32_t *state);
-uint32_t	vec4_to_color(t_vec4 c);
-t_vec3		random_direction(uint32_t *state);
+// t_vec2		random_point_in_circle(uint32_t *state);
+// t_vec3		random_direction(uint32_t *state);
 double		time_delta(double prev_frame);
 
 
@@ -62,14 +61,14 @@ void	recalculated_projection(t_data *d);
 void	recalculat_ray_directions(t_data *d);
 
 
-float	aabb_intersection(t_ray ray, t_aabb aabb);
+// float	aabb_intersection(t_ray ray, t_aabb aabb);
 
 
 
-void	init_scene(t_scene *scene);
+// void	init_scene(t_scene *scene);
 
 
-t_bvh_node	*build_bvh_sphere(t_sphere *spheres, uint32_t start, uint32_t end, uint32_t max_depth);
+// t_bvh_node	*build_bvh_sphere(t_sphere *spheres, uint32_t start, uint32_t end, uint32_t max_depth);
 
 
 
@@ -201,5 +200,21 @@ bool	print_warning(const char *msg);
 //? cleanup.c
 void	cleanup_scene(t_scene *scene);
 void	free_all_data(t_data *data);
+
+
+
+float	fresnel_reflect_amount(float n1, float n2, float cosx, float f0);
+
+float	get_specular_chance(t_vec3f ray_dir, t_hitinfo *hitinfo);
+void	calc_ray(t_rayf *ray, t_hitinfo *hitinfo, float do_specular, \
+			float do_refraction, uint32_t *rngState);
+// specular_chance = FresnelReflectAmount(
+// 	hitinfo->inside ? hitinfo->material.ior : 1.0f, 
+// 	!hitinfo->inside ? hitinfo->material.ior : 1.0f,
+// 	ray[0][DIR], hitinfo->normal, hitinfo->material.specular, 1.0f);
+void	update_ray(t_rayf *ray, t_hitinfo *hitinfo, uint32_t *rngState, \
+					t_vec3f *ray_color);
+
+float	fresnel_reflect_amount(float n1, float n2, float cosx, float f0);
 
 #endif

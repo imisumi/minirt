@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/26 18:04:27 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/04 19:20:57 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	cleanup_scene(t_scene *scene)
 {
 	vec_free(&scene->spheres);
 	vec_free(&scene->inv_planes);
-	vec_free(&scene->cylinders);
+	// vec_free(&scene->cylinders);
 	vec_free(&scene->point_lights);
 }
 
@@ -64,7 +64,7 @@ void	free_all_data(t_data *data)
 	}
 	vec_free(&data->scene.tri_meshes);
 	vec_free(&data->scene.inv_planes);
-	vec_free(&data->scene.cylinders);
+	// vec_free(&data->scene.cylinders);
 	vec_free(&data->scene.point_lights);
 	free(data->scene.hdri.rgba);
 }

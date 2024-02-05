@@ -1,0 +1,4 @@
+C  0,0,2   0,0,-1   60
+A  .1   255,255,255
+#?   position   diameter   color          roughness   specular   specular_color   ior   refraction   refraction_rougness   refraction_color   emission_strength
+sp   0,0,-1.5      1.3          0,0,0      0.0         0.01        255,255,255     1.4  0.0          0.0                   0,0,0             0.0

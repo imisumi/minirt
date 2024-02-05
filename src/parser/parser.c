@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/20 14:58:09 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/04 19:20:44 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	init_scene_vec(t_scene *scene)
 {
 	vec_init(&scene->spheres, 1, sizeof(t_sphere));
 	vec_init(&scene->inv_planes, 8, sizeof(t_inv_plane));
-	vec_init(&scene->cylinders, 8, sizeof(t_cylinder));
+	// vec_init(&scene->cylinders, 8, sizeof(t_cylinder));
 	vec_init(&scene->point_lights, 8, sizeof(t_point_light));
 	vec_init(&scene->tri_meshes, 8, sizeof(t_tri_mesh));
 	// vec_clear(&scene->spheres);

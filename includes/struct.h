@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/26 17:47:47 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/04 19:19:18 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ typedef struct s_barycentric
 
 typedef struct
 {
-	t_vec3 position; // Position of the light source
-	t_vec3 color;    // Color of the light
+	// t_vec3 position; // Position of the light source
+	// t_vec3 color;    // Color of the light
 	float intensity; // Intensity of the light
 
 	// t_vec3f	position_f;
@@ -163,8 +163,8 @@ typedef struct s_material
 
 typedef struct s_aabb
 {
-	t_vec3	min;
-	t_vec3	max;
+	// t_vec3	min;
+	// t_vec3	max;
 
 	t_vec3f	min_f;
 	t_vec3f	max_f;
@@ -209,7 +209,7 @@ typedef struct s_tri_mesh
 
 typedef struct s_sphere
 {
-	t_vec3		position;
+	// t_vec3		position;
 	t_vec3f		pos_f;
 	// t_vec3f		position;
 	
@@ -226,14 +226,14 @@ typedef struct s_inv_plane
 	t_material	material;
 }	t_inv_plane;
 
-typedef struct s_cylinder
-{
-	t_vec3		position;
-	t_vec3		normal;
-	float		radius;
-	float		height;
-	t_material	material;
-}	t_cylinder;
+// typedef struct s_cylinder
+// {
+// 	t_vec3		position;
+// 	t_vec3		normal;
+// 	float		radius;
+// 	float		height;
+// 	t_material	material;
+// }	t_cylinder;
 
 // typedef struct s_tri_mesh
 // {
@@ -278,7 +278,7 @@ typedef struct s_scene
 	
 	t_inv_plane	*inv_planes;
 
-	t_cylinder	*cylinders;
+	// t_cylinder	*cylinders;
 
 
 	t_point_light	*point_lights;

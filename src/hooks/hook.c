@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:23:41 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/15 14:53:45 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/04 19:20:37 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,28 @@
 uint32_t	global_frame = 1;
 
 
-t_vec3	default_sky(t_vec3 direction, t_scene scene)
-{
-	t_vec3	sky;
-	float	t;
+// t_vec3	default_sky(t_vec3 direction, t_scene scene)
+// {
+// 	t_vec3	sky;
+// 	float	t;
 
-	t = 0.5f * (vec3_normalize(direction).y + 1.0f);
-	// sky = vec3_add(vec3_mulf((t_vec3){1.0f, 1.0f, 1.0f}, 1.0f - t), \
-	// 				vec3_mulf((t_vec3){0.5f, 0.7f, 1.0f}, t));
-	sky = vec3_add(vec3_mulf((t_vec3){0.5f, 0.7f, 1.0f}, 1.0f - t), \
-					vec3_mulf((t_vec3){1.0f, 1.0f, 1.0f}, t));
-	return (sky);
-}
+// 	t = 0.5f * (vec3_normalize(direction).y + 1.0f);
+// 	// sky = vec3_add(vec3_mulf((t_vec3){1.0f, 1.0f, 1.0f}, 1.0f - t), \
+// 	// 				vec3_mulf((t_vec3){0.5f, 0.7f, 1.0f}, t));
+// 	sky = vec3_add(vec3_mulf((t_vec3){0.5f, 0.7f, 1.0f}, 1.0f - t), \
+// 					vec3_mulf((t_vec3){1.0f, 1.0f, 1.0f}, t));
+// 	return (sky);
+// }
 
-t_vec3	calc_onmi_light(t_vec3 point, t_vec3 normal, t_omnidirectional_light light)
-{
-	t_vec3 lightDirection = vec3_normalize(vec3_sub(light.position, point));
+// t_vec3	calc_onmi_light(t_vec3 point, t_vec3 normal, t_omnidirectional_light light)
+// {
+// 	t_vec3 lightDirection = vec3_normalize(vec3_sub(light.position, point));
 
-	float diffuse_factor = vec3_dot(normal, lightDirection);
-	diffuse_factor = fmaxf(diffuse_factor, 0.0f);
-	t_vec3 diffuse = vec3_mulf(light.color, diffuse_factor * light.intensity);
-	return (diffuse);
-}
+// 	float diffuse_factor = vec3_dot(normal, lightDirection);
+// 	diffuse_factor = fmaxf(diffuse_factor, 0.0f);
+// 	t_vec3 diffuse = vec3_mulf(light.color, diffuse_factor * light.intensity);
+// 	return (diffuse);
+// }
 
 // t_vec3	calc_dls(t_hitinfo hitinfo)
 // {
@@ -81,12 +81,12 @@ t_vec3	calc_onmi_light(t_vec3 point, t_vec3 normal, t_omnidirectional_light ligh
 // 	return vec3f_dot(v1, v2) / (vec3f_length(v1) * vec3f_length(v2));
 // }
 
-float calculateFalloff(t_vec3 lightPos, t_vec3 surfacePoint) {
-    float distanceSquared = powf(lightPos.x - surfacePoint.x, 2) +
-                            powf(lightPos.y - surfacePoint.y, 2) +
-                            powf(lightPos.z - surfacePoint.z, 2);
-    return 1.0f / powf(distanceSquared, 2.0f);
-}
+// float calculateFalloff(t_vec3 lightPos, t_vec3 surfacePoint) {
+//     float distanceSquared = powf(lightPos.x - surfacePoint.x, 2) +
+//                             powf(lightPos.y - surfacePoint.y, 2) +
+//                             powf(lightPos.z - surfacePoint.z, 2);
+//     return 1.0f / powf(distanceSquared, 2.0f);
+// }
 
 
 //! goood
