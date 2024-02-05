@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/02/05 02:37:33 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/05 14:07:25 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_vec3f	default_skyf(t_vec3f direction, t_scene scene);
 t_vec3f omni_dir_light_f(t_rayf ray, t_scene *scene, t_hitinfo closest_hit);
 
 
-t_vec3f	texture(t_vec3f normal, t_hdri hdri);
+t_vec3f	texture(t_vec3f normal, t_hdri *hdri);
 
 
 

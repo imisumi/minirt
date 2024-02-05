@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/05 03:00:49 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/05 14:07:38 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_vec4f	apply_enviorment(t_rayf ray, t_scene *scene, t_ray_utils *u)
 	if (!RENDER_SKYBOX && u->bounce == 0)
 		return ((t_vec4f){0.0f, 0.0f, 0.0f, 1.0f});
 	if (BONUS && scene->hdri.rgba != NULL)
-		sky = texture(ray[DIR], scene->hdri);
+		sky = texture(ray[DIR], &scene->hdri);
 	else if (scene->ambient_light > 0.0f)
 		sky = scene->ambient_color * scene->ambient_light;
 	else

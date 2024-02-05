@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+         #
+#    By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#              #
-#    Updated: 2024/02/04 19:39:23 by imisumi-wsl      ###   ########.fr        #
+#    Updated: 2024/02/05 14:52:22 by imisumi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:=	lib3d.a
 CC			:=	gcc
-CFLAGS 		:=	-g -O2
+CFLAGS 		:=	-g -O2 #-pg
 LFLAGS		:=	-lm
 
 HEADERS		:=	./includes/lib3d.h

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/05 02:47:22 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/05 14:11:34 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,29 +130,28 @@ t_vec3f omni_dir_light_f(t_rayf ray, t_scene *scene, t_hitinfo closest_hit)
 	return (diffuse_contribution_f);
 }
 
-t_vec3f	sampleEXRTexture(float u, float v, t_hdri hdri)
+t_vec3f	sampleEXRTexture(float u, float v, t_hdri *hdri)
 {
 	t_vec3f	color;
-	int width = hdri.width;
-	int height = hdri.height;
-	
+
 	// Clamp texture coordinates to the valid range [0, 1]
 	u = fmax(0.0f, fmin(1.0f, u));
 	v = fmax(0.0f, fmin(1.0f, v));
 	
 	// Calculate pixel coordinates in the EXR texture
-	int x = u * (width - 1);
-	int y = v * (height - 1);
+	int x = u * (hdri->width - 1);
+	int y = v * (hdri->height - 1);
 	
-	int	pixelIndex = (x + (height - 1 - y) * width) * 4;
+	//TODO use num chanels instead of 4
+	int	pixelIndex = (x + (hdri->height - 1 - y) * hdri->width) * 4;
 
-	color[X] = hdri.rgba[pixelIndex + 0];
-	color[Y] = hdri.rgba[pixelIndex + 1];
-	color[Z] = hdri.rgba[pixelIndex + 2];
+	color[X] = hdri->rgba[pixelIndex];
+	color[Y] = hdri->rgba[pixelIndex + 1];
+	color[Z] = hdri->rgba[pixelIndex + 2];
 	return (color);
 }
 
-t_vec3f	texture(t_vec3f normal, t_hdri hdri)
+t_vec3f	texture(t_vec3f normal, t_hdri *hdri)
 {
 	const float		phi = atan2(normal[Z], normal[X]);
 	const float		theta = asinf(normal[Y]);
