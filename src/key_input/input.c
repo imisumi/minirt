@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichiro <ichiro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 20:36:00 by ichiro            #+#    #+#             */
-/*   Updated: 2023/12/17 21:49:57 by ichiro           ###   ########.fr       */
+/*   Updated: 2024/02/06 16:04:22 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void	movement(t_data *data)
 		data->scene.camera.prev_mouse_pos[Y] = -1;
 		data->scene.camera.mouse_pos[X] = 0;
 		data->scene.camera.mouse_pos[Y] = 0;
+		//TODO check this
 		data->utils.prev_frame = glfwGetTime();
 		return ;
 	}

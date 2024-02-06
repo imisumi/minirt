@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/04 19:19:18 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/06 16:15:21 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,9 +191,9 @@ typedef uint32_t	t_vec3ui[3];
 typedef struct s_tri_mesh
 {
 	// t_tri			*tris;
-	t_vec3ui		*v_idx;
-	t_vec3ui		*vt_idx;
-	uint32_t		*mat_idx;
+	t_vec3ui		*v_idx;		// vertex index
+	t_vec3ui		*vt_idx;	// texture index
+	uint32_t		*mat_idx;	// material index
 	// float			*vertices;
 
 	// t_vec3ui		*v_idx;
@@ -219,31 +219,10 @@ typedef struct s_sphere
 
 typedef struct s_inv_plane
 {
-	// t_vec3		position;
-	// t_vec3		normal;
 	t_vec3f		position;
 	t_vec3f		normal;
 	t_material	material;
 }	t_inv_plane;
-
-// typedef struct s_cylinder
-// {
-// 	t_vec3		position;
-// 	t_vec3		normal;
-// 	float		radius;
-// 	float		height;
-// 	t_material	material;
-// }	t_cylinder;
-
-// typedef struct s_tri_mesh
-// {
-// 	t_vec3f		*vertices;
-// 	t_vec3f		*normals;
-// 	t_vec2f		*uvs;
-// 	t_vec3f		*colors;
-// 	t_vec3f		*vert_indices;
-
-// }	t_tri_mesh;
 
 typedef struct s_point_light
 {

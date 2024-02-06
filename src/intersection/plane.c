@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:36:28 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/24 00:32:38 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/06 16:18:37 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	inv_plane_intersection_f(t_rayf ray, t_scene *s, t_hitinfo *hitinfo)
 		{
 			offset_origin = s->inv_planes[i].position - ray[ORIGIN];
 			t = vec3f_dot(offset_origin, s->inv_planes[i].normal) / demon;
-			if (t >= 0.0f && t < hitinfo->distance)
+			if (t >= EPSILON && t < hitinfo->distance)
 			{
 				hitinfo->hit = true;
 				hitinfo->distance = t;
