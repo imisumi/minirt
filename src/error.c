@@ -33,12 +33,26 @@ bool	print_error(const char *msg)
 	[MALLOC_BVH] = "Malloc error in bvh",
 	};
 
-	if (msg && *error() == NO_ERROR)
-		printf("%s\n", msg);
+	if (*error() == NO_ERROR)
+	{
+		if (msg)
+			printf("%s\n", msg);
+	}
 	else
-		printf("%s: ", msg);
-	if (*error() != NO_ERROR)
-		printf("%s\n", error_strings[*error()]);
+	{
+		if (msg)
+			printf("%s: %s\n", msg, error_strings[*error()]);
+		else
+			printf("%s\n", error_strings[*error()]);
+	}
+		
+
+	// if (msg && *error() == NO_ERROR)
+	// 	printf("%s\n", msg);
+	// else
+	// 	printf("%s: ", msg);
+	// if (*error() != NO_ERROR)
+	// 	printf("%s\n", error_strings[*error()]);
 
 	return (false);
 }
@@ -47,4 +61,11 @@ bool	print_warning(const char *msg)
 {
 	printf("Warning: %s\n", msg);
 	return (true);
+}
+
+void	exit_error(t_error type, const char *msg)
+{
+	*error() = type;
+	print_error(msg);
+	exit(type);
 }

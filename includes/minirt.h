@@ -196,6 +196,7 @@ bool	run_mlx(t_data *data);
 t_error	*error(void);
 bool	print_error(const char *msg);
 bool	print_warning(const char *msg);
+void	exit_error(enum error, const char *msg);
 
 //? cleanup.c
 void	cleanup_scene(t_scene *scene);
