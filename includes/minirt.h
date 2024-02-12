@@ -6,7 +6,7 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/02/05 14:07:25 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/12 16:54:01 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # include "darray.h"
 
 
-float		randomFloat(uint32_t *state);
+float		random_float(uint32_t *state);
 // t_vec2		random_point_in_circle(uint32_t *state);
 // t_vec3		random_direction(uint32_t *state);
 double		time_delta(double prev_frame);
@@ -72,13 +72,13 @@ void	recalculat_ray_directions(t_data *d);
 
 
 
-void	resize_window(void *param);
+void	resize_window(t_data *data);
 
 
 
 
 //? thread.c
-bool	create_thread(t_data *data);
+void	create_threads(t_data *data);
 
 //? hook
 void	*render(void *arg);
@@ -93,7 +93,8 @@ bool	inv_plane_intersection_f(t_rayf ray, t_scene *s, t_hitinfo *hitinfo);
 uint32_t	vec4f_to_color(t_vec4f c);
 bool	sphere_intersection_f(t_rayf ray, t_scene *s, t_hitinfo *hitinfo);
 bool	single_sphere_intersection_f(t_rayf ray, t_sphere *sphere, t_hitinfo *hitinfo);
-uint32_t	get_rngstate(uint32_t width, uint32_t height, uint32_t x, uint32_t y);
+// uint32_t	get_rngstate(uint32_t width, uint32_t height, uint32_t x, uint32_t y);
+uint32_t	get_rngstate(uint32_t width, uint32_t height, uint32_t xy[2], uint32_t frame);
 t_bvh_node	*build_bvh_sphere_f(t_sphere *spheres, uint32_t start, uint32_t end, uint32_t max_depth);
 t_aabb		calculate_sphere_aabb_f(t_sphere *spheres, uint32_t start, uint32_t end);
 float		aabb_intersection_f(t_rayf ray, t_aabb aabb);
@@ -217,5 +218,17 @@ void	update_ray(t_rayf *ray, t_hitinfo *hitinfo, uint32_t *rngState, \
 					t_vec3f *ray_color);
 
 float	fresnel_reflect_amount(float n1, float n2, float cosx, float f0);
+
+
+void	handle_input(t_data *d);
+bool	render_zone(t_data *data);
+
+
+
+float calculate_falloff(t_vec3f lightPos, t_vec3f surfacePoint);
+bool	simple_sphere_intersection_f(t_rayf ray, t_sphere *sphere, t_hitinfo *hitinfo);
+float vec3_cosine_angle(t_vec3f v1, t_vec3f v2);
+t_hitinfo	new_hitinfo(void);
+t_vec3f omni_dir_light_f(t_rayf ray, t_scene *scene, t_hitinfo closest_hit);
 
 #endif

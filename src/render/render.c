@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/10 17:17:36 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/12 16:48:52 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,6 @@ bool	object_intersection(t_rayf ray, t_scene *scene, t_hitinfo *hitinfo)
 		tri_mesh_intersection(ray, scene, hitinfo);
 	return (hitinfo->hit);
 }
-
-typedef struct s_ray_utils
-{
-	uint32_t	bounce;
-	t_vec3f		incomming_light;
-	t_vec3f		ray_color;
-	t_vec3f		emitted_light;
-	t_vec3f		ray[2];
-	t_hitinfo	hitinfo;
-	float		p;
-}	t_ray_utils;
 
 t_vec4f	apply_enviorment(t_rayf ray, t_scene *scene, t_ray_utils *u)
 {
@@ -80,7 +69,7 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene *scene, uint32_t *rngState)
 				u.hitinfo.distance);
 		update_ray(&u.ray, &u.hitinfo, rngState, &u.ray_color);
 		u.p = fmaxf(fmaxf(u.ray_color[X], u.ray_color[Y]), u.ray_color[Z]);
-		if (randomFloat(rngState) > u.p)
+		if (random_float(rngState) > u.p)
 			break ;
 		u.ray_color *= (1.0f / u.p);
 		u.emitted_light = omni_dir_light_f(u.ray, scene, u.hitinfo);
@@ -119,16 +108,6 @@ void	render_pixel(t_data *data, uint32_t x, uint32_t y)
 	}
 }
 
-typedef struct s_render_utils
-{
-	t_data		*data;
-	uint32_t	x;
-	uint32_t	y;
-	uint32_t	rng_state;
-	t_vec4f		color;
-	t_vec3f		dir;
-}	t_render_utils;
-
 void	*render(void *arg)
 {
 	const t_thread	*thread = arg;
@@ -142,14 +121,14 @@ void	*render(void *arg)
 		while (u.x < thread->x_end)
 		{
 			u.rng_state = get_rngstate(u.data->utils.width, \
-				u.data->utils.height, u.x, u.y);
+				u.data->utils.height, (uint32_t[2]){u.x, u.y}, \
+				u.data->utils.global_frame);
 			u.dir = u.data->scene.camera.ray_dir[u.x + u.y * \
 				u.data->utils.width];
 			if (AA)
 				u.dir = aa_update_dir(u.data, &u.rng_state, u.x, u.y);
-			u.color = per_pixel(u.dir, &u.data->scene, &u.rng_state);
 			u.data->utils.accumulated_data[u.x + u.y * u.data->utils.width] \
-				+= u.color;
+				+= per_pixel(u.dir, &u.data->scene, &u.rng_state);
 			render_pixel(u.data, u.x, u.y);
 			u.x++;
 		}
@@ -160,4 +139,3 @@ void	*render(void *arg)
 
 //? with rayprobability idk if needed 
 // t_vec4f	per_pixel(t_vec3f dir, t_scene *scene, uint32_t *rngState)
-

@@ -6,7 +6,7 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/06 16:15:21 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/12 16:31:33 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,14 @@ typedef enum error
 	MLX_IMG_TO_WIN,
 	MAP_INV_TYPE,
 	MALLOC_BVH,
-	ERROR_COUNT
+	MALLOC,
+	THREAD_CREATE,
+	THREAD_JOIN,
+	ERROR_COUNT,
 }	t_error;
+
+
+
 
 // typedef enum error
 // {
@@ -131,6 +137,7 @@ typedef struct s_utils
 	t_render_block		blocks[THREADS];
 	pthread_mutex_t		mutex;
 	uint32_t			accumulated_frames;
+	uint32_t			global_frame;
 
 	t_vec4f				*accumulated_data;
 	double				prev_frame;
@@ -321,5 +328,30 @@ typedef struct s_hitinfo
 	// t_vec3		color;
 	
 }	t_hitinfo;
+
+//? helper structs
+typedef struct s_ray_utils
+{
+	uint32_t	bounce;
+	t_vec3f		incomming_light;
+	t_vec3f		ray_color;
+	t_vec3f		emitted_light;
+	t_vec3f		ray[2];
+	t_hitinfo	hitinfo;
+	float		p;
+}	t_ray_utils;
+
+typedef struct s_render_utils
+{
+	t_data		*data;
+	uint32_t	x;
+	uint32_t	y;
+	uint32_t	rng_state;
+	t_vec4f		color;
+	t_vec3f		dir;
+
+}	t_render_utils;
+
+//?
 
 #endif

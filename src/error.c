@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/26 17:39:52 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/12 15:22:11 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ bool	print_error(const char *msg)
 	[MLX_IMG_TO_WIN] = "Mlx image to window error",
 	[MAP_INV_TYPE] = "Invalid type in map",
 	[MALLOC_BVH] = "Malloc error in bvh",
+	[MALLOC] = "Malloc failure",
+	[THREAD_CREATE] = "Thread creation error",
+	[THREAD_JOIN] = "Thread join error",
 	};
 
 	if (*error() == NO_ERROR)

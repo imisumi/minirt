@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/04 19:20:06 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/12 16:28:18 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 // extern uint32_t accumulated_frames;
 
-extern int	total_frames;
+// extern int	total_frames;
 
-extern uint32_t	global_frame;
+// extern uint32_t	global_frame;
 
 
 // void recalculat_ray_directions(t_data *d)

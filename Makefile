@@ -6,7 +6,7 @@
 #    By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2024/02/05 14:32:05 by imisumi          ###   ########.fr        #
+#    Updated: 2024/02/12 16:49:48 by imisumi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,7 +95,7 @@ $(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D) $(TINYEXR)
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@ 
-	@echo "$(CYAN)[Compiled $@]$(NC)"
+	@echo "$(CYAN)[Created $@]$(NC)"
 
 $(MLX):
 	git submodule update --init --recursive lib/MLX42

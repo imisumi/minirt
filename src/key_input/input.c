@@ -6,19 +6,19 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 20:36:00 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/06 16:04:22 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/12 15:13:23 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	update_cam_pos(t_data *data, t_vec3f v, bool *moved)
+static void	update_cam_pos(t_data *data, t_vec3f v, bool *moved)
 {
 	data->scene.camera.position += v;
 	*moved = true;
 }
 
-void	detect_cam_movement(t_data *data, t_vec3f right_dir, bool *moved)
+static void	detect_cam_movement(t_data *data, t_vec3f right_dir, bool *moved)
 {
 	const float		speed = time_delta(data->utils.prev_frame) * 10.0f;
 	const t_vec3f	up_direction = {0.0f, 1.0f, 0.0f, 0.0f};
@@ -38,7 +38,8 @@ void	detect_cam_movement(t_data *data, t_vec3f right_dir, bool *moved)
 		update_cam_pos(data, -up_direction * speed, moved);
 }
 
-void	calculate_new_cam_dir(t_data *data, t_vec3f up_dir, t_vec3f right_dir)
+static void	calculate_new_cam_dir(t_data *data, t_vec3f up_dir, \
+	t_vec3f right_dir)
 {
 	const float		pitch = data->scene.camera.mouse_delta[Y] * -0.01f;
 	const float		yaw = data->scene.camera.mouse_delta[X] * 0.01f;
@@ -52,7 +53,7 @@ void	calculate_new_cam_dir(t_data *data, t_vec3f up_dir, t_vec3f right_dir)
 	data->scene.camera.mouse_delta[Y] = 0;
 }
 
-void	detect_cam_rotation(t_data *data, bool *rotated, t_vec3f right_dir)
+static void	detect_cam_rotation(t_data *data, bool *rotated, t_vec3f right_dir)
 {
 	int				x;
 	int				y;
@@ -99,20 +100,4 @@ void	handle_input(t_data *d)
 		if (rotated)
 			recalculat_ray_directions(d);
 	}
-}
-
-void	movement(t_data *data)
-{
-	if (!mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_RIGHT))
-	{
-		data->scene.camera.mouse_lock = false;
-		data->scene.camera.prev_mouse_pos[X] = -1;
-		data->scene.camera.prev_mouse_pos[Y] = -1;
-		data->scene.camera.mouse_pos[X] = 0;
-		data->scene.camera.mouse_pos[Y] = 0;
-		//TODO check this
-		data->utils.prev_frame = glfwGetTime();
-		return ;
-	}
-	handle_input(data);
 }

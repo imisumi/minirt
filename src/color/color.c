@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:03:04 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/04 16:22:14 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/12 15:09:58 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-uint32_t ft_pixel(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+uint32_t	ft_pixel(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
-
 
 uint32_t	vec4f_to_color(t_vec4f c)
 {
@@ -29,8 +28,7 @@ uint32_t	vec4f_to_color(t_vec4f c)
 	return (color);
 }
 
-
-t_vec3f LinearToSRGB(t_vec3f rgb)
+t_vec3f linear_to_srgb(t_vec3f rgb)
 {
 	rgb = vec4f_clamp(rgb, 0.0f, 1.0f);
 
@@ -77,7 +75,7 @@ t_vec4f	ACESFilm(t_vec4f x)
 t_vec4f	vec3f_tone_map(t_vec3f color)
 {
 	color = ACESFilm(color);
-	color = LinearToSRGB(color);
+	color = linear_to_srgb(color);
 	color[W] = 1.0f;
 	return color;
 	float	gamma = 2.2f;

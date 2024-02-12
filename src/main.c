@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/05 03:02:06 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/12 16:21:28 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,18 @@ bool	init_buffers(t_data *data)
 	data->utils.height = HEIGHT;
 	data->utils.accumulated_frames = 1;
 	data->utils.accumulated_data = malloc(sizeof(t_vec4f) * WIDTH * HEIGHT);
-	if (data->utils.accumulated_data == NULL)
-	{
-		free_all_data(data);
-		return (false);
-	}
 	data->scene.camera.ray_target = malloc(sizeof(t_vec4f) * WIDTH * HEIGHT);
-	if (data->scene.camera.ray_target == NULL)
-	{
-		free_all_data(data);
-		return (false);
-	}
 	data->scene.camera.ray_dir = malloc(sizeof(t_vec3f) * WIDTH * HEIGHT);
-	if (data->scene.camera.ray_dir == NULL)
+	if (!data->utils.accumulated_data || !data->scene.camera.ray_target || \
+		!data->scene.camera.ray_dir)
 	{
-		free_all_data(data);
-		return (false);
+		exit_error(MALLOC, "init buffers");
 	}
 	return (true);
 }
 
 bool	init_bvh(t_data *data)
 {
-	// *error() = MALLOC_BVH;
-	// return false;
 	if (!BONUS || !USE_BVH)
 		return (print_warning("to use bvh, define BONUS and USE_BVH"));
 	if (vec_length(&data->scene.spheres) > 0)
@@ -49,18 +37,12 @@ bool	init_bvh(t_data *data)
 		data->scene.bvh_spheres_f = build_bvh_sphere_f(data->scene.spheres, 0, \
 			vec_length(&data->scene.spheres), 1000);
 		if (data->scene.bvh_spheres_f == NULL)
-		{
-			*error() = MALLOC_BVH;
-			return (false);
-		}
+			exit_error(MALLOC, "init bvh spheres");
 	}
 	if (data->scene.num_tri_meshes > 0)
 	{
 		if (init_mesh_bvh(&data->scene) == false)
-		{
-			*error() = MALLOC_BVH;
-			return (false);
-		}
+			exit_error(MALLOC, "init bvh mesh");
 	}
 	return (true);
 }
@@ -84,6 +66,7 @@ int32_t main(int32_t argc, char* argv[])
 {
 	t_data	data;
 
+	data.utils.global_frame = 1;
 	if (valid_input(argc, argv) == false)
 		return (print_error("Error"));
 	*error() = NO_ERROR;
@@ -95,17 +78,7 @@ int32_t main(int32_t argc, char* argv[])
 		free_all_data(&data);
 		return (print_error("Error"));
 	}
-	if (init_bvh(&data) == false)
-	{
-		free_all_data(&data);
-		return (print_error("Error"));
-	}
-	// return (EXIT_SUCCESS);
-	if (*error() == MALLOC_BVH)
-	{
-		free_all_data(&data);
-		return (print_error("Error bvh"));
-	}
+	init_bvh(&data);
 	recalculate_view(&data);
 	recalculated_projection(&data);
 	recalculat_ray_directions(&data);
