@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/05 03:01:20 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/14 04:37:40 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_vec3f	vec3f_to_vec4f(t_vec3f v, float f);
 /*                                    vec4                                    */
 /* ************************************************************************** */
 t_vec4f	vec4f_clamp(t_vec4f vec, float min, float max);
-t_vec4f LessThan_vec4f(t_vec4f v, t_vec4f threshold);
+t_vec4f vec4f_less_than(t_vec4f v, t_vec4f threshold);
 t_vec4f mix_vec4f(t_vec4f x, t_vec4f y, t_vec4f mask);
 
 

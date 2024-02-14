@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/04 16:21:37 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/14 04:37:40 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_vec4f	vec4f_clamp(t_vec4f vec, float min, float max)
 	return (vec);
 }
 
-t_vec4f LessThan_vec4f(t_vec4f v, t_vec4f threshold)
+t_vec4f vec4f_less_than(t_vec4f v, t_vec4f threshold)
 {
 	t_vec4f result;
 
