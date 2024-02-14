@@ -3,56 +3,106 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 16:51:06 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/14 04:34:13 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vec3f omni_dir_light_f(t_rayf ray, t_scene *scene, t_hitinfo closest_hit)
+typedef struct s_light_utils
 {
-	t_sphere sphere;
-	sphere.radius = 0.01f;
-	int	i;
-
+	t_sphere	sphere;
 	t_rayf		shadow_ray;
-	t_vec3f		diffuse_contribution_f;
+	t_vec3f		diffuse_contribution;
 	t_hitinfo	light;
 	t_hitinfo	shadow_hit;
+	int			i;
+}	t_light_utils;
 
-	
-	i = 0;
-	diffuse_contribution_f = (t_vec3f){0.0f, 0.0f, 0.0f, 0.0f};
-	while (i < vec_length(&scene->point_lights))
+static float	vec3_cosine_angle(t_vec3f v1, t_vec3f v2)
+{
+	return (vec3f_dot(v1, v2) / (vec3f_length(v1) * vec3f_length(v2)));
+}
+
+static float	calculate_falloff(t_vec3f light_pos, t_vec3f surface_point)
+{
+	const float	distance_squared = powf(light_pos[X] - surface_point[X], 2) + \
+							powf(light_pos[Y] - surface_point[Y], 2) + \
+							powf(light_pos[Z] - surface_point[Z], 2);
+
+	return (1.0f / powf(distance_squared, 2.0f));
+}
+
+static void	calculate_lighting(t_hitinfo *hitinfo, t_scene *scene, \
+	t_light_utils *u)
+{
+	float		attenuation;
+	float		falloff;
+	float		intensity;
+	const float	distance_to_light = vec3f_distance(hitinfo->position, \
+		u->sphere.pos_f);
+	const float	cosine = vec3_cosine_angle(hitinfo->normal, u->shadow_ray[DIR]);
+
+	if (cosine > 0.0f)
 	{
-		light = new_hitinfo();
-		shadow_hit = new_hitinfo();
-		
-		sphere.pos_f = scene->point_lights[i].position;
-		shadow_ray[ORIGIN] = ray[ORIGIN];
-		shadow_ray[DIR] = vec3f_normalize(sphere.pos_f - closest_hit.position);
-
-		shadow_hit = sphere_bvh_intersection_f(shadow_ray, scene->spheres, shadow_hit, scene->bvh_spheres_f);
-		inv_plane_intersection_f(shadow_ray, scene, &shadow_hit);
-		
-		simple_sphere_intersection_f(shadow_ray, &sphere, &shadow_hit);
-		if (light.distance != shadow_hit.distance && light.distance < shadow_hit.distance)
-		{
-			float	distance_to_light = vec3f_distance(closest_hit.position, sphere.pos_f);
-			float cosine = vec3_cosine_angle(closest_hit.normal, shadow_ray[DIR]);
-			if (cosine > 0.0f)
-			{
-				float attenuation = cosine / (distance_to_light * distance_to_light);
-				float falloff = calculate_falloff(sphere.pos_f, closest_hit.position);
-				float intensity = cosine * attenuation * scene->point_lights[i].intensity;;
-
-				diffuse_contribution_f += (scene->point_lights[i].color * intensity);
-			}
-		}
-		i++;
+		attenuation = cosine / (distance_to_light * distance_to_light);
+		falloff = calculate_falloff(u->sphere.pos_f, hitinfo->position);
+		intensity = cosine * attenuation * scene->point_lights[u->i].intensity;
+		u->diffuse_contribution += (scene->point_lights[u->i].color * \
+			intensity);
 	}
-	return (diffuse_contribution_f);
+}
+
+static bool	simple_sphere_intersection_f(t_rayf ray, t_sphere *sphere, \
+	t_hitinfo *hitinfo, t_hitinfo *light)
+{
+	const t_vec3f	offset_origin = ray[ORIGIN] - sphere->pos_f;
+	const float		a = vec3f_dot(ray[DIR], ray[DIR]);
+	const float		b = 2.0f * vec3f_dot(offset_origin, ray[DIR]);
+	const float		c = vec3f_dot(offset_origin, offset_origin) - \
+		sphere->radius * sphere->radius;
+	float			discriminant;
+
+	discriminant = b * b - 4 * a * c;
+	if (discriminant >= 0.0f)
+	{
+		discriminant = (-b - sqrtf(discriminant)) / (2.0f * a);
+		if (discriminant > EPSILON && discriminant < hitinfo->distance)
+		{
+			light->hit = true;
+			light->distance = discriminant;
+		}
+	}
+	return (light->hit);
+}
+
+t_vec3f	omni_dir_light_f(t_rayf ray, t_scene *scene, t_hitinfo hitinfo)
+{
+	t_light_utils	u;
+
+	ft_memset(&u, 0, sizeof(t_light_utils));
+	u.sphere.radius = 0.01f;
+	while (u.i < vec_length(&scene->point_lights))
+	{
+		u.light = new_hitinfo();
+		u.shadow_hit = new_hitinfo();
+		u.sphere.pos_f = scene->point_lights[u.i].position;
+		u.shadow_ray[ORIGIN] = ray[ORIGIN];
+		u.shadow_ray[DIR] = vec3f_normalize(u.sphere.pos_f - hitinfo.position);
+		u.shadow_hit = sphere_bvh_intersection_f(u.shadow_ray, scene->spheres, \
+			u.shadow_hit, scene->bvh_spheres_f);
+		inv_plane_intersection_f(u.shadow_ray, scene, &u.shadow_hit);
+		simple_sphere_intersection_f(u.shadow_ray, &u.sphere, \
+			&u.shadow_hit, &u.light);
+		if (u.light.distance != u.shadow_hit.distance && \
+			u.light.distance < u.shadow_hit.distance)
+		{
+			calculate_lighting(&hitinfo, scene, &u);
+		}
+		u.i++;
+	}
+	return (u.diffuse_contribution);
 }
