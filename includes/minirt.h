@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/02/12 16:54:01 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/14 04:34:38 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_hitinfo	sphere_bvh_intersection_f(t_rayf ray, t_sphere *spheres, t_hitinfo hit
 t_vec3f	aa_update_dir(t_data *data, uint32_t *rng, uint32_t x, uint32_t y);
 t_vec4f	vec3f_tone_map(t_vec3f color);
 t_vec3f	default_skyf(t_vec3f direction, t_scene scene);
-t_vec3f omni_dir_light_f(t_rayf ray, t_scene *scene, t_hitinfo closest_hit);
+// t_vec3f omni_dir_light_f(t_rayf ray, t_scene *scene, t_hitinfo closest_hit);
 
 
 t_vec3f	texture(t_vec3f normal, t_hdri *hdri);
@@ -225,10 +225,30 @@ bool	render_zone(t_data *data);
 
 
 
-float calculate_falloff(t_vec3f lightPos, t_vec3f surfacePoint);
-bool	simple_sphere_intersection_f(t_rayf ray, t_sphere *sphere, t_hitinfo *hitinfo);
-float vec3_cosine_angle(t_vec3f v1, t_vec3f v2);
+// float calculate_falloff(t_vec3f lightPos, t_vec3f surfacePoint);
+// bool	simple_sphere_intersection_f(t_rayf ray, t_sphere *sphere, t_hitinfo *hitinfo);
+// float vec3_cosine_angle(t_vec3f v1, t_vec3f v2);
 t_hitinfo	new_hitinfo(void);
-t_vec3f omni_dir_light_f(t_rayf ray, t_scene *scene, t_hitinfo closest_hit);
+t_vec3f omni_dir_light_f(t_rayf ray, t_scene *scene, t_hitinfo hitinfo);
+
+
+
+
+
+
+
+
+
+//? tri_utils.c
+
+t_vec3f	get_tri_from_index(t_scene *scene, int index, int face, int id);
+void	set_tri_hitinfo(t_hitinfo *hitinfo, t_rayf ray, float t, const t_vec3f edge[2]);
+void	set_point_and_edge(t_scene *scene, t_vec3f tri[3], int mesh_face[2], t_vec3f edge[2]);
+//
+
+
+//? mesh_intersection.c
+t_hitinfo	mesh_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node, t_scene *scene);
+//?
 
 #endif
