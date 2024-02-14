@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:03:04 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 15:09:58 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/14 04:49:42 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,72 +19,41 @@ uint32_t	ft_pixel(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 
 uint32_t	vec4f_to_color(t_vec4f c)
 {
-	const uint32_t color = ft_pixel(
-		(uint8_t)(c[X] * 255.0),
-		(uint8_t)(c[Y] * 255.0),
-		(uint8_t)(c[Z] * 255.0),
+	const uint32_t	color = ft_pixel(\
+		(uint8_t)(c[X] * 255.0), \
+		(uint8_t)(c[Y] * 255.0), \
+		(uint8_t)(c[Z] * 255.0), \
 		255);
 
 	return (color);
 }
 
-t_vec3f linear_to_srgb(t_vec3f rgb)
+//TODO use num chanels instead of 4
+static t_vec3f	sample_exr_texture(float u, float v, t_hdri *hdri)
 {
-	rgb = vec4f_clamp(rgb, 0.0f, 1.0f);
+	t_vec3f	color;
+	int		x;
+	int		y;
+	int		pixel_index;
 
-	t_vec3f condition = {0.0031308f, 0.0031308f, 0.0031308f};
-	t_vec3f pow_result = vec3f_pow(rgb, 1.0f / 2.4f);
-
-	t_vec3f mix_result = mix_vec4f(
-		pow_result * 1.055f - 0.055f,
-		rgb * 12.92f,
-		LessThan_vec4f(rgb, condition)
-	);
-
-	return mix_result;
+	u = fmax(0.0f, fmin(1.0f, u));
+	v = fmax(0.0f, fmin(1.0f, v));
+	x = u * (hdri->width - 1);
+	y = v * (hdri->height - 1);
+	pixel_index = (x + (hdri->height - 1 - y) * hdri->width) * 4;
+	color[X] = hdri->rgba[pixel_index];
+	color[Y] = hdri->rgba[pixel_index + 1];
+	color[Z] = hdri->rgba[pixel_index + 2];
+	return (color);
 }
 
-t_vec4f	ACESFilm(t_vec4f x)
+t_vec3f	texture(t_vec3f normal, t_hdri *hdri)
 {
-	float a = 2.51f;
-	float b = 0.03f;
-	float c = 2.43f;
-	float d = 0.59f;
-	float e = 0.14f;
+	const float		phi = atan2(normal[Z], normal[X]);
+	const float		theta = asinf(normal[Y]);
+	const float		u = 1.0f - (phi + PI) / TWO_PI;
+	const float		v = (theta + PI / 2.0f) / PI;
+	const t_vec3f	color = sample_exr_texture(u, v, hdri);
 
-	t_vec4f numerator = {x[X] * (a * x[X] + b), x[Y] * (a * x[Y] + b), x[Z] * (a * x[Z] + b), x[W] * (a * x[W] + b)};
-	t_vec4f denominator = {x[X] * (c * x[X] + d) + e, x[Y] * (c * x[Y] + d) + e, x[Z] * (c * x[Z] + d) + e, x[W] * (c * x[W] + d) + e};
-
-	t_vec4f result;
-	result[X] = numerator[X] / denominator[X];
-	result[Y] = numerator[Y] / denominator[Y];
-	result[Z] = numerator[Z] / denominator[Z];
-	result[W] = numerator[W] / denominator[W];
-
-	// Clamp the result to the range [0.0, 1.0]
-	result[X] = fmax(0.0f, fmin(1.0f, result[X]));
-	result[Y] = fmax(0.0f, fmin(1.0f, result[Y]));
-	result[Z] = fmax(0.0f, fmin(1.0f, result[Z]));
-	result[W] = fmax(0.0f, fmin(1.0f, result[W]));
-
-	result[W] = 1.0f;
-
-	return result;
-}
-
-t_vec4f	vec3f_tone_map(t_vec3f color)
-{
-	color = ACESFilm(color);
-	color = linear_to_srgb(color);
-	color[W] = 1.0f;
-	return color;
-	float	gamma = 2.2f;
-	float	exposure = 1.0f;
-	color = color * exposure;
-	t_vec3f	result = color / (color + 1.0f);
-
-	result[X] = powf(result[X], 1.0f / gamma);
-	result[Y] = powf(result[Y], 1.0f / gamma);
-	result[Z] = powf(result[Z], 1.0f / gamma);
-	return((t_vec4f){result[X], result[Y], result[Z], 1.0f});
+	return (color);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 16:28:18 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/14 04:32:22 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,4 +163,21 @@ void recalculated_projection(t_data *d)
 								(float)d->utils.width / (float)d->utils.height, \
 								d->scene.camera.zNear, d->scene.camera.zFar);
 	d->scene.camera.inv_projection = mat4_inverse(d->scene.camera.projection);
+}
+
+t_vec3f	aa_update_dir(t_data *data, uint32_t *rng, uint32_t x, uint32_t y)
+{
+	t_vec3f			new_dir;
+	const t_vec3f	cam_right_f = {
+		data->scene.camera.view.m[0][0], data->scene.camera.view.m[1][0],
+		data->scene.camera.view.m[2][0], 0.0f};
+	const t_vec3f	cam_up_f = {
+		data->scene.camera.view.m[0][1], data->scene.camera.view.m[1][1],
+		data->scene.camera.view.m[2][1], 0.0f};
+	const float		off_1 = (random_float(rng) - 0.5f) / data->utils.width;
+	const float		off_2 = (random_float(rng) - 0.5f) / data->utils.height;
+
+	new_dir = data->scene.camera.ray_target[x + y * data->utils.width] + \
+				(cam_right_f * off_1) + (cam_up_f * off_2);
+	return (vec3f_normalize(new_dir));
 }
