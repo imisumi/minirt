@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 16:31:33 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/16 19:05:30 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,6 +351,12 @@ typedef struct s_render_utils
 	t_vec3f		dir;
 
 }	t_render_utils;
+
+typedef struct s_mesh_utils
+{
+	t_hitinfo	hitinfo;
+	uint32_t	index;
+}				t_mesh_utils;
 
 //?
 
