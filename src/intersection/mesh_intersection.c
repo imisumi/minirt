@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/13 19:53:53 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 19:10:58 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,15 @@
 static t_hitinfo	mesh_is_leaf(t_rayf ray, t_hitinfo hitinfo, \
 	t_bvh_node *node, t_scene *scene)
 {
-	int		i;
+	t_mesh_utils	u;
 
-	i = node->start;
-	while (i < node->end)
+	u.hitinfo = hitinfo;
+	u.index = node->start;
+	while (u.index < node->end)
 	{
-		hitinfo = triangle_bvh_intersection(ray, hitinfo, \
-			scene->tri_meshes[i].bvh, scene, i);
-		i++;
+		hitinfo = triangle_bvh_intersection(ray, u, \
+			scene->tri_meshes[u.index].bvh, scene);
+		u.index++;
 	}
 	return (hitinfo);
 }

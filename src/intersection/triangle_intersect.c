@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/13 19:53:13 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 19:10:40 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@
 bool	single_triangle_intersection(t_rayf ray, t_hitinfo *hitinfo, \
 	t_scene *scene, int mesh_face[2])
 {
-	t_vec3f	tri[3];
-	t_vec3f	edge[2];
-	t_tri_vecs v;
-	t_tri_floats f;
+	t_vec3f			tri[3];
+	t_vec3f			edge[2];
+	t_tri_vecs		v;
+	t_tri_floats	f;
 
 	set_point_and_edge(scene, tri, mesh_face, edge);
 	v.ray_cross_e2 = vec3f_cross(ray[DIR], edge[E2]);
 	f.det = vec3f_dot(edge[E1], v.ray_cross_e2);
-	if ((BACK_FACE_CULLING && f.det < 0) || (f.det > -EPSILON && f.det < EPSILON))
+	if ((BACK_FACE_CULL && f.det < 0) || (f.det > -EPSILON && f.det < EPSILON))
 		return (false);
 	f.inv_det = 1.0f / f.det;
 	v.s = ray[ORIGIN] - tri[0];
@@ -41,11 +41,11 @@ bool	single_triangle_intersection(t_rayf ray, t_hitinfo *hitinfo, \
 	if (f.t < EPSILON || f.t > hitinfo->distance)
 		return (false);
 	set_tri_hitinfo(hitinfo, ray, f.t, edge);
-	set_tri_material(hitinfo, scene, mesh_face, (float[2]){f.u, f.v});
+	set_tri_material(hitinfo, scene, mesh_face, (float [2]){f.u, f.v});
 	return (hitinfo->hit);
 }
 
-bool triangle_intersection(t_rayf ray, t_scene *scene, \
+bool	triangle_intersection(t_rayf ray, t_scene *scene, \
 	uint32_t mesh_idx, t_hitinfo *hitinfo)
 {
 	int	face;
@@ -53,7 +53,8 @@ bool triangle_intersection(t_rayf ray, t_scene *scene, \
 	face = 0;
 	while (face < scene->tri_meshes[mesh_idx].num_faces)
 	{
-		single_triangle_intersection(ray, hitinfo, scene, (int[2]){mesh_idx, face});
+		single_triangle_intersection(ray, hitinfo, scene, \
+			(int [2]){mesh_idx, face});
 		face++;
 	}
 	return (hitinfo->hit);
@@ -73,33 +74,72 @@ bool	tri_mesh_intersection(t_rayf ray, t_scene *scene, t_hitinfo *hitinfo)
 	return (hitinfo->hit);
 }
 
+//? faster but not norm
+// t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, 
+// t_bvh_node *node, t_scene *scene, int index)
+// {
+// 	int			face;
+// 	float		t;
+// 	t_hitinfo	left;
+// 	t_hitinfo	right;
 
-t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node, t_scene *scene, int index)
+// 	t = aabb_intersection_f(ray, node->aabb);
+// 	if (!t)
+// 		return (hitinfo);
+// 	if (node->is_leaf == true)
+// 	{
+// 		face = node->start - 1;
+// 		while (++face < node->end)
+// 			single_triangle_intersection(ray, &hitinfo, scene, 
+// (int [2]){index, face});
+// 		return (hitinfo);
+// 	}
+// 	else
+// 	{
+// 		left = triangle_bvh_intersection(ray, hitinfo, node->left, 
+//scene, index);
+// 		right = triangle_bvh_intersection(ray, hitinfo, node->right, 
+//scene, index);
+// 		if (left.hit && (!right.hit || left.distance < right.distance))
+// 			return (left);
+// 		else if (right.hit)
+// 			return (right);
+// 	}
+// 	return (hitinfo);
+// }
+
+static t_hitinfo	traverse_tree(t_rayf ray, t_mesh_utils u, \
+	t_bvh_node *node, t_scene *scene)
+{
+	const t_hitinfo	l = triangle_bvh_intersection(ray, u, node->left, scene);
+	const t_hitinfo	r = triangle_bvh_intersection(ray, u, node->right, scene);
+
+	if (l.hit && (!r.hit || l.distance < r.distance))
+		return (l);
+	else if (r.hit)
+		return (r);
+	return (u.hitinfo);
+}
+
+t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_mesh_utils u, \
+	t_bvh_node *node, t_scene *scene)
 {
 	int			face;
 	float		t;
-	t_hitinfo	left;
-	t_hitinfo	right;
 
 	t = aabb_intersection_f(ray, node->aabb);
 	if (!t)
-		return (hitinfo);
+		return (u.hitinfo);
 	if (node->is_leaf == true)
 	{
 		face = node->start - 1;
 		while (++face < node->end)
-			single_triangle_intersection(ray, &hitinfo, scene, (int[2]){index, face});
-		return (hitinfo);
+		{
+			single_triangle_intersection(ray, &u.hitinfo, scene, \
+				(int [2]){u.index, face});
+		}
+		return (u.hitinfo);
 	}
 	else
-	{
-		left = triangle_bvh_intersection(ray, hitinfo, node->left, scene, index);
-		right = triangle_bvh_intersection(ray, hitinfo, node->right, scene, index);
-		if (left.hit && (!right.hit || left.distance < right.distance))
-			return (left);
-		else if (right.hit)
-			return (right);
-	}
-	return (hitinfo);
+		return (traverse_tree(ray, u, node, scene));
 }
-

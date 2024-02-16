@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/24 01:16:40 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 18:26:53 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,33 @@ typedef struct s_sphere_utils
 	bool	inside;
 }				t_sphere_utils;
 
-bool	single_sphere_intersection_f(t_rayf ray, t_sphere *sphere, t_hitinfo *hitinfo)
+static void	sphere_update_hit(t_hitinfo *hitinfo, t_sphere *sphere, \
+	t_rayf ray, t_sphere_utils sp)
+{
+	t_vec3f	normal;
+
+	hitinfo->hit = true;
+	hitinfo->distance = sp.t;
+	hitinfo->position = ray[ORIGIN] + (ray[DIR] * sp.t);
+	normal = vec3f_normalize(hitinfo->position - sphere->pos_f);
+	if (sp.inside)
+		hitinfo->normal = -normal;
+	else
+		hitinfo->normal = normal;
+	hitinfo->inside = sp.inside;
+	hitinfo->material = sphere->material;
+}
+
+bool	single_sphere_intersection_f(t_rayf ray, t_sphere *sphere, \
+	t_hitinfo *hitinfo)
 {
 	t_sphere_utils	sp;
-	
+
 	sp.offset_origin = ray[ORIGIN] - sphere->pos_f;
 	sp.a = vec3f_dot(ray[DIR], ray[DIR]);
 	sp.b = 2.0f * vec3f_dot(sp.offset_origin, ray[DIR]);
-	sp.c = vec3f_dot(sp.offset_origin, sp.offset_origin) - sphere->radius * sphere->radius;
+	sp.c = vec3f_dot(sp.offset_origin, sp.offset_origin) - \
+		sphere->radius * sphere->radius;
 	sp.discriminant = sp.b * sp.b - 4 * sp.a * sp.c;
 	sp.inside = false;
 	if (sp.discriminant >= 0.0f)
@@ -42,14 +61,7 @@ bool	single_sphere_intersection_f(t_rayf ray, t_sphere *sphere, t_hitinfo *hitin
 			sp.t = (-sp.b + sqrtf(sp.discriminant)) / (2.0f * sp.a);
 		}
 		if (sp.t > EPSILON && sp.t < hitinfo->distance)
-		{
-			hitinfo->hit = true;
-			hitinfo->distance = sp.t;
-			hitinfo->position = ray[ORIGIN] + (ray[DIR] * sp.t);
-			hitinfo->normal = vec3f_normalize(hitinfo->position - sphere->pos_f) * (sp.inside ? -1.0f : 1.0f);
-			hitinfo->inside = sp.inside;
-			hitinfo->material = sphere->material;
-		}
+			sphere_update_hit(hitinfo, sphere, ray, sp);
 	}
 	return (hitinfo->hit);
 }
