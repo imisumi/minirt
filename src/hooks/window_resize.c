@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window_resize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 22:25:20 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 16:19:46 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/16 19:22:30 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,13 @@
 static void	realloc_buffers(t_data *data)
 {
 	free(data->utils.accumulated_data);
-	free(data->scene.camera.ray_target);
 	free(data->scene.camera.ray_dir);
 	data->utils.accumulated_data = malloc(sizeof(t_vec4f) * \
 		data->utils.width * data->utils.height);
-	data->scene.camera.ray_target = malloc(sizeof(t_vec4f) * \
-		data->utils.width * data->utils.height);
 	data->scene.camera.ray_dir = malloc(sizeof(t_vec3f) * \
 		data->utils.width * data->utils.height);
-	if (!data->utils.accumulated_data || !data->scene.camera.ray_target || \
-		!data->scene.camera.ray_dir)
-	{
+	if (!data->utils.accumulated_data || !data->scene.camera.ray_dir)
 		exit_error(MALLOC, "resize window");
-	}
 }
 
 void	resize_window(t_data *data)

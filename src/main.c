@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 16:21:28 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/16 19:22:19 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,9 @@ bool	init_buffers(t_data *data)
 	data->utils.height = HEIGHT;
 	data->utils.accumulated_frames = 1;
 	data->utils.accumulated_data = malloc(sizeof(t_vec4f) * WIDTH * HEIGHT);
-	data->scene.camera.ray_target = malloc(sizeof(t_vec4f) * WIDTH * HEIGHT);
 	data->scene.camera.ray_dir = malloc(sizeof(t_vec3f) * WIDTH * HEIGHT);
-	if (!data->utils.accumulated_data || !data->scene.camera.ray_target || \
-		!data->scene.camera.ray_dir)
-	{
+	if (!data->utils.accumulated_data || !data->scene.camera.ray_dir)
 		exit_error(MALLOC, "init buffers");
-	}
 	return (true);
 }
 

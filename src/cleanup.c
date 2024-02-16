@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/04 19:20:57 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 19:22:35 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	cleanup_scene(t_scene *scene)
 
 void	free_all_data(t_data *data)
 {
-	free(data->scene.camera.ray_target);
 	free(data->scene.camera.ray_dir);
 	free(data->utils.accumulated_data);
 

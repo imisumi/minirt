@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:05:30 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 19:22:59 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ typedef struct s_camera
 	t_vec2f	prev_mouse_pos;
 
 	t_vec3f	*ray_dir;
-	t_vec4f	*ray_target;
+	// t_vec4f	*ray_target;
 }	t_camera;
 
 typedef struct s_render_block
