@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:22:35 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 19:54:44 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	free_all_data(t_data *data)
 	
 	vec_free(&data->scene.spheres);
 
-	free_bvh_tree(data->scene.bvh_spheres_f);
-	free_bvh_tree(data->scene.bvh_meshes);
+	// free_bvh_tree(data->scene.bvh_spheres_f);
+	// free_bvh_tree(data->scene.bvh_meshes);
 	
 	for (int i = 0; i < data->scene.num_tri_meshes; i++)
 	{

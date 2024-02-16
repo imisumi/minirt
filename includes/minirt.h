@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/02/16 19:05:49 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 19:56:48 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ t_material	default_material(void);
 
 t_vec3f	vec3f_lerp(const t_vec3f vec1, const t_vec3f vec2, const float t);
 
-void free_bvh_tree(t_bvh_node* node);
+// void free_bvh_tree(t_bvh_node* node);
 
 
 
@@ -175,14 +175,14 @@ t_aabb	merge_aabb_f(t_aabb a, t_aabb b);
 
 // t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node, t_scene *scene, int index);
 t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_mesh_utils u, t_bvh_node *node, t_scene *scene);
-t_bvh_node	*build_mesh_bvh(t_tri_mesh *meshes, uint32_t start, uint32_t end, uint32_t max_dept);
+// t_bvh_node	*build_mesh_bvh(t_tri_mesh *meshes, uint32_t start, uint32_t end, uint32_t max_dept);
 t_hitinfo	mesh_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node, t_scene *scene);
 
 
 //? bvh_utils.c
 t_aabb	aabb_infinity(void);
 void	bvh_starter_node(t_bvh_node *node, uint32_t start, uint32_t end);
-void	free_bvh_tree(t_bvh_node* node);
+// void	free_bvh_tree(t_bvh_node* node);
 
 
 //? material.c
@@ -251,5 +251,37 @@ void	set_point_and_edge(t_scene *scene, t_vec3f tri[3], int mesh_face[2], t_vec3
 //? mesh_intersection.c
 t_hitinfo	mesh_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, t_bvh_node *node, t_scene *scene);
 //?
+
+
+// bvh_triangle.c
+t_bvh_node	*bvh_triangle(t_vec3ui *tri_indexes, uint32_t start_end[2], \
+	uint32_t max_dept, float *vertices);
+
+
+
+
+
+
+
+
+
+
+
+//? ----------------------------------------------------------------------
+//?                              bvh                                      
+//? ----------------------------------------------------------------------
+//* bvh_mesh.c
+bool	init_mesh_bvh(t_scene *scene);
+//* bvh_sphere.c
+t_bvh_node	*build_bvh_sphere_f(t_sphere *spheres, uint32_t start, \
+	uint32_t end, uint32_t max_depth);
+//* bvh_triangle.c
+t_bvh_node	*bvh_triangle(t_vec3ui *tri_indexes, uint32_t start_end[2], \
+	uint32_t max_dept, float *vertices);
+//* bvh_utils.c
+t_aabb	aabb_infinity(void);
+void	bvh_starter_node(t_bvh_node *node, uint32_t start, uint32_t end);
+t_aabb	merge_aabb_f(t_aabb a, t_aabb b);
+//? ----------------------------------------------------------------------
 
 #endif

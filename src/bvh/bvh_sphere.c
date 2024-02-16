@@ -6,13 +6,14 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 21:53:27 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/23 02:18:13 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 19:53:26 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_aabb	calculate_sphere_aabb_f(t_sphere *spheres, uint32_t start, uint32_t end)
+static t_aabb	calculate_sphere_aabb_f(t_sphere *spheres, uint32_t start, \
+	uint32_t end)
 {
 	t_aabb	aabb;
 	t_vec3f	temp;
@@ -34,31 +35,15 @@ t_aabb	calculate_sphere_aabb_f(t_sphere *spheres, uint32_t start, uint32_t end)
 	return (aabb);
 }
 
-t_aabb	merge_aabb_f(t_aabb a, t_aabb b)
-{
-	t_aabb	result;
-
-	result.min_f[X] = fminf(a.min_f[X], b.min_f[X]);
-	result.min_f[Y] = fminf(a.min_f[Y], b.min_f[Y]);
-	result.min_f[Z] = fminf(a.min_f[Z], b.min_f[Z]);
-	result.max_f[X] = fmaxf(a.max_f[X], b.max_f[X]);
-	result.max_f[Y] = fmaxf(a.max_f[Y], b.max_f[Y]);
-	result.max_f[Z] = fmaxf(a.max_f[Z], b.max_f[Z]);
-	return (result);
-}
-
-//TODO: malloc protection
-t_bvh_node	*build_bvh_sphere_f(t_sphere *spheres, uint32_t start, uint32_t end, uint32_t max_depth)
+t_bvh_node	*build_bvh_sphere_f(t_sphere *spheres, uint32_t start, \
+	uint32_t end, uint32_t max_depth)
 {
 	t_bvh_node	*node;
 	uint32_t	mid;
 
 	node = malloc(sizeof(t_bvh_node));
 	if (node == NULL)
-	{
-		*error() = MALLOC_BVH;
-		return (NULL);
-	}
+		exit_error(MALLOC, "build bvh sphere");
 	bvh_starter_node(node, start, end);
 	if (end - start <= MAX_SPHERES_LEAF || max_depth == 0)
 	{
@@ -69,13 +54,8 @@ t_bvh_node	*build_bvh_sphere_f(t_sphere *spheres, uint32_t start, uint32_t end, 
 	{
 		mid = (start + end) / 2;
 		node->left = build_bvh_sphere_f(spheres, start, mid, max_depth - 1);
-		if (node->left == NULL)
-			return (NULL);
 		node->right = build_bvh_sphere_f(spheres, mid, end, max_depth - 1);
-		if (node->right == NULL)
-			return (NULL);
 		node->aabb = merge_aabb_f(node->left->aabb, node->right->aabb);
 	}
 	return (node);
 }
-

@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:22:19 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 19:54:50 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ bool	valid_input(int argc, char *argv[])
 }
 
 // const char *file = "assets/maps/fresnel.rt";
-const char *file = "assets/maps/obj.rt";
-// const char *file = "assets/maps/map1.rt";
+// const char *file = "assets/maps/obj.rt";
+const char *file = "assets/maps/map1.rt";
 
 void	temp(t_data *data)
 {
-	free_bvh_tree(data->scene.bvh_spheres_f);
+	// free_bvh_tree(data->scene.bvh_spheres_f);
 }
 
 int32_t main(int32_t argc, char* argv[])
