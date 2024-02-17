@@ -14,7 +14,7 @@ C  0,0,3   0,0,-1   60
 
 # .EXR only
 # HDRI      assets/hdri/empty_workshop_2k.exr
-HDRI      assets/hdri/pine_attic_4k.exr
+HDRI      assets/hdri/empty_workshop_2k.exr
 # HDRI	assets/hdri/uffizi-large.exr
 # HDRI	/home/imisumi-wsl/Github/minirt/assets/hdri/uffizi-large.exr
 # HDRI		assets/hdri/sun_sky.exr
