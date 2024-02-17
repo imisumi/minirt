@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 16:48:52 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/16 21:10:09 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool	object_intersection(t_rayf ray, t_scene *scene, t_hitinfo *hitinfo)
+static bool	object_intersection(t_rayf ray, t_scene *scene, t_hitinfo *hitinfo)
 {
 	hitinfo->distance = INFINITY;
 	hitinfo->hit = false;
@@ -35,7 +35,7 @@ bool	object_intersection(t_rayf ray, t_scene *scene, t_hitinfo *hitinfo)
 	return (hitinfo->hit);
 }
 
-t_vec4f	apply_enviorment(t_rayf ray, t_scene *scene, t_ray_utils *u)
+static t_vec4f	apply_enviorment(t_rayf ray, t_scene *scene, t_ray_utils *u)
 {
 	t_vec3f	sky;
 
@@ -52,7 +52,7 @@ t_vec4f	apply_enviorment(t_rayf ray, t_scene *scene, t_ray_utils *u)
 		u->incomming_light[Z], 1.0f});
 }
 
-t_vec4f	per_pixel(t_vec3f dir, t_scene *scene, uint32_t *rngState)
+static t_vec4f	per_pixel(t_vec3f dir, t_scene *scene, uint32_t *rngState)
 {
 	t_ray_utils	u;
 
@@ -81,7 +81,7 @@ t_vec4f	per_pixel(t_vec3f dir, t_scene *scene, uint32_t *rngState)
 	return (vec3f_to_vec4f(u.incomming_light, 1.0f));
 }
 
-void	render_pixel(t_data *data, uint32_t x, uint32_t y)
+static void	render_pixel(t_data *data, uint32_t x, uint32_t y)
 {
 	uint32_t	i;
 	uint32_t	j;

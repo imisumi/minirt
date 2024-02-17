@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 16:55:34 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/16 21:13:45 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-float	get_specular_chance(t_vec3f ray_dir, t_hitinfo *hitinfo)
+static float	get_specular_chance(t_vec3f ray_dir, t_hitinfo *hitinfo)
 {
 	float	specular_chance;
 
@@ -29,8 +29,8 @@ float	get_specular_chance(t_vec3f ray_dir, t_hitinfo *hitinfo)
 	return (specular_chance);
 }
 
-void	calc_ray(t_rayf *ray, t_hitinfo *hitinfo, float do_specular, \
-			float do_refraction, uint32_t *rngState)
+static void	calc_ray(t_rayf *ray, t_hitinfo *hitinfo, float do_spec_refrac[2], \
+	uint32_t *rngState)
 {
 	t_vec3f			refract_dir;
 	float			refractive_index;
@@ -40,7 +40,7 @@ void	calc_ray(t_rayf *ray, t_hitinfo *hitinfo, float do_specular, \
 		hitinfo->normal), diffuse_dir, hitinfo->material.roughness * \
 		hitinfo->material.roughness);
 
-	if (do_refraction == 1.0f)
+	if (do_spec_refrac[1] == 1.0f)
 		ray[0][ORIGIN] = hitinfo->position - (hitinfo->normal * EPSILON);
 	else
 		ray[0][ORIGIN] = hitinfo->position + (hitinfo->normal * EPSILON);
@@ -52,8 +52,8 @@ void	calc_ray(t_rayf *ray, t_hitinfo *hitinfo, float do_specular, \
 	refract_dir = vec3f_normalize(vec3f_lerp(refract_dir, -diffuse_dir, \
 		hitinfo->material.refraction_roughness * \
 		hitinfo->material.refraction_roughness));
-	ray[0][DIR] = vec3f_lerp(diffuse_dir, specular_dir, do_specular);
-	ray[0][DIR] = vec3f_lerp(ray[0][DIR], refract_dir, do_refraction);
+	ray[0][DIR] = vec3f_lerp(diffuse_dir, specular_dir, do_spec_refrac[0]);
+	ray[0][DIR] = vec3f_lerp(ray[0][DIR], refract_dir, do_spec_refrac[1]);
 }
 
 // specular_chance = FresnelReflectAmount(
@@ -87,5 +87,5 @@ void	update_ray(t_rayf *ray, t_hitinfo *hitinfo, uint32_t *rngState, \
 	if (do_refraction == 0.0f)
 		*ray_color *= vec3f_lerp(hitinfo->material.color, \
 			hitinfo->material.specular_color, do_specular);
-	calc_ray(ray, hitinfo, do_specular, do_refraction, rngState);
+	calc_ray(ray, hitinfo, (float [2]){do_specular, do_refraction}, rngState);
 }

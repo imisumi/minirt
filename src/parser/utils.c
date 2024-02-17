@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/05 19:00:13 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 21:52:22 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,11 @@ bool	ft_strcmp(const char *s1, const char *s2)
 	}
 }
 
-
-
 bool	parse_vec3(char *line, t_vec3f *vec)
 {
 	char	**split;
 
 	split = ft_split(line, ',');
-	// vec[0][X] = 0;
-	// vec[0][Y] = 0;
-	// vec[0][Z] = 0;
 	if (split == NULL)
 		return (false);
 	if (ft_split_count(split) != 3)
@@ -115,14 +110,6 @@ bool	parse_vec3_normal(char *line, t_vec3f *vec)
 	return (true);
 }
 
-/**
- * Converts a string representing an 8-bit color value in "R,G,B" format to a 
- * t_vec3f structure ranging from 0.0f to 1.0f.
- * 
- * @param[in] line String containing the color components separated by commas
- * @param[in] col Pointer to a t_vec3f structure to store the normalized RGB values
- * @returns True if parsing and conversion succeed, false otherwise
- */
 bool	parse_8bit_color(char *line, t_vec3f *col)
 {
 	int		i;
@@ -147,8 +134,3 @@ bool	parse_8bit_color(char *line, t_vec3f *col)
 	}
 	return (ft_split_free(split), true);
 }
-
-// bool	parse_material()
-// {
-	
-// }

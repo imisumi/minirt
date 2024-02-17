@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 23:09:09 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 15:41:05 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/16 21:18:02 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	thread_create(t_thread *threads, t_data *data)
 	}
 }
 
-void	create_threads(t_data *data)
+static void	create_threads(t_data *data)
 {
 	t_thread	threads[THREADS];
 	uint32_t	step_x;
@@ -55,7 +55,10 @@ bool	render_zone(t_data *data)
 	t_thread	zone;
 
 	if (data->utils.accumulated_frames == 1)
-		ft_memset(data->utils.accumulated_data, 0, sizeof(t_vec4f) * data->utils.width * data->utils.height);
+	{
+		ft_memset(data->utils.accumulated_data, 0, sizeof(t_vec4f) * \
+			data->utils.width * data->utils.height);
+	}
 	if (MT)
 		create_threads(data);
 	else

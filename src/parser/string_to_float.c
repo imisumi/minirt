@@ -6,13 +6,13 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/05 18:31:39 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 21:36:49 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minirt.h"
+#include "minirt.h"
 
-static bool	ft_stof2(const char* s, float *res, float *fact)
+static bool	ft_stof2(const char *s, float *res, float *fact)
 {
 	int	point_seen;
 	int	i;
@@ -35,11 +35,12 @@ static bool	ft_stof2(const char* s, float *res, float *fact)
 				return (false);
 		}
 		s++;
-	};
+	}
 	return (true);
-};
+}
 
-// https://stackoverflow.com/questions/4392665/converting-string-to-float-without-atof-in-c
+// https://stackoverflow.com/questions/4392665/
+// converting-string-to-float-without-atof-in-c
 bool	ft_stof(const char *s, float *f)
 {
 	float	fact;
@@ -50,10 +51,9 @@ bool	ft_stof(const char *s, float *f)
 	{
 		s++;
 		fact = -1;
-	};
+	}
 	if (ft_stof2(s, f, &fact) == false)
 	{
-		// printf("string to float error\n");
 		*error() = STOF;
 		return (false);
 	}
@@ -71,7 +71,7 @@ bool	ft_stoi(const char *s, int *i)
 	{
 		s++;
 		fact = -1;
-	};
+	}
 	while (*s)
 	{
 		if (*s >= '0' && *s <= '9')
@@ -79,7 +79,7 @@ bool	ft_stoi(const char *s, int *i)
 		else
 			return (false);
 		s++;
-	};
+	}
 	*i *= fact;
 	return (true);
 }

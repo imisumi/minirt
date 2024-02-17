@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/20 14:56:46 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 22:16:16 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,48 +20,19 @@
 
 bool	parse_sphere(t_scene *scene, char **split)
 {
-	t_sphere	sphere;
+	t_sphere		sphere;
+	const uint32_t	arg_count = ft_split_count(split);
 
-	int arg_count = ft_split_count(split);
 	if (arg_count != 4 && arg_count != 12)
-	{
-		print_error("sphere arg count");
-		return (false);
-	}
+		return (print_error("sphere arg count"));
 	if (parse_vec3(split[1], &sphere.pos_f) == false)
-	{
-		print_error("sphere position");
-		return (false);
-	}
+		return (print_error("sphere position"));
 	if (ft_stof(split[2], &sphere.radius) == false)
-	{
-		print_error("sphere radius");
-		return (false);
-	}
-	if (sphere.radius <= 0.0f)
-	{
-		print_error("sphere radius range");
-		return (false);
-	}
-
+		return (print_error("sphere radius"));
+	if (sphere.radius <= EPSILON)
+		return (print_error("sphere radius range"));
 	if (parse_material(&sphere.material, &split[3]) == false)
 		return (false);
-	// exit(0);
-	// t_material	material;
-	// if (parse_8bit_color(split[3], &material.color) == false)
-	// {
-	// 	print_error("sphere color");
-	// 	return (false);
-	// }
-	// sphere.material = material;
-	if (vec_push(&scene->spheres, &sphere) == false)
-		return (false);
-
-	
+	vec_push(&scene->spheres, &sphere);
 	return (true);
 }
-
-	// printf("--------------\n");
-	// printf("%f, %f, %f\n", sphere.pos_f[X], sphere.pos_f[Y], sphere.pos_f[Z]);
-	// printf("%f\n", sphere.radius);
-	// printf("%f, %f, %f\n", material.color[R], material.color[G], material.color[B]);

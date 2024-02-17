@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/14 04:35:22 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/16 21:14:35 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_hitinfo	new_hitinfo(void)
 	return (hitinfo);
 }
 
-float	lerpf(float a, float b, float t)
+static float	lerpf(float a, float b, float t)
 {
 	return (a + (b - a) * t);
 }
