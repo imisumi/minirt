@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:22:59 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/17 16:14:40 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef enum error
 	MALLOC,
 	THREAD_CREATE,
 	THREAD_JOIN,
+	TEXTURE_LOAD,
+	OBJ_LOAD,
 	ERROR_COUNT,
 }	t_error;
 
