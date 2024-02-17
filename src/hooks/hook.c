@@ -3,34 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:23:41 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 16:21:47 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/16 20:40:36 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// uint32_t	global_frame = 1;
-
-void	frame_times(void *param)
+static void	frame_times(void *param)
 {
 	t_data	*data;
+	double	delta_time;
+	double	frame_time_ms;
+	double	fps;
+	char	output[50];
 
+	if (!BONUS)
+		return ;
 	data = param;
-	double currentTime = glfwGetTime();
-	double deltaTime = currentTime - data->utils.prev_frame;
-	double frameTimeMs = deltaTime * 1000.0;
-	double fps = 1000.0 / frameTimeMs;
-	// printf("\rframeTimeMs: %.2f ms    frames: %d", frameTimeMs, global_frame);
-	char output[50];
+	delta_time = glfwGetTime() - data->utils.prev_frame;
+	frame_time_ms = delta_time * 1000.0;
+	fps = 1000.0 / frame_time_ms;
 	snprintf(output, 50, "%.2f", fps);
 	mlx_set_window_title(data->mlx, output);
-	fflush(stdout);
 }
 
-void	movement(t_data *data)
+static void	movement(t_data *data)
 {
 	if (!mlx_is_mouse_down(data->mlx, MLX_MOUSE_BUTTON_RIGHT))
 	{

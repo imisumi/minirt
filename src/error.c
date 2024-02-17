@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 15:22:11 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/02/17 16:14:53 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,16 @@ t_error	*error(void)
 bool	print_error(const char *msg)
 {
 	const char	*error_strings[ERROR_COUNT] = {
-	[NO_ERROR] = "NO_ERROR",
-	[STOF] = "String to float error",
-	[VEC3_NAN] = "Vec3 is not a number",
-	[VEC3_INF] = "Vec3 is infinite",
-	[MLX_INIT] = "Mlx init error",
-	[MLX_IMG] = "Mlx new image error",
+	[NO_ERROR] = "NO_ERROR", [STOF] = "String to float error",
+	[VEC3_NAN] = "Vec3 is not a number", [VEC3_INF] = "Vec3 is infinite",
+	[MLX_INIT] = "Mlx init error", [MLX_IMG] = "Mlx new image error",
 	[MLX_IMG_TO_WIN] = "Mlx image to window error",
 	[MAP_INV_TYPE] = "Invalid type in map",
-	[MALLOC_BVH] = "Malloc error in bvh",
-	[MALLOC] = "Malloc failure",
+	[MALLOC_BVH] = "Malloc error in bvh", [MALLOC] = "Malloc failure",
 	[THREAD_CREATE] = "Thread creation error",
 	[THREAD_JOIN] = "Thread join error",
-	};
+	[TEXTURE_LOAD] = "Texture load error",
+	[OBJ_LOAD] = "Obj load error",};
 
 	if (*error() == NO_ERROR)
 	{
@@ -48,15 +45,6 @@ bool	print_error(const char *msg)
 		else
 			printf("%s\n", error_strings[*error()]);
 	}
-		
-
-	// if (msg && *error() == NO_ERROR)
-	// 	printf("%s\n", msg);
-	// else
-	// 	printf("%s: ", msg);
-	// if (*error() != NO_ERROR)
-	// 	printf("%s\n", error_strings[*error()]);
-
 	return (false);
 }
 

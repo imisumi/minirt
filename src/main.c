@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:54:50 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/17 16:04:57 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ bool	valid_input(int argc, char *argv[])
 
 // const char *file = "assets/maps/fresnel.rt";
 // const char *file = "assets/maps/obj.rt";
-const char *file = "assets/maps/map1.rt";
+// const char *file = "assets/maps/map1.rt";
+const char *file = "assets/maps/uv.rt";
 
 void	temp(t_data *data)
 {
