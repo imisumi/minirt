@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/26 00:58:27 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/18 03:33:48 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ bool	setup_mlx(t_data *data)
 	resizeble = false;
 	if (PIXEL_SIZE == 1)
 		resizeble = true;
-	data->mlx = mlx_init(WIDTH * PIXEL_SIZE, HEIGHT * PIXEL_SIZE, "Ray Tracer", resizeble);
+	data->mlx = mlx_init(WIDTH * PIXEL_SIZE, HEIGHT * PIXEL_SIZE, \
+		"Ray Tracer", resizeble);
 	if (data->mlx == NULL)
 	{
 		*error() = MLX_INIT;

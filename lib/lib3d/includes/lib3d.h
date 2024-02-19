@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/14 04:37:40 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/18 03:27:49 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ t_vec3f		vec3f_normalize(t_vec3f v);
 float		vec3f_dot(t_vec3f a, t_vec3f b);
 t_quat		quat_angle_axis_f(float angle, t_vec3f axis);
 t_vec3f		quat_rotate_f(t_quat q, t_vec3f v);
-t_vec2f		random_point_in_circle_f(uint32_t *state);
+// t_vec2f		random_point_in_circle_f(uint32_t *state);
 t_mat4		mat4_look_at_f(t_vec3f eye, t_vec3f center, t_vec3f up);
 
 

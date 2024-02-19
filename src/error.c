@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/17 16:14:53 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/18 03:42:16 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_error	*error(void)
 {
-	static t_error	error;
+	static t_error	error = NO_ERROR;
 
 	return (&error);
 }

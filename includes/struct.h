@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/17 16:14:40 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/18 18:44:37 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +257,7 @@ typedef struct s_scene
 	uint32_t	num_materials;
 	
 	t_sphere	*spheres;
+	t_inv_plane	*inv_planes;
 
 	t_bvh_node	*bvh_spheres_f;
 	t_bvh_node	*bvh_meshes;
@@ -264,7 +265,6 @@ typedef struct s_scene
 	t_tri_mesh	*tri_meshes;
 	uint32_t	num_tri_meshes;
 	
-	t_inv_plane	*inv_planes;
 
 	// t_cylinder	*cylinders;
 
