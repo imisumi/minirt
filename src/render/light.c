@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/14 04:34:13 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 14:54:24 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-typedef struct s_light_utils
-{
-	t_sphere	sphere;
-	t_rayf		shadow_ray;
-	t_vec3f		diffuse_contribution;
-	t_hitinfo	light;
-	t_hitinfo	shadow_hit;
-	int			i;
-}	t_light_utils;
 
 static float	vec3_cosine_angle(t_vec3f v1, t_vec3f v2)
 {

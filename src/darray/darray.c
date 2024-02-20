@@ -3,23 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   darray.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 00:44:47 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 20:10:45 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 14:57:55 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "darray.h"
 
 // https://www.youtube.com/watch?v=Nn_hbAGnBOs&t=1157s
-typedef struct s_array
-{
-	uint32_t	capacity;
-	uint32_t	count;
-	size_t		element_size;
-}				t_array;
-
 static void	exit_msg(char *msg)
 {
 	printf("Error: %s\n", msg);

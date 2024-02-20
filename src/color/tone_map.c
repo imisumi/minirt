@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tone_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:03:04 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/14 04:50:13 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 14:57:46 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-typedef struct s_aces
-{
-	float	a;
-	float	b;
-	float	c;
-	float	d;
-	float	e;
-}	t_aces;
 
 static t_vec4f	aces_film(t_vec4f x)
 {
