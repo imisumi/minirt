@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   triangle.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 21:02:18 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 15:41:10 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_mesh_utils u, \
 	int			face;
 	float		t;
 
+	if (!node)
+		return (u.hitinfo);
 	t = aabb_intersection_f(ray, node->aabb);
 	if (!t)
 		return (u.hitinfo);

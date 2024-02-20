@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/19 03:16:02 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 17:09:50 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,75 +44,62 @@ bool	init_bvh(t_data *data)
 	return (true);
 }
 
+//TODO
 bool	valid_input(int argc, char *argv[])
 {
-	//TODO: 
 	return (true);
 }
 
-// const char *file = "assets/maps/fresnel.rt";
-// const char *file = "assets/maps/obj.rt";
-// const char *file = "assets/maps/map1.rt";
-const char *file = "assets/maps/uv.rt";
-
-void	temp(t_data *data)
+void	null_init(t_data *data)
 {
-	// free_bvh_tree(data->scene.bvh_spheres_f);
+	ft_memset(data, 0, sizeof(t_data));
+	data->utils.accumulated_data = NULL;
+	data->scene.vertices = NULL;
+	data->scene.tex_coords = NULL;
+	data->scene.materials = NULL;
+	data->scene.spheres = NULL;
+	data->scene.inv_planes = NULL;
+	data->scene.bvh_spheres_f = NULL;
+	data->scene.bvh_meshes = NULL;
+	data->scene.tri_meshes = NULL;
+	data->scene.point_lights = NULL;
+	data->scene.hdri.rgba = NULL;
+	data->scene.num_materials = 0;
+	//TODO - implement in parser
+	data->scene.sky = RENDER_SKYBOX;
 }
 
-void	free_data(t_data *data)
+const char	*get_path(void)
 {
-	//? utils
-	free(data->utils.accumulated_data);
+	
+	const char	*file1 = "assets/maps/fresnel.rt"; // render skybox - false
+	const char	*file2 = "assets/maps/obj.rt";
+	const char	*file3 = "assets/maps/owl.rt";
+	const char	*file4 = "assets/maps/map1.rt";
+	const char	*file5 = "assets/maps/uv.rt";
 
-	//? scene
-	free(data->scene.vertices);
-	free(data->scene.tex_coords);
-	// free(data->scene.materials);
-	int i = 0;
-	while (i < data->scene.num_materials)
-	{
-		mlx_delete_texture(data->scene.materials[i].color_tex);
-		mlx_delete_texture(data->scene.materials[i].normal_tex);
-		i++;
-	}
-
-	vec_free(&data->scene.spheres);
-	vec_free(&data->scene.inv_planes);
-	
-	
-	
-	// free(data->scene.camera.ray_dir);
-	// free(data->utils.accumulated_data);
-	// free(data->scene.materials);
-	// free(data->scene.point_lights);
-	// free(data->scene.inv_planes);
-	// free(data->scene.spheres);
-	// free(data->scene.tri_meshes);
-	// free(data->scene.bvh_spheres_f);
-	// free(data->scene.bvh_tri_meshes);
+	return (file1);
 }
 
-int32_t main(int32_t argc, char* argv[])
+int	main(int argc, char *argv[])
 {
 	t_data	data;
 
 	if (valid_input(argc, argv) == false)
 		return (print_error("Error"));
-	ft_memset(&data, 0, sizeof(t_data));
-	init_buffers(&data);
+	null_init(&data);
 	init_camera(&data.scene.camera);
-	if (parse_map(&data.scene, file) == false)
+	if (parse_map(&data.scene, get_path()) == false)
 	{
-		free_all_data(&data);
-		return (print_error("Error"));
+		free_parser(&data.scene);
+		exit_error(*error(), "parse map");
 	}
+	init_buffers(&data);
 	init_bvh(&data);
 	recalculate_view(&data);
 	recalculated_projection(&data);
 	recalculat_ray_directions(&data);
 	if (run_mlx(&data) == false)
 		return (print_error("Error"));
-	free_all_data(&data);
 	return (EXIT_SUCCESS);
 }

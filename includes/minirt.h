@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/02/17 16:34:38 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 16:47:49 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ float		random_float(uint32_t *state);
 // t_vec3		random_direction(uint32_t *state);
 double		time_delta(double prev_frame);
 
-
+void	free_parser(t_scene *scene);
 //? hooks
 // void	ft_hook(void* param);
 // void	render_loop(void *param);/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   darray.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 00:44:47 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 20:26:37 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 14:58:23 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 # include <string.h>
 # include <stdbool.h>
 
+typedef struct s_array
+{
+	uint32_t	capacity;
+	uint32_t	count;
+	size_t		element_size;
+}				t_array;
 
 void	vec_init(void *refvec, uint32_t capacity, size_t element_size);
 void	vec_push(void *refvec, void *value);

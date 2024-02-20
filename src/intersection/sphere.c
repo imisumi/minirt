@@ -1,27 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sphere_intersec.c                                  :+:      :+:    :+:   */
+/*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 18:26:53 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 15:39:56 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-typedef struct s_sphere_utils
-{
-	t_vec3f	offset_origin;
-	float	a;
-	float	b;
-	float	c;
-	float	discriminant;
-	float	t;
-	bool	inside;
-}				t_sphere_utils;
 
 static void	sphere_update_hit(t_hitinfo *hitinfo, t_sphere *sphere, \
 	t_rayf ray, t_sphere_utils sp)
@@ -101,6 +90,8 @@ t_hitinfo	sphere_bvh_intersection_f(t_rayf ray, t_sphere *spheres, \
 	t_hitinfo	left;
 	t_hitinfo	right;
 
+	if (!node)
+		return (hitinfo);
 	if (!aabb_intersection_f(ray, node->aabb))
 		return (hitinfo);
 	if (node->is_leaf == true)

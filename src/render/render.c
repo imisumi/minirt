@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 21:10:09 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 17:09:03 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_vec4f	apply_enviorment(t_rayf ray, t_scene *scene, t_ray_utils *u)
 {
 	t_vec3f	sky;
 
-	if (!RENDER_SKYBOX && u->bounce == 0)
+	if (!scene->sky && u->bounce == 0)
 		return ((t_vec4f){0.0f, 0.0f, 0.0f, 1.0f});
 	if (BONUS && scene->hdri.rgba != NULL)
 		sky = texture(ray[DIR], &scene->hdri);

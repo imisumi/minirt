@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/17 16:35:23 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 17:11:40 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static bool	load_mesh_materials(t_scene *scene, fastObjMesh *mesh)
 	return (true);
 }
 
+//TODO: other matrial properties
 static bool	get_mesh_materials(t_scene *scene, fastObjMesh *mesh)
 {
 	int				i;
@@ -50,11 +51,9 @@ static bool	get_mesh_materials(t_scene *scene, fastObjMesh *mesh)
 			{mat.Ke[0], mat.Ke[1], mat.Ke[2]};
 		if (mat.Ke[0] > 0.0f || mat.Ke[1] > 0.0f || mat.Ke[2] > 0.0f)
 			scene->materials[i].emission_strength = 10.0f;
-		if (load_texture(&scene->materials[i].color_tex, \
-			mesh->materials[i].map_Kd.path) == false)
+		if (load_texture(&scene->materials[i].color_tex, mesh->materials[i].map_Kd.path) == false)
 			return (false);
-		if (load_texture(&scene->materials[i].normal_tex, \
-			mesh->materials[i].map_bump.path) == false)
+		if (load_texture(&scene->materials[i].normal_tex, mesh->materials[i].map_bump.path) == false)
 			return (false);
 		i++;
 	}
@@ -118,6 +117,7 @@ static void	parse_objects(t_scene *scene, fastObjMesh *mesh)
 	}
 }
 
+// print_mesh_data(mesh);
 bool	parse_obj(t_scene *scene, const char *filename)
 {
 	fastObjMesh	*mesh;
@@ -130,7 +130,6 @@ bool	parse_obj(t_scene *scene, const char *filename)
 	mesh = fast_obj_read(filename);
 	if (!mesh)
 		exit_error(OBJ_LOAD, "fast_obj_read");
-	// print_mesh_data(mesh);
 	if (load_mesh_materials(scene, mesh) == false)
 		exit_error(MALLOC, "load mesh materials");
 	if (get_mesh_materials(scene, mesh) == false)

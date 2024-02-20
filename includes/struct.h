@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/18 18:44:37 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 17:09:19 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,6 +279,9 @@ typedef struct s_scene
 
 	t_vec3f		ambient_color;
 	t_camera	camera;
+
+	// render sky in bakcground
+	bool		sky;
 }				t_scene;
 
 typedef struct s_data
@@ -289,19 +292,6 @@ typedef struct s_data
 	mlx_image_t		*img;
 }				t_data;
 
-// typedef enum e_type
-// {
-// 	SPHERE = 0
-// }	t_type;
-
-// typedef struct s_aabb
-// {
-// 	t_vec3	min;
-// 	t_vec3	max;
-
-// 	t_vec3f	min_f;
-// 	t_vec3f	max_f;
-// }	t_aabb;
 
 typedef struct s_bvh_node
 {
@@ -331,6 +321,8 @@ typedef struct s_hitinfo
 	
 }	t_hitinfo;
 
+
+
 //? helper structs
 typedef struct s_ray_utils
 {
@@ -359,6 +351,36 @@ typedef struct s_mesh_utils
 	t_hitinfo	hitinfo;
 	uint32_t	index;
 }				t_mesh_utils;
+
+typedef struct s_light_utils
+{
+	t_sphere	sphere;
+	t_rayf		shadow_ray;
+	t_vec3f		diffuse_contribution;
+	t_hitinfo	light;
+	t_hitinfo	shadow_hit;
+	int			i;
+}	t_light_utils;
+
+typedef struct s_sphere_utils
+{
+	t_vec3f	offset_origin;
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
+	float	t;
+	bool	inside;
+}				t_sphere_utils;
+
+typedef struct s_aces
+{
+	float	a;
+	float	b;
+	float	c;
+	float	d;
+	float	e;
+}	t_aces;
 
 //?
 

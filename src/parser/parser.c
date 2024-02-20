@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 22:23:45 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 16:48:18 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,11 @@ bool	parse_map(t_scene *scene, const char *file)
 			line = str_replace_char(line, '\n', '\0');
 			split = ft_split(line, ' ');
 			if (split == NULL)
-				return (free(line), false);
+			{
+				free(line);
+				valid = false;
+				break ;
+			}
 			if (check_type(scene, split) == false)
 				valid = false;
 			ft_split_free(split);

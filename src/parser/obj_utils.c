@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/17 16:25:54 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 16:54:38 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ void	print_mesh_data(fastObjMesh *mesh)
 bool	load_texture(mlx_texture_t **tex, const char *path)
 {
 	if (!path)
+	{
+		*tex = NULL;
 		return (true);
+	}
 	*tex = mlx_load_png(path);
 	if (!*tex)
 		return (false);

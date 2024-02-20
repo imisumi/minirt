@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/18 03:41:27 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 17:01:31 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,50 +20,35 @@ void	cleanup_scene(t_scene *scene)
 	vec_free(&scene->point_lights);
 }
 
-void	free_all_data(t_data *data)
+void	free_parser(t_scene *scene)
 {
-	free(data->scene.camera.ray_dir);
-	free(data->utils.accumulated_data);
+	int	i;
 
-
-	//? free scene
-	free(data->scene.vertices);
-	free(data->scene.tex_coords);
-	//TODO free materials
-
-	for (int i = 0; i < data->scene.num_materials; i++)
+	i = 0;
+	while (i < scene->num_materials)
 	{
-		t_material *mat = &data->scene.materials[i];
-
-		if (mat->color_tex)
-		{
-			free(mat->color_tex->pixels);
-			free(mat->color_tex);
-		}
-		if (mat->normal_tex)
-		{
-			free(mat->normal_tex->pixels);
-			free(mat->normal_tex);
-		}
+		if (scene->materials[i].color_tex)
+			mlx_delete_texture(scene->materials[i].color_tex);
+		if (scene->materials[i].normal_tex)
+			mlx_delete_texture(scene->materials[i].normal_tex);
+		i++;
 	}
-	free(data->scene.materials);
-	
-	vec_free(&data->scene.spheres);
-
-	// free_bvh_tree(data->scene.bvh_spheres_f);
-	// free_bvh_tree(data->scene.bvh_meshes);
-	
-	for (int i = 0; i < data->scene.num_tri_meshes; i++)
+	free(scene->materials);
+	i = 0;
+	while (i < scene->num_tri_meshes)
 	{
-		t_tri_mesh *mesh = &data->scene.tri_meshes[i];
-		free(mesh->v_idx);
-		free(mesh->vt_idx);
-		free(mesh->mat_idx);
-		// free_bvh_tree(mesh->bvh);
+		free(scene->tri_meshes[i].v_idx);
+		free(scene->tri_meshes[i].vt_idx);
+		free(scene->tri_meshes[i].mat_idx);
+		i++;
 	}
-	vec_free(&data->scene.tri_meshes);
-	vec_free(&data->scene.inv_planes);
-	// vec_free(&data->scene.cylinders);
-	vec_free(&data->scene.point_lights);
-	free(data->scene.hdri.rgba);
+
+	free(scene->vertices);
+	free(scene->tex_coords);
+
+	vec_free(&scene->spheres);
+	vec_free(&scene->inv_planes);
+	vec_free(&scene->point_lights);
+	vec_free(&scene->tri_meshes);
+	free(scene->hdri.rgba);
 }

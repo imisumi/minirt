@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mesh_intersection.c                                :+:      :+:    :+:   */
+/*   mesh.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:10:58 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/02/20 15:41:00 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ t_hitinfo	mesh_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, \
 	t_hitinfo	left;
 	t_hitinfo	right;
 
+	if (!node)
+		return (hitinfo);
 	t = aabb_intersection_f(ray, node->aabb);
 	if (!t)
 		return (hitinfo);
