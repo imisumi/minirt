@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/20 16:48:18 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/03/08 03:48:06 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ bool	check_type(t_scene *scene, char **type)
 		return (parse_camera(type, &scene->camera));
 	else if (ft_strcmp(type[0], PLANE))
 		return (parse_plane(type, scene));
+	else if (ft_strcmp(type[0], CYLINDER))
+		return (parse_cylinder(type, scene));
 	else if (BONUS && ft_strcmp(type[0], HDRI))
 		return (parse_hdri(type, scene));
 	else if (BONUS && ft_strcmp(type[0], OBJ))
@@ -43,10 +45,11 @@ bool	check_type(t_scene *scene, char **type)
 
 void	init_scene_vec(t_scene *scene)
 {
-	vec_init(&scene->spheres, 1, sizeof(t_sphere));
+	vec_init(&scene->spheres, 8, sizeof(t_sphere));
 	vec_init(&scene->inv_planes, 8, sizeof(t_inv_plane));
 	vec_init(&scene->point_lights, 8, sizeof(t_point_light));
 	vec_init(&scene->tri_meshes, 8, sizeof(t_tri_mesh));
+	vec_init(&scene->cylinders, 8, sizeof(t_cylinder));
 }
 
 bool	parse_map(t_scene *scene, const char *file)

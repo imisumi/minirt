@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/02 19:21:35 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/03/07 22:21:54 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_quat	quat_new(float x, float y, float z, float w)
 	return ((t_quat){x, y, z, w});
 }
 
+
+// angle in radians
 t_quat	quat_angle_axis_f(float angle, t_vec3f axis)
 {
 	t_quat	result;

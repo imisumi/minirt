@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/20 17:09:19 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/03/08 01:28:32 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,22 @@ typedef struct s_sphere
 	t_material	material;
 }	t_sphere;
 
+typedef struct s_disk
+{
+	t_vec3f		position;
+	t_vec3f		normal;
+	float		radius;
+}	t_disk;
+
+typedef struct s_cylinder
+{
+	t_vec3f		position;
+	t_vec3f		normal;
+	float		radius;
+	float		height;
+	t_material	material;
+}	t_cylinder;
+
 typedef struct s_inv_plane
 {
 	t_vec3f		position;
@@ -258,6 +274,7 @@ typedef struct s_scene
 	
 	t_sphere	*spheres;
 	t_inv_plane	*inv_planes;
+	t_cylinder	*cylinders;
 
 	t_bvh_node	*bvh_spheres_f;
 	t_bvh_node	*bvh_meshes;

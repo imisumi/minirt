@@ -6,13 +6,13 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 22:25:18 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/03/07 18:08:07 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-//?	Sphere:
+//?	plane:
 //?	∗ identifier: pl
 //?	∗ x,y,z coordinates of a point in the plane: 0.0,0.0,-10.0
 //?	∗ 3d normalized vector. In range [-1,1] for each x,y,z axis: 0.0,1.0,0.0

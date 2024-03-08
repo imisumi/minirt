@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 21:52:22 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/03/08 01:58:08 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ bool	parse_vec3_normal(char *line, t_vec3f *vec)
 		}
 		i++;
 	}
+	*vec = vec3f_normalize(*vec);
 	return (true);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/02/20 16:47:49 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/03/08 02:46:44 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,9 @@ bool	parse_camera(char **split, t_camera *camera);
 
 //! plane
 bool	parse_plane(char **split, t_scene *scene);
+
+//! cylinder
+bool	parse_cylinder(char **split, t_scene *scene);
 
 //! Material
 bool	parse_material(t_material *mat, char **split);
@@ -324,6 +327,14 @@ void	resize_window(t_data *data);
 // *************************************************************************** /
 //? aabb.c
 float	aabb_intersection_f(t_rayf ray, t_aabb aabb);
+
+//? cylinder.c
+bool	cylinder_intersection(t_rayf ray, t_scene *scene, t_hitinfo *hitinfo);
+
+//? cylinder_utils.c
+float	angle_between_vec3(t_vec3f v1, t_vec3f v2);
+t_vec3f	create_rotation_axis(t_vec3f normal, t_vec3f up);
+void	apply_cap_hitinfo(t_hitinfo *hitinfo, t_vec3f hitpoint, float distance, t_cylinder *cylinder);
 
 //? mesh.c
 t_hitinfo	mesh_bvh_intersection(t_rayf ray, t_hitinfo hitinfo, \

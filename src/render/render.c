@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:32:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/20 17:09:03 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/03/07 18:37:17 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static bool	object_intersection(t_rayf ray, t_scene *scene, t_hitinfo *hitinfo)
 	else
 		sphere_intersection_f(ray, scene, hitinfo);
 	inv_plane_intersection_f(ray, scene, hitinfo);
+	cylinder_intersection(ray, scene, hitinfo);
 	if (USE_BVH && scene->num_tri_meshes > 0)
 	{
 		*hitinfo = mesh_bvh_intersection(ray, *hitinfo, scene->bvh_meshes, \
