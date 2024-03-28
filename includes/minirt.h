@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/03/08 02:46:44 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/03/28 15:35:25 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,13 +213,7 @@ void	free_all_data(t_data *data);
 
 float	fresnel_reflect_amount(float n1, float n2, float cosx, float f0);
 
-// float	get_specular_chance(t_vec3f ray_dir, t_hitinfo *hitinfo);
-// void	calc_ray(t_rayf *ray, t_hitinfo *hitinfo, float do_specular, \
-// 			float do_refraction, uint32_t *rngState);
-// specular_chance = FresnelReflectAmount(
-// 	hitinfo->inside ? hitinfo->material.ior : 1.0f, 
-// 	!hitinfo->inside ? hitinfo->material.ior : 1.0f,
-// 	ray[0][DIR], hitinfo->normal, hitinfo->material.specular, 1.0f);
+
 void	update_ray(t_rayf *ray, t_hitinfo *hitinfo, uint32_t *rngState, \
 					t_vec3f *ray_color);
 
@@ -406,7 +400,7 @@ void	update_ray(t_rayf *ray, t_hitinfo *hitinfo, uint32_t *rngState, \
 //? render_utils.c
 t_vec3f	default_skyf(t_vec3f direction, t_scene scene);
 t_hitinfo	new_hitinfo(void);
-static float	lerpf(float a, float b, float t);
+// static float	lerpf(float a, float b, float t);
 float	fresnel_reflect_amount(float n1, float n2, float cosx, float f0);
 
 //? render.c
