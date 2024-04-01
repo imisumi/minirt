@@ -1,0 +1,47 @@
+
+C  16,0,0   -1,0,0   60
+HDRI      assets/hdri/sun_sky.exr
+
+
+OBJ     assets/obj/100m-uv-plane-rotated.obj
+
+
+#?   position   diameter   color          roughness   specular	specular_color   ior   refraction   refraction_rougness   refraction_color   emission_strength
+sp   3,5,5      1          22,22,255       0.0         0.02		0,222,222      1.4		1.0			0.0					222,222,222             0.0
+sp   3,5,2.5      1          22,22,255       0.25         0.02	0,222,222      1.4		1.0			0.25				222,222,222             0.0
+sp   3,5,0      1          22,22,255       0.5         0.02		0,222,222      1.4		1.0			0.5					222,222,222             0.0
+sp   3,5,-2.5      1         22,22,255      0.75         0.02		0,222,222       1.4		1.0			0.75				222,222,222             0.0
+sp   3,5,-5      1         22,22,255      1.0         0.02		0,222,222       1.4		1.0			1.0					222,222,222             0.0
+
+
+#?   position   diameter   color          roughness   specular   specular_color   ior   refraction   refraction_rougness   refraction_color   emission_strength
+sp   3,2.5,5      1          255,22,22       0.0         0.02        0,0,255      1.4		1.0			0.0					0,222,222             0.0
+sp   3,2.5,2.5      1          255,22,22       0.25         0.02        0,0,255      1.4		1.0			0.25				0,222,222             0.0
+sp   3,2.5,0      1          255,22,22       0.5         0.02        0,0,255      1.4		1.0			0.5					0,222,222             0.0
+sp   3,2.5,-2.5      1          255,22,22      0.75         0.02       0,0,255       1.4		1.0			0.75				0,222,222             0.0
+sp   3,2.5,-5      1          255,22,22      1.0         0.02       0,0,255       1.4		1.0			1.0					0,222,222             0.0
+
+
+#?   position   diameter   color          roughness   specular   specular_color   ior   refraction   refraction_rougness   refraction_color   emission_strength
+sp   3,0,5      1          255,22,22       0.0         0.02        255,255,255      1		1.0          0.0                   0,0,0             0.0
+sp   3,0,2.5      1          255,22,22       0.0         0.02        255,255,255      1.1		1.0          0.0                   0,0,0             0.0
+sp   3,0,0      1          255,22,22       0.0         0.02        255,255,255      1.2		1.0          0.0                   0,0,0             0.0
+sp   3,0,-2.5      1          255,22,22      0.0         0.02       255,255,255       1.3		1.0          0.0                   0,0,0             0.0
+sp   3,0,-5      1          255,22,22      0.0         0.02       255,255,255       1.4		1.0          0.0                   0,0,0             0.0
+
+
+#?   position   diameter   color          roughness   specular   specular_color   ior   refraction   refraction_rougness   refraction_color   emission_strength
+sp   3,-2.5,5      1          255,22,22       0.0         0.02        255,255,255      1.4	1.0			0                   0,0,0             0.0
+sp   3,-2.5,2.5      1          255,22,22       0.0         0.02        255,255,255      1.4	1.0			0.25                   0,0,0             0.0
+sp   3,-2.5,0      1          255,22,22       0.0         0.02        255,255,255      1.4	1.0			0.5                   0,0,0             0.0
+sp   3,-2.5,-2.5      1          255,22,22      0.0         0.02       255,255,255       1.4	1.0			0.75                   0,0,0             0.0
+sp   3,-2.5,-5      1          255,22,22      0.0         0.02       255,255,255       1.4	1.0			1.0                   0,0,0             0.0
+
+
+#?   position   diameter   color          roughness   specular   specular_color   ior   refraction   refraction_rougness   refraction_color   emission_strength
+sp   3,-5,5      1          255,22,22       0.0         0.02        255,255,255      1.4	1.0		0                   0,0,0             0.0
+sp   3,-5,2.5      1          255,22,22       0.0         0.02        255,255,255      1.4	1.0		0                   64,64,64             0.0
+sp   3,-5,0      1          255,22,22       0.0         0.02        255,255,255      1.4	1.0		0                   128,128,128             0.0
+sp   3,-5,-2.5      1          255,22,22      0.0         0.02       255,255,255       1.4	1.0		0                   192,192,192             0.0
+sp   3,-5,-5      1          255,22,22      0.0         0.02       255,255,255       1.4	1.0		0                   255,255,255             0.0
+

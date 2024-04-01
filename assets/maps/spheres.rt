@@ -1,0 +1,14 @@
+
+C  0,1.5,6   0,-0.1,-1   60
+HDRI      assets/hdri/sun_sky.exr
+
+
+#?   position   diameter   color          roughness   specular   specular_color   ior   refraction   refraction_rougness   refraction_color   emission_strength
+sp   1.5,1,0      1          255,22,22      0.0         1        255,255,255      1.5  0.0          0.0                   0,0,0             0.0
+sp   -1.5,1,0      1          255,22,22      0.0         0.1        255,255,255      1.5  1.0          0.0                   0,0,0             0.0
+
+sp   -1,0.3,3      0.3          255,22,22      0.0         0.1        255,255,255      1.5  1.0          0.0                   255,1,1             0.0
+sp   0,0.3,3      0.3          255,22,22      0.0         0.1        255,255,255      1.5  1.0          0.0                   1,255,1             0.0
+sp   1,0.3,3      0.3          255,22,22      0.0         0.1        255,255,255      1.5  1.0          0.0                   1,1,255             0.0
+
+OBJ     assets/obj/100m-uv-plane.obj
