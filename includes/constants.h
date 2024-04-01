@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:50:45 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/03/28 19:27:33 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,18 @@
 
 // # define MT
 
-# ifdef BONUS
-#  define MT 1
-#  define PIXEL_SIZE 2
-# else
+# if BONUS == 0
 #  define MT 0
 #  define PIXEL_SIZE 2
+#  define USE_BVH 0
+# else
+#  define MT 1
+#  define PIXEL_SIZE 1
+#  define USE_BVH 1
 # endif
 
-# define WIDTH 500
-# define HEIGHT 500
+# define WIDTH 1024
+# define HEIGHT 1024
 
 // # define PIXEL_SIZE 2
 
@@ -44,7 +46,7 @@
 # define RENDER_SKYBOX 1
 
 # define BACK_FACE_CULL 1
-# define USE_BVH 1
+// # define USE_BVH 1
 
 # define AA 1
 

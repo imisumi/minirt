@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   obj.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/20 17:11:40 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/03/28 15:39:18 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static bool	load_mesh_materials(t_scene *scene, fastObjMesh *mesh)
 //TODO: other matrial properties
 static bool	get_mesh_materials(t_scene *scene, fastObjMesh *mesh)
 {
-	int				i;
+	uint32_t		i;
 	fastObjMaterial	mat;
 
 	i = 0;
@@ -93,7 +93,7 @@ static void	parse_objects(t_scene *scene, fastObjMesh *mesh)
 {
 	int			face_offset;
 	int			mat_offset;
-	int			obj;
+	uint32_t	obj;
 	int			faces;
 	t_tri_mesh	tri_mesh;
 

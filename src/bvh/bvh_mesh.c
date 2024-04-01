@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:51:29 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/03/28 15:35:05 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static t_bvh_node	*build_mesh_bvh(t_tri_mesh *meshes, uint32_t start, \
 
 bool	init_mesh_bvh(t_scene *scene)
 {
-	int	i;
+	uint32_t	i;
 
 	i = 0;
 	setup_mesh_aabb(scene->tri_meshes, scene->num_tri_meshes, scene);

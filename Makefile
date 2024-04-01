@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+         #
+#    By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2024/02/12 16:49:48 by imisumi          ###   ########.fr        #
+#    Updated: 2024/03/28 17:06:41 by imisumi-wsl      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minirt
+NAME = miniRT
 
 CFLAGS = -I$(INCDIR)
 # CFLAGS += -I./lib/MLX42/include/MLX42
@@ -22,6 +22,7 @@ CFLAGS += -I./tinyEXR/
 # CFLAGS = -I./includes
 
 CC = gcc -O2
+# CC += -Wall -Wextra -Werror
 # CC += -g -fsanitize=thread -pthread
 # CC += -Wuninitialized -Wall -Wextra -Werror
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/20 14:54:24 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/03/28 15:39:43 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	calculate_lighting(t_hitinfo *hitinfo, t_scene *scene, \
 	t_light_utils *u)
 {
 	float		attenuation;
-	float		falloff;
+	// float		falloff;
 	float		intensity;
 	const float	distance_to_light = vec3f_distance(hitinfo->position, \
 		u->sphere.pos_f);
@@ -39,7 +39,7 @@ static void	calculate_lighting(t_hitinfo *hitinfo, t_scene *scene, \
 	if (cosine > 0.0f)
 	{
 		attenuation = cosine / (distance_to_light * distance_to_light);
-		falloff = calculate_falloff(u->sphere.pos_f, hitinfo->position);
+		// falloff = calculate_falloff(u->sphere.pos_f, hitinfo->position);
 		intensity = cosine * attenuation * scene->point_lights[u->i].intensity;
 		u->diffuse_contribution += (scene->point_lights[u->i].color * \
 			intensity);

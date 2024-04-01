@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 22:25:20 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:22:30 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/03/28 15:36:54 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	resize_window(t_data *data)
 {
 	if (PIXEL_SIZE != 1)
 		return ;
-	if (data->mlx->width == data->img->width && \
-		data->mlx->height == data->img->height)
+	if (data->mlx->width == (int32_t)data->img->width && \
+		data->mlx->height == (int32_t)data->img->height)
 		return ;
 	data->utils.accumulated_frames = 1;
 	if (!mlx_resize_image(data->img, data->mlx->width, data->mlx->height))

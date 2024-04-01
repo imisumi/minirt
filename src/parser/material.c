@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 21:49:58 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:31:33 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ t_material	default_material(void)
 bool	parse_material(t_material *mat, char **split)
 {
 	*mat = default_material();
-	if (!BONUS)
-		return (true);
 	if (parse_8bit_color(split[0], &mat->color) == false)
 		return (print_error("sphere color"));
+	if (!BONUS)
+		return (true);
 	if (ft_split_count(split) != 9)
 		return (true);
 	if (ft_stof(split[1], &mat->roughness) == false)

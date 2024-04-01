@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:23:41 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 20:40:36 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/01 15:30:38 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,14 @@ void	render_loop(void *param)
 	if (render_zone(data) == false)
 		return ;
 	if (BONUS)
-		frame_times(param);
-	if (data->utils.global_frame % 100 == 0)
 	{
-		screenshot(data);
+		frame_times(param);
+		if (data->utils.global_frame % 100 == 0)
+			screenshot(data);
 	}
 	data->utils.accumulated_frames++;
-	data->utils.global_frame ++;
+	data->utils.global_frame++;
+
+	//print cam direction
+	// printf("camera direction: %f %f %f\n", data->scene.camera.dir[X], data->scene.camera.dir[Y], data->scene.camera.dir[Z]);
 }

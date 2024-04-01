@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 21:53:27 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:53:26 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/03/28 15:35:52 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_aabb	calculate_sphere_aabb_f(t_sphere *spheres, uint32_t start, \
 
 	aabb.min_f = spheres[start].pos_f;
 	aabb.max_f = spheres[start].pos_f;
-	while (start < end && start < vec_length(&spheres))
+	while (start < end && start < (uint32_t)vec_length(&spheres))
 	{
 		temp = spheres[start].pos_f + spheres[start].radius;
 		aabb.max_f[X] = fmaxf(temp[X], aabb.max_f[X]);

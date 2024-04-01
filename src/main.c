@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/03/07 18:25:02 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/03/28 21:59:03 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,14 @@ const char	*get_path(void)
 	const char	*file4 = "assets/maps/map1.rt";
 	const char	*file5 = "assets/maps/uv.rt";
 	const char	*file6 = "assets/maps/cy.rt";
-	return (file6);
+	const char	*file7 = "assets/maps/basic/multi-light.rt";
+	const char	*file8 = "assets/maps/basic/sphere.rt";
+	const char	*file9 = "assets/maps/basic/cylinder.rt";
+	const char	*file10 = "assets/maps/basic/random.rt";
+	const char	*file11 = "assets/maps/demo.rt";
+	const char	*file12 = "assets/maps/spheres.rt";
+	const char	*file13 = "assets/maps/glass-demo.rt";
+	return (file13);
 }
 
 int	main(int argc, char *argv[])

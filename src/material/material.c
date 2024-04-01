@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/01/25 23:15:41 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/03/28 18:27:23 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,19 @@ t_vec3f	sample_texture(mlx_texture_t *tex, const t_barycentric *c, \
 			const float *uvs)
 {
 	t_vec3f		color;
-	int			x;
-	int			y;
+	uint32_t	x;
+	uint32_t	y;
 	const float	tex_u = c->w * uvs[0] + c->u * uvs[2] + c->v * uvs[4];
 	const float	tex_v = c->w * uvs[1] + c->u * uvs[3] + c->v * uvs[5];
 
 	x = (int)(tex_u * (tex->width - 1));
 	y = (int)((1 - tex_v) * (tex->height - 1));
-	if (x < 0)
-		x = 0;
-	else if (x >= tex->width)
-		x = tex->width - 1;
-	if (y < 0)
-		y = 0;
-	else if (y >= tex->height)
-		y = tex->height - 1;
+	// if (x >= tex->width)
+	// 	x = tex->width - 1;
+	// if (y >= tex->height)
+	// 	y = tex->height - 1;
+	x = x % tex->width;
+	y = y % tex->height;
 	x = (y * tex->width + x) * tex->bytes_per_pixel;
 	color[R] = tex->pixels[x] / 255.0f;
 	color[G] = tex->pixels[x + 1] / 255.0f;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   triangle.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/20 15:41:10 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/03/28 15:37:28 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ bool	single_triangle_intersection(t_rayf ray, t_hitinfo *hitinfo, \
 static bool	triangle_intersection(t_rayf ray, t_scene *scene, \
 	uint32_t mesh_idx, t_hitinfo *hitinfo)
 {
-	int	face;
+	uint32_t	face;
 
 	face = 0;
 	while (face < scene->tri_meshes[mesh_idx].num_faces)
@@ -124,7 +124,7 @@ static t_hitinfo	traverse_tree(t_rayf ray, t_mesh_utils u, \
 t_hitinfo	triangle_bvh_intersection(t_rayf ray, t_mesh_utils u, \
 	t_bvh_node *node, t_scene *scene)
 {
-	int			face;
+	uint32_t	face;
 	float		t;
 
 	if (!node)
