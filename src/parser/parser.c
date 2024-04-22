@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/03/08 03:48:06 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 21:50:10 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,44 @@ void	init_scene_vec(t_scene *scene)
 	vec_init(&scene->cylinders, 8, sizeof(t_cylinder));
 }
 
+bool	parse_type(char *line, t_scene *scene)
+{
+	char	**split;
+
+	line = str_replace_char(line, '\t', ' ');
+	line = str_replace_char(line, '\n', '\0');
+	split = ft_split(line, ' ');
+	if (split == NULL)
+	{
+		free(line);
+		return (false);
+	}
+	if (check_type(scene, split) == false)
+	{
+		ft_split_free(split);
+		free(line);
+		return (false);
+	}
+	ft_split_free(split);
+	free(line);
+	return (true);
+}
+
+void	cleanup_gnl(char *line, int fd)
+{
+	while (true)
+	{
+		line = get_next_line(fd);
+		if (line == NULL)
+			break ;
+		free(line);
+	}
+}
+
 bool	parse_map(t_scene *scene, const char *file)
 {
 	int		fd;
 	char	*line;
-	char	**split;
 	bool	valid;
 
 	fd = open(file, O_RDONLY);
@@ -71,28 +104,11 @@ bool	parse_map(t_scene *scene, const char *file)
 			return (close(fd), true);
 		if (line[0] != '#' && line[0] != '\n')
 		{
-			line = str_replace_char(line, '\t', ' ');
-			line = str_replace_char(line, '\n', '\0');
-			split = ft_split(line, ' ');
-			if (split == NULL)
-			{
-				free(line);
-				valid = false;
+			if (parse_type(line, scene) == false)
 				break ;
-			}
-			if (check_type(scene, split) == false)
-				valid = false;
-			ft_split_free(split);
 		}
-		free(line);
 	}
-	while (true)
-	{
-		line = get_next_line(fd);
-		if (line == NULL)
-			break ;
-		free(line);
-	}
+	cleanup_gnl(line, fd);
 	close(fd);
 	return (valid);
 }

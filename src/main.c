@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/04/22 16:21:40 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/04/22 21:52:39 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool	init_buffers(t_data *data)
+void	init_buffers(t_data *data)
 {
 	data->utils.width = WIDTH;
 	data->utils.height = HEIGHT;
@@ -22,7 +22,6 @@ bool	init_buffers(t_data *data)
 	data->utils.accumulated_data = malloc(sizeof(t_vec4f) * WIDTH * HEIGHT);
 	if (!data->utils.accumulated_data || !data->scene.camera.ray_dir)
 		exit_error(MALLOC, "init buffers");
-	return (true);
 }
 
 bool	init_bvh(t_data *data)
@@ -44,9 +43,39 @@ bool	init_bvh(t_data *data)
 	return (true);
 }
 
-//TODO
-bool	valid_input(int argc, char *argv[])
+bool	check_file_extension(const char *file, const char *ext)
 {
+	size_t	i;
+	size_t	len;
+	size_t	ext_len;
+
+	len = ft_strlen(file);
+	ext_len = ft_strlen(ext);
+	if (len < ext_len)
+		return (false);
+	i = 0;
+	while (i < ext_len)
+	{
+		if (file[len - ext_len + i] != ext[i])
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+bool	valid_input(int argc, char **argv)
+{
+	if (argc != 2)
+	{
+		*error() = ARGC;
+		return (false);
+	}
+	if (check_file_extension(argv[1], ".rt") == false)
+	{
+		*error() = FILE_EXT;
+		return (false);
+	}
+	
 	return (true);
 }
 
@@ -72,20 +101,20 @@ void	null_init(t_data *data)
 const char	*get_path(void)
 {
 	
-	const char	*file1 = "assets/maps/fresnel.rt"; // render skybox - false
-	const char	*file2 = "assets/maps/obj.rt";
-	const char	*file3 = "assets/maps/owl.rt";
-	const char	*file4 = "assets/maps/map1.rt";
-	const char	*file5 = "assets/maps/uv.rt";
-	const char	*file6 = "assets/maps/cy.rt";
+	// const char	*file1 = "assets/maps/fresnel.rt"; // render skybox - false
+	// const char	*file2 = "assets/maps/obj.rt";
+	// const char	*file3 = "assets/maps/owl.rt";
+	// const char	*file4 = "assets/maps/map1.rt";
+	// const char	*file5 = "assets/maps/uv.rt";
+	// const char	*file6 = "assets/maps/cy.rt";
 	const char	*file7 = "assets/maps/basic/multi-light.rt";
-	const char	*file8 = "assets/maps/basic/sphere.rt";
-	const char	*file9 = "assets/maps/basic/cylinder.rt";
-	const char	*file10 = "assets/maps/basic/random.rt";
-	const char	*file11 = "assets/maps/demo.rt";
-	const char	*file12 = "assets/maps/spheres.rt";
-	const char	*file13 = "assets/maps/glass-demo.rt";
-	return (file12);
+	// const char	*file8 = "assets/maps/basic/sphere.rt";
+	// const char	*file9 = "assets/maps/basic/cylinder.rt";
+	// const char	*file10 = "assets/maps/basic/random.rt";
+	// const char	*file11 = "assets/maps/demo.rt";
+	// const char	*file12 = "assets/maps/spheres.rt";
+	// const char	*file13 = "assets/maps/glass-demo.rt";
+	return (file7);
 }
 
 int	main(int argc, char *argv[])
@@ -97,10 +126,7 @@ int	main(int argc, char *argv[])
 	null_init(&data);
 	init_camera(&data.scene.camera);
 	if (parse_map(&data.scene, get_path()) == false)
-	{
-		free_parser(&data.scene);
 		exit_error(*error(), "parse map");
-	}
 	init_buffers(&data);
 	init_bvh(&data);
 	recalculate_view(&data);

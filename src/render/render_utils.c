@@ -6,13 +6,13 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 21:14:35 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 21:50:31 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vec3f	default_skyf(t_vec3f direction, t_scene scene)
+t_vec3f	default_skyf(t_vec3f direction)
 {
 	t_vec3f	sky;
 	float	t;

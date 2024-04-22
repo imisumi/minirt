@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:23:41 by ichiro            #+#    #+#             */
-/*   Updated: 2024/04/22 12:58:36 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/04/22 19:26:50 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void	movement(t_data *data)
 		data->scene.camera.prev_mouse_pos[Y] = -1;
 		data->scene.camera.mouse_pos[X] = 0;
 		data->scene.camera.mouse_pos[Y] = 0;
-		// data->utils.prev_frame = glfwGetTime();
 		data->utils.prev_frame = mlx_get_time();
 		return ;
 	}
@@ -63,7 +62,4 @@ void	render_loop(void *param)
 	}
 	data->utils.accumulated_frames++;
 	data->utils.global_frame++;
-
-	//print cam direction
-	// printf("camera direction: %f %f %f\n", data->scene.camera.dir[X], data->scene.camera.dir[Y], data->scene.camera.dir[Z]);
 }

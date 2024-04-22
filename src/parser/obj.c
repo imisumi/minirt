@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/03/28 15:39:18 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 19:28:17 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,11 @@ static bool	get_mesh_materials(t_scene *scene, fastObjMesh *mesh)
 			{mat.Ke[0], mat.Ke[1], mat.Ke[2]};
 		if (mat.Ke[0] > 0.0f || mat.Ke[1] > 0.0f || mat.Ke[2] > 0.0f)
 			scene->materials[i].emission_strength = 10.0f;
-		if (load_texture(&scene->materials[i].color_tex, mesh->materials[i].map_Kd.path) == false)
+		if (load_texture(&scene->materials[i].color_tex, \
+			mesh->materials[i].map_Kd.path) == false)
 			return (false);
-		if (load_texture(&scene->materials[i].normal_tex, mesh->materials[i].map_bump.path) == false)
+		if (load_texture(&scene->materials[i].normal_tex, \
+			mesh->materials[i].map_bump.path) == false)
 			return (false);
 		i++;
 	}

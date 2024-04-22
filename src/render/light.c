@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 20:33:16 by ichiro            #+#    #+#             */
-/*   Updated: 2024/03/28 15:39:43 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 20:02:46 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,10 @@ static float	vec3_cosine_angle(t_vec3f v1, t_vec3f v2)
 	return (vec3f_dot(v1, v2) / (vec3f_length(v1) * vec3f_length(v2)));
 }
 
-static float	calculate_falloff(t_vec3f light_pos, t_vec3f surface_point)
-{
-	const float	distance_squared = powf(light_pos[X] - surface_point[X], 2) + \
-							powf(light_pos[Y] - surface_point[Y], 2) + \
-							powf(light_pos[Z] - surface_point[Z], 2);
-
-	return (1.0f / powf(distance_squared, 2.0f));
-}
-
 static void	calculate_lighting(t_hitinfo *hitinfo, t_scene *scene, \
 	t_light_utils *u)
 {
 	float		attenuation;
-	// float		falloff;
 	float		intensity;
 	const float	distance_to_light = vec3f_distance(hitinfo->position, \
 		u->sphere.pos_f);
@@ -39,7 +29,6 @@ static void	calculate_lighting(t_hitinfo *hitinfo, t_scene *scene, \
 	if (cosine > 0.0f)
 	{
 		attenuation = cosine / (distance_to_light * distance_to_light);
-		// falloff = calculate_falloff(u->sphere.pos_f, hitinfo->position);
 		intensity = cosine * attenuation * scene->point_lights[u->i].intensity;
 		u->diffuse_contribution += (scene->point_lights[u->i].color * \
 			intensity);

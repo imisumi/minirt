@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 23:09:09 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 21:18:02 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 21:51:17 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void	thread_create(t_thread *threads, t_data *data)
 static void	create_threads(t_data *data)
 {
 	t_thread	threads[THREADS];
-	uint32_t	step_x;
 	int			i;
 
 	thread_create(threads, data);

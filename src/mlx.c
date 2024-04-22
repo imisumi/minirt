@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/18 03:33:48 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 19:46:02 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 bool	setup_mlx(t_data *data)
 {
-	bool	resizeble;
-
-	resizeble = false;
 	if (PIXEL_SIZE == 1)
-		resizeble = true;
-	data->mlx = mlx_init(WIDTH * PIXEL_SIZE, HEIGHT * PIXEL_SIZE, \
-		"Ray Tracer", resizeble);
+		data->mlx = mlx_init(WIDTH * PIXEL_SIZE, HEIGHT * PIXEL_SIZE, \
+		"Ray Tracer", true);
+	else
+		data->mlx = mlx_init(WIDTH * PIXEL_SIZE, HEIGHT * PIXEL_SIZE, \
+		"Ray Tracer", false);
 	if (data->mlx == NULL)
 	{
 		*error() = MLX_INIT;
@@ -45,10 +44,7 @@ bool	setup_mlx(t_data *data)
 bool	run_mlx(t_data *data)
 {
 	if (setup_mlx(data) == false)
-	{
-		print_error("Error");
-		return (EXIT_FAILURE);
-	}
+		return (false);
 	mlx_loop_hook(data->mlx, render_loop, data);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);

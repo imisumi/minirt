@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:26:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/03/28 18:27:23 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 19:26:24 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,6 @@ t_vec3f	sample_texture(mlx_texture_t *tex, const t_barycentric *c, \
 
 	x = (int)(tex_u * (tex->width - 1));
 	y = (int)((1 - tex_v) * (tex->height - 1));
-	// if (x >= tex->width)
-	// 	x = tex->width - 1;
-	// if (y >= tex->height)
-	// 	y = tex->height - 1;
 	x = x % tex->width;
 	y = y % tex->height;
 	x = (y * tex->width + x) * tex->bytes_per_pixel;
@@ -44,7 +40,8 @@ t_vec3f	sample_texture(mlx_texture_t *tex, const t_barycentric *c, \
 void	set_tri_material(t_hitinfo *hitinfo, t_scene *s, \
 			int m_f_idx[2], float uv[2])
 {
-	const uint32_t		mat_index = s->tri_meshes[m_f_idx[0]].mat_idx[m_f_idx[1]];
+	const uint32_t		mat_index = \
+		s->tri_meshes[m_f_idx[0]].mat_idx[m_f_idx[1]];
 	const t_barycentric	bary_coords = {uv[0], uv[1], 1.0f - uv[0] - uv[1]};
 	const float			uvs[6] = {
 		s->tex_coords[s->tri_meshes[m_f_idx[0]].vt_idx[m_f_idx[1]][0] * 2],
@@ -58,10 +55,12 @@ void	set_tri_material(t_hitinfo *hitinfo, t_scene *s, \
 	hitinfo->material = s->materials[mat_index];
 	if (s->materials[mat_index].normal_tex)
 	{
-		normal_color = sample_texture(s->materials[mat_index].normal_tex, &bary_coords, uvs);
+		normal_color = sample_texture(s->materials[mat_index].normal_tex, \
+			&bary_coords, uvs);
 		normal_color = 2.0f * normal_color - 1.0f;
 		hitinfo->normal = vec3f_normalize(hitinfo->normal + normal_color);
 	}
 	if (s->materials[mat_index].color_tex)
-		hitinfo->material.color = sample_texture(s->materials[mat_index].color_tex, &bary_coords, uvs);
+		hitinfo->material.color = sample_texture(\
+		s->materials[mat_index].color_tex, &bary_coords, uvs);
 }

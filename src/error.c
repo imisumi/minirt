@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/18 03:42:16 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 20:12:29 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,22 @@ t_error	*error(void)
 	static t_error	error = NO_ERROR;
 
 	return (&error);
+}
+
+void asdasd(const char *error_strings[], const char *msg)
+{
+	if (*error() == NO_ERROR)
+	{
+		if (msg)
+			printf("%s\n", msg);
+	}
+	else
+	{
+		if (msg)
+			printf("%s: %s\n", msg, error_strings[*error()]);
+		else
+			printf("%s\n", error_strings[*error()]);
+	}
 }
 
 bool	print_error(const char *msg)
@@ -31,20 +47,24 @@ bool	print_error(const char *msg)
 	[THREAD_CREATE] = "Thread creation error",
 	[THREAD_JOIN] = "Thread join error",
 	[TEXTURE_LOAD] = "Texture load error",
-	[OBJ_LOAD] = "Obj load error",};
+	[OBJ_LOAD] = "Obj load error",
+	[ARGC] = "Invalid number of arguments, expected: ./miniRT <scene.rt>",
+	[FILE_EXT] = "Invalid file extension, expected: .rt",
+	};
 
-	if (*error() == NO_ERROR)
-	{
-		if (msg)
-			printf("%s\n", msg);
-	}
-	else
-	{
-		if (msg)
-			printf("%s: %s\n", msg, error_strings[*error()]);
-		else
-			printf("%s\n", error_strings[*error()]);
-	}
+	asdasd(error_strings, msg);
+	// if (*error() == NO_ERROR)
+	// {
+	// 	if (msg)
+	// 		printf("%s\n", msg);
+	// }
+	// else
+	// {
+	// 	if (msg)
+	// 		printf("%s: %s\n", msg, error_strings[*error()]);
+	// 	else
+	// 		printf("%s\n", error_strings[*error()]);
+	// }
 	return (false);
 }
 

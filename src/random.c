@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:03:04 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/18 03:33:31 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 21:54:02 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ uint32_t	get_rngstate(uint32_t width, uint32_t height, \
 	return (pixel_index + frame * 719393);
 }
 
-static t_vec2f	random_point_in_circle_f(uint32_t *state)
-{
-	const float		angle = random_float(state) * TWO_PI;
-	const t_vec2f	point_on_circle_f = {cosf(angle), sinf(angle)};
+// static t_vec2f	random_point_in_circle_f(uint32_t *state)
+// {
+// 	const float		angle = random_float(state) * TWO_PI;
+// 	const t_vec2f	point_on_circle_f = {cosf(angle), sinf(angle)};
 
-	return (point_on_circle_f * sqrtf(random_float(state)));
-}
+// 	return (point_on_circle_f * sqrtf(random_float(state)));
+// }
 
-const float	random_value_normal_distribution(uint32_t *state)
+static float	random_value_normal_distribution(uint32_t *state)
 {
 	const float	theta = TWO_PI * random_float(state);
 	float		rand_float;

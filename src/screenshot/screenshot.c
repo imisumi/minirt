@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 20:56:34 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/17 16:56:48 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 21:51:04 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	screenshot(t_data *data)
 	const size_t	size = data->utils.width * data->utils.height * 4;
 	uint8_t			*image;
 	t_vec4f			color;
-	int				i;
+	size_t			i;
 	int				j;
 
 	image = malloc(size);
