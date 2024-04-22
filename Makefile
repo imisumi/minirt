@@ -6,23 +6,20 @@
 #    By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2024/03/28 17:06:41 by imisumi-wsl      ###   ########.fr        #
+#    Updated: 2024/04/22 21:47:03 by imisumi-wsl      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = miniRT
 
 CFLAGS = -I$(INCDIR)
-# CFLAGS += -I./lib/MLX42/include/MLX42
 CFLAGS += -I./lib/libft/includes/
 CFLAGS += -I./lib/lib3d/includes/
 CFLAGS += -I./lib/MLX42/include/
-CFLAGS += -I./tinyEXR/
-
-# CFLAGS = -I./includes
+CFLAGS += -I./lib/tinyEXR/
 
 CC = gcc -O2
-# CC += -Wall -Wextra -Werror
+CC += -Wall -Wextra -Werror
 # CC += -g -fsanitize=thread -pthread
 # CC += -Wuninitialized -Wall -Wextra -Werror
 
@@ -33,6 +30,7 @@ OBJDIR		:= .obj
 MLX = lib/MLX42/build/libmlx42.a
 LIBFT = lib/libft/libft.a
 LIB3D = lib/lib3d/lib3d.a
+TINYEXR = ./lib/tinyEXR/tinyexr.o ./lib/tinyEXR/dep/miniz.o
 
 SOURCES		= $(wildcard $(SRCDIR)/**/*.c) $(wildcard $(SRCDIR)/*.c)
 SOURCES += ./lib/MLX42/lib/png/lodepng.c
@@ -45,12 +43,11 @@ GREEN=\033[0;32m
 NC=\033[0m
 
 #	MLX42
-LFLAGS = -lglfw -L./lib/MLX42/build/ -lmlx42 -g
+LFLAGS = -lglfw -L./lib/MLX42/build/ -lmlx42
 #	libft
 LFLAGS += -L./lib/libft/ -lft
 #	lib3d
 LFLAGS += -L./lib/lib3d/ -l3d
-
 # c++ for tinyexr
 LFLAGS += -lstdc++
 
@@ -64,34 +61,9 @@ LFLAGS += -ldl -lglfw -pthread -lm
 $(info x86_64)
 endif
 
-# tinyEXR:
-# 	$(MAKE) -C tinyEXR
-
-
-# include ./tinyEXR/Makefile
-
-# $(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D)
-# 	$(CC) $(CFLAGS) $(LFLAGS) $^ -o $@ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -lstdc++ $(LFLAGS)
-
-# OBJECTS += ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o
-
-TINYEXR = ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o
-
-$(TINYEXR):
-	$(MAKE) -C tinyEXR
-	$(MAKE) -C tinyEXR/dep
-	$(eval OBJECTS += ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o)
-
-# tinyEXR:
-# 	$(MAKE) -C tinyEXR
 
 $(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D) $(TINYEXR)
 	@$(CC) $(CFLAGS) $^ -o $@ $(LFLAGS)
-# $(CC) $(CFLAGS) $^ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -o $@ -lstdc++ $(LFLAGS)
-
-
-# $(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D)
-# 	$(CC) $(CFLAGS) $(LFLAGS) $^ -o $@ $(LFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
@@ -107,10 +79,16 @@ $(LIBFT):
 
 $(LIB3D):
 	@$(MAKE) -C lib/lib3d
-# -I./tinyEXR/ -I./tinyEXR/dep/ ./tinyEXR/tinyexr.o ./tinyEXR/dep/miniz.o -lstdc++
+
+$(TINYEXR):
+	$(MAKE) -C lib/tinyEXR/dep
+	$(MAKE) -C lib/tinyEXR
+	$(eval OBJECTS += ./lib/tinyEXR/tinyexr.o ./lib/tinyEXR/dep/miniz.o)
+
+	
 all: $(NAME)
 	@echo "$(GREEN)[Compiled $(NAME)]$(NC)"
-#	@$(CC) -O3 $(CFLAGS) $(LFLAGS) $(SOURCES)
+
 
 run: all
 	./$(NAME)
@@ -130,5 +108,11 @@ fclean: clean
 	@echo "$(RED)[Deleted $(NAME)]$(NC)"
 
 re: fclean all
+
+libclean:
+	$(MAKE) -C lib/tinyEXR clean
+	$(MAKE) -C lib/tinyEXR/dep clean
+	$(MAKE) -C lib/lib3d fclean
+	$(MAKE) -C lib/libft fclean
 
 .PHONY: all clean fclean re

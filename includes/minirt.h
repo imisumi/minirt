@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#             */
-/*   Updated: 2024/04/22 13:51:42 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/04/22 21:50:44 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ float		aabb_intersection_f(t_rayf ray, t_aabb aabb);
 t_hitinfo	sphere_bvh_intersection_f(t_rayf ray, t_sphere *spheres, t_hitinfo hitinfo, t_bvh_node *node);
 t_vec3f	aa_update_dir(t_data *data, uint32_t *rng, uint32_t x, uint32_t y);
 t_vec4f	vec3f_tone_map(t_vec3f color);
-t_vec3f	default_skyf(t_vec3f direction, t_scene scene);
+t_vec3f	default_skyf(t_vec3f direction);
 // t_vec3f omni_dir_light_f(t_rayf ray, t_scene *scene, t_hitinfo closest_hit);
 
 
@@ -398,7 +398,7 @@ void	update_ray(t_rayf *ray, t_hitinfo *hitinfo, uint32_t *rngState, \
 					t_vec3f *ray_color);
 
 //? render_utils.c
-t_vec3f	default_skyf(t_vec3f direction, t_scene scene);
+t_vec3f	default_skyf(t_vec3f direction);
 t_hitinfo	new_hitinfo(void);
 // static float	lerpf(float a, float b, float t);
 float	fresnel_reflect_amount(float n1, float n2, float cosx, float f0);

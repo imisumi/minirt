@@ -6,7 +6,7 @@
 /*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/03/08 01:28:32 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 20:11:30 by imisumi-wsl      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ typedef enum error
 	THREAD_JOIN,
 	TEXTURE_LOAD,
 	OBJ_LOAD,
+	ARGC,
+	FILE_EXT,
 	ERROR_COUNT,
 }	t_error;
 
