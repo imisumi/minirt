@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/03/28 21:59:03 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/04/22 16:21:40 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ const char	*get_path(void)
 	const char	*file11 = "assets/maps/demo.rt";
 	const char	*file12 = "assets/maps/spheres.rt";
 	const char	*file13 = "assets/maps/glass-demo.rt";
-	return (file13);
+	return (file12);
 }
 
 int	main(int argc, char *argv[])

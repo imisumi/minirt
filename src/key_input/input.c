@@ -6,7 +6,7 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 20:36:00 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/12 15:13:23 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/04/22 12:51:50 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	detect_cam_movement(t_data *data, t_vec3f right_dir, bool *moved)
 	const float		speed = time_delta(data->utils.prev_frame) * 10.0f;
 	const t_vec3f	up_direction = {0.0f, 1.0f, 0.0f, 0.0f};
 
-	data->utils.prev_frame = glfwGetTime();
+	data->utils.prev_frame = mlx_get_time();
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 		update_cam_pos(data, data->scene.camera.dir * speed, moved);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
