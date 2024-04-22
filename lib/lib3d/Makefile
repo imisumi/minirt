@@ -6,12 +6,12 @@
 #    By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/07 14:31:38 by imisumi           #+#    #+#              #
-#    Updated: 2024/02/05 14:52:22 by imisumi          ###   ########.fr        #
+#    Updated: 2024/04/22 16:12:42 by imisumi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:=	lib3d.a
-CC			:=	gcc
+CC			:=	gcc -Wall -Werror -Wextra
 CFLAGS 		:=	-g -O2 #-pg
 LFLAGS		:=	-lm
 
@@ -28,9 +28,14 @@ QUAT_DIR	:=	$(SRC_DIR)quat/
 
 SRCS		:=	$(VEC2_DIR)vec2.c \
 				$(VEC3_DIR)vec3.c \
+				$(VEC3_DIR)vec3_2.c \
+				$(VEC3_DIR)vec3_3.c \
 				$(VEC4_DIR)vec4.c \
 				$(MAT4_DIR)mat4.c \
-				$(QUAT_DIR)quat.c
+				$(MAT4_DIR)mat4_2.c \
+				$(MAT4_DIR)mat4_3.c \
+				$(QUAT_DIR)quat.c \
+				$(QUAT_DIR)quat_2.c
 
 
 INCLUDES	:=	$(addprefix -I, $(sort $(dir $(HEADERS))))
