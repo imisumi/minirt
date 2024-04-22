@@ -1,8 +1,0 @@
-# Contents of my_suppressions.supp
-{
-    obj_loader
-    Memcheck:Leak
-    ...
-    fun:tinyobj_parse_obj
-    ...
-}
