@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/04/22 20:11:30 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/05/02 11:02:34 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -400,6 +400,21 @@ typedef struct s_aces
 	float	d;
 	float	e;
 }	t_aces;
+
+typedef struct s_cylinder_utils
+{
+	t_quat	q;
+	t_vec3f	oo;
+	t_vec3f	od;
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
+	float	half_height;
+	float	y;
+	float	t1;
+	float	t2;
+}	t_cylinder_utils;
 
 //?
 

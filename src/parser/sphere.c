@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 22:16:16 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/05/02 12:40:56 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ bool	parse_sphere(t_scene *scene, char **split)
 	t_sphere		sphere;
 	const uint32_t	arg_count = ft_split_count(split);
 
+	if (!BONUS && arg_count != 4)
+		return (print_error("sphere arg count"));
 	if (arg_count != 4 && arg_count != 12)
 		return (print_error("sphere arg count"));
 	if (parse_vec3(split[1], &sphere.pos_f) == false)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/04/22 21:52:39 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/05/02 11:18:17 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,9 @@ int	main(int argc, char *argv[])
 		return (print_error("Error"));
 	null_init(&data);
 	init_camera(&data.scene.camera);
-	if (parse_map(&data.scene, get_path()) == false)
+	// if (parse_map(&data.scene, get_path()) == false)
+	// 	exit_error(*error(), "parse map");
+	if (parse_map(&data.scene, argv[1]) == false)
 		exit_error(*error(), "parse map");
 	init_buffers(&data);
 	init_bvh(&data);

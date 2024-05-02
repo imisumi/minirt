@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/03/07 18:08:07 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/05/02 14:18:42 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ bool	parse_plane(char **split, t_scene *scene)
 	t_inv_plane		plane;
 	const uint32_t	arg_count = ft_split_count(split);
 
+	if (!BONUS && arg_count != 4)
+		return (print_error("plane arg count"));
 	if (arg_count != 4 && arg_count != 6)
 		return (print_error("plane arg count"));
 	if (parse_vec3(split[1], &plane.position) == false)

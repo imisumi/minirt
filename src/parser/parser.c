@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/04/22 21:50:10 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/05/02 12:36:55 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,12 @@ bool	parse_map(t_scene *scene, const char *file)
 {
 	int		fd;
 	char	*line;
-	bool	valid;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (false);
 	init_scene_vec(scene);
-	valid = true;
-	while (valid)
+	while (true)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
@@ -105,10 +103,14 @@ bool	parse_map(t_scene *scene, const char *file)
 		if (line[0] != '#' && line[0] != '\n')
 		{
 			if (parse_type(line, scene) == false)
-				break ;
+			{
+				cleanup_gnl(line, fd);
+				close(fd);
+				return (false);
+			}
 		}
 	}
 	cleanup_gnl(line, fd);
 	close(fd);
-	return (valid);
+	return (true);
 }

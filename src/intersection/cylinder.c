@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:36:28 by ichiro            #+#    #+#             */
-/*   Updated: 2024/03/08 03:46:31 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/05/02 11:52:57 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,6 @@
 
 #define TOP_CAP 1
 #define BOTTOM_CAP 0
-
-typedef struct s_cylinder_utils
-{
-	t_quat	q;
-	t_vec3f	oo;
-	t_vec3f	od;
-	float	a;
-	float	b;
-	float	c;
-	float	discriminant;
-	float	half_height;
-	float	y;
-	float	t1;
-	float	t2;
-}	t_cylinder_utils;
 
 static void	init_cylinder_data(t_rayf ray, t_cylinder cy, t_cylinder_utils *u)
 {

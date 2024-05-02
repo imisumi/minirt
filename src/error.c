@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/04/22 20:12:29 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/05/02 11:06:52 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_error	*error(void)
 	return (&error);
 }
 
-void asdasd(const char *error_strings[], const char *msg)
+static void	write_error(const char *error_strings[], const char *msg)
 {
 	if (*error() == NO_ERROR)
 	{
@@ -52,19 +52,7 @@ bool	print_error(const char *msg)
 	[FILE_EXT] = "Invalid file extension, expected: .rt",
 	};
 
-	asdasd(error_strings, msg);
-	// if (*error() == NO_ERROR)
-	// {
-	// 	if (msg)
-	// 		printf("%s\n", msg);
-	// }
-	// else
-	// {
-	// 	if (msg)
-	// 		printf("%s: %s\n", msg, error_strings[*error()]);
-	// 	else
-	// 		printf("%s\n", error_strings[*error()]);
-	// }
+	write_error(error_strings, msg);
 	return (false);
 }
 

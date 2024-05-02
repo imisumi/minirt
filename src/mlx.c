@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/04/22 19:46:02 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/05/02 11:22:58 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ bool	setup_mlx(t_data *data)
 {
 	if (PIXEL_SIZE == 1)
 		data->mlx = mlx_init(WIDTH * PIXEL_SIZE, HEIGHT * PIXEL_SIZE, \
-		"Ray Tracer", true);
+		"miniRT", true);
 	else
 		data->mlx = mlx_init(WIDTH * PIXEL_SIZE, HEIGHT * PIXEL_SIZE, \
-		"Ray Tracer", false);
+		"miniRT", false);
 	if (data->mlx == NULL)
 	{
 		*error() = MLX_INIT;

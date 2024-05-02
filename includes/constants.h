@@ -6,20 +6,18 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/04/22 12:57:51 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/05/02 11:31:10 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONSTANTS_H
 # define CONSTANTS_H
 
-# define BONUS 1
-
-// # define MT
+# define BONUS 0
 
 # if BONUS == 0
 #  define MT 0
-#  define PIXEL_SIZE 2
+#  define PIXEL_SIZE 1
 #  define USE_BVH 0
 # else
 #  define MT 1
