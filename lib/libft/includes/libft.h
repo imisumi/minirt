@@ -6,7 +6,7 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 16:23:26 by imisumi           #+#    #+#             */
-/*   Updated: 2023/01/31 12:57:19 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/06/03 11:47:31 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,5 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
-
 
 #endif

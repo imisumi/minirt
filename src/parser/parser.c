@@ -6,7 +6,7 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/05/02 12:36:55 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/06/03 12:38:15 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #define HDRI      "HDRI"
 #define OBJ       "OBJ"
 
-bool	check_type(t_scene *scene, char **type)
+static bool	check_type(t_scene *scene, char **type)
 {
 	if (ft_strcmp(type[0], SPHERE))
 		return (parse_sphere(scene, type));
@@ -43,7 +43,7 @@ bool	check_type(t_scene *scene, char **type)
 	return (false);
 }
 
-void	init_scene_vec(t_scene *scene)
+static void	init_scene_vec(t_scene *scene)
 {
 	vec_init(&scene->spheres, 8, sizeof(t_sphere));
 	vec_init(&scene->inv_planes, 8, sizeof(t_inv_plane));
@@ -52,7 +52,7 @@ void	init_scene_vec(t_scene *scene)
 	vec_init(&scene->cylinders, 8, sizeof(t_cylinder));
 }
 
-bool	parse_type(char *line, t_scene *scene)
+static bool	parse_type(char *line, t_scene *scene)
 {
 	char	**split;
 
@@ -75,7 +75,7 @@ bool	parse_type(char *line, t_scene *scene)
 	return (true);
 }
 
-void	cleanup_gnl(char *line, int fd)
+static void	cleanup_gnl(char *line, int fd)
 {
 	while (true)
 	{

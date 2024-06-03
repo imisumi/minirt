@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   obj.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/04/22 19:28:17 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/06/03 12:37:24 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define FAST_OBJ_IMPLEMENTATION
 #include "fast_obj.h"
-
 #include "minirt.h"
 
 static bool	load_mesh_materials(t_scene *scene, fastObjMesh *mesh)

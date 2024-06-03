@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:35:45 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/06/03 11:58:09 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	init_camera(t_camera *cam)
 	cam->view = mat4_identity();
 	cam->inv_view = mat4_identity();
 	cam->vertical_fov = 45.0f;
-	cam->aspectRatio = (float)WIDTH / (float)HEIGHT;
-	cam->zNear = 0.1f;
-	cam->zFar = 1000.0f;
+	cam->aspect_ratio = (float)WIDTH / (float)HEIGHT;
+	cam->z_near = 0.1f;
+	cam->z_far = 1000.0f;
 	cam->prev_mouse_pos[X] = -1;
 	cam->prev_mouse_pos[Y] = -1;
 }

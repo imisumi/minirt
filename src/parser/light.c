@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/03/28 15:38:57 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/06/03 12:34:26 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ bool	parse_light(char **split, t_scene *scene)
 	return (true);
 }
 
-bool	parse_load_hdri(const char *path, t_hdri *hdri)
+static bool	parse_load_hdri(const char *path, t_hdri *hdri)
 {
 	int			ret;
 	const char	*err;

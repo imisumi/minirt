@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   screenshot.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 20:56:34 by ichiro            #+#    #+#             */
-/*   Updated: 2024/04/22 21:51:04 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/06/03 12:16:28 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lodepng/lodepng.h"
 #include "minirt.h"
 
-void	image_flip_vertical(uint8_t *pixels, int width, int height)
+static void	image_flip_vertical(uint8_t *pixels, int width, int height)
 {
 	const uint32_t	row_size = width * 4;
 	uint8_t			*temp_row;

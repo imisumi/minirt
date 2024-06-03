@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+        */
+/*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:12 by ichiro            #+#    #+#             */
-/*   Updated: 2024/02/16 19:33:32 by imisumi-wsl      ###   ########.fr       */
+/*   Updated: 2024/06/03 11:58:32 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	recalculated_projection(t_data *d)
 	d->scene.camera.projection = mat4_perspective(\
 		fov_radians(d->scene.camera.vertical_fov), \
 		(float)d->utils.width / (float)d->utils.height, \
-		d->scene.camera.zNear, d->scene.camera.zFar);
+		d->scene.camera.z_near, d->scene.camera.z_far);
 	d->scene.camera.inv_projection = mat4_inverse(d->scene.camera.projection);
 }
 

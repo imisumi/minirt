@@ -6,7 +6,7 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 00:41:53 by ichiro            #+#    #+#             */
-/*   Updated: 2024/05/02 11:02:34 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/06/03 11:59:31 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@
 
 # include <pthread.h>
 
-typedef struct s_data t_data;
-typedef struct s_bvh_node t_bvh_node;
+typedef struct s_data		t_data;
+typedef struct s_bvh_node	t_bvh_node;
+typedef uint32_t			t_vert_indices[3];
+typedef uint32_t			t_vec3ui[3];
 
 typedef enum error
 {
@@ -41,18 +43,6 @@ typedef enum error
 	FILE_EXT,
 	ERROR_COUNT,
 }	t_error;
-
-
-
-
-// typedef enum error
-// {
-// 	NO_ERROR = 0,
-// 	STOF,
-// 	VEC3_NAN,
-// 	VEC3_INF,
-// 	ERROR_COUNT
-// }	t_error;
 
 typedef struct s_tri_floats
 {
@@ -79,16 +69,6 @@ typedef struct s_barycentric
 	float	w;
 }	t_barycentric;
 
-typedef struct
-{
-	// t_vec3 position; // Position of the light source
-	// t_vec3 color;    // Color of the light
-	float intensity; // Intensity of the light
-
-	// t_vec3f	position_f;
-	// t_vec3f	color_f;
-}	t_omnidirectional_light;
-
 typedef struct t_thread
 {
 	pthread_t	tid;
@@ -99,7 +79,7 @@ typedef struct t_thread
 	uint32_t	y_end;
 
 	uint32_t	index;
-	
+
 	t_data		*data;
 }	t_thread;
 
@@ -111,9 +91,9 @@ typedef struct s_camera
 	t_mat4	inv_view;
 
 	float	vertical_fov;
-	float	aspectRatio;
-	float	zNear;
-	float	zFar;
+	float	aspect_ratio;
+	float	z_near;
+	float	z_far;
 
 	t_vec3f	position;
 	t_vec3f	dir;
@@ -137,67 +117,44 @@ typedef struct s_render_block
 
 typedef struct s_utils
 {
-	pthread_t			threads[THREADS];
-	t_render_block		blocks[THREADS];
-	pthread_mutex_t		mutex;
-	uint32_t			accumulated_frames;
-	uint32_t			global_frame;
+	pthread_t		threads[THREADS];
+	t_render_block	blocks[THREADS];
+	pthread_mutex_t	mutex;
+	uint32_t		accumulated_frames;
+	uint32_t		global_frame;
 
-	t_vec4f				*accumulated_data;
-	double				prev_frame;
+	t_vec4f			*accumulated_data;
+	double			prev_frame;
 
-	uint32_t			width;
-	uint32_t			height;
-}				t_utils;
+	uint32_t		width;
+	uint32_t		height;
+}					t_utils;
 
 typedef struct s_material
 {
-	t_vec3f		color;
+	t_vec3f			color;
 	mlx_texture_t	*color_tex;
 	mlx_texture_t	*normal_tex;
-	
-	float		roughness;
-	
-	float		specular;
-	t_vec3f		specular_color;
-	// t_vec3		emission;
 
-	float		ior;
-	float		refraction;
-	float		refraction_roughness;
-	t_vec3f		refraction_color;
-	
-	float		emission_strength;
-	t_vec3f		emission_color;
+	float			roughness;
+
+	float			specular;
+	t_vec3f			specular_color;
+
+	float			ior;
+	float			refraction;
+	float			refraction_roughness;
+	t_vec3f			refraction_color;
+
+	float			emission_strength;
+	t_vec3f			emission_color;
 }	t_material;
-
 
 typedef struct s_aabb
 {
-	// t_vec3	min;
-	// t_vec3	max;
-
 	t_vec3f	min_f;
 	t_vec3f	max_f;
-}	t_aabb;
-
-typedef uint32_t	t_vert_indices[3];
-typedef uint32_t	t_vec3ui[3];
-
-// typedef struct t_tri
-// {
-// 	// t_vec3f			v[3];
-	
-// 	// t_vec3f			vt[3];
-// 	// t_vec3f			vn;
-// 	uint32_t		v_idx[3];
-
-	
-// 	// t_material		material;
-// }	t_tri;
-
-
-// typedef t_vec3ui uint32_t[3];
+}			t_aabb;
 
 typedef struct s_tri_mesh
 {
@@ -206,7 +163,6 @@ typedef struct s_tri_mesh
 	t_vec3ui		*vt_idx;	// texture index
 	uint32_t		*mat_idx;	// material index
 	// float			*vertices;
-
 	// t_vec3ui		*v_idx;
 	// t_vec3ui		*vn_idx;
 	// t_vec3ui		*vt_idx;
@@ -220,10 +176,8 @@ typedef struct s_tri_mesh
 
 typedef struct s_sphere
 {
-	// t_vec3		position;
 	t_vec3f		pos_f;
-	// t_vec3f		position;
-	
+
 	float		radius;
 	t_material	material;
 }	t_sphere;
@@ -267,41 +221,33 @@ typedef struct s_hdri
 
 typedef struct s_scene
 {
-	// t_ambient	ambient;
+	float			*vertices;
+	float			*tex_coords;
+	t_material		*materials;
+	uint32_t		num_materials;
 
-	float		*vertices;
-	float		*tex_coords;
-	t_material	*materials;
-	uint32_t	num_materials;
-	
-	t_sphere	*spheres;
-	t_inv_plane	*inv_planes;
-	t_cylinder	*cylinders;
+	t_sphere		*spheres;
+	t_inv_plane		*inv_planes;
+	t_cylinder		*cylinders;
 
-	t_bvh_node	*bvh_spheres_f;
-	t_bvh_node	*bvh_meshes;
+	t_bvh_node		*bvh_spheres_f;
+	t_bvh_node		*bvh_meshes;
 
-	t_tri_mesh	*tri_meshes;
-	uint32_t	num_tri_meshes;
-	
-
-	// t_cylinder	*cylinders;
-
+	t_tri_mesh		*tri_meshes;
+	uint32_t		num_tri_meshes;
 
 	t_point_light	*point_lights;
 
-
 	t_hdri			hdri;
 
+	float			ambient_light;
 
-	float	ambient_light;
-
-	t_vec3f		ambient_color;
-	t_camera	camera;
+	t_vec3f			ambient_color;
+	t_camera		camera;
 
 	// render sky in bakcground
-	bool		sky;
-}				t_scene;
+	bool			sky;
+}					t_scene;
 
 typedef struct s_data
 {
@@ -311,7 +257,6 @@ typedef struct s_data
 	mlx_image_t		*img;
 }				t_data;
 
-
 typedef struct s_bvh_node
 {
 	// void	*object;
@@ -319,28 +264,25 @@ typedef struct s_bvh_node
 	// t_sphere	sphere;
 	uint32_t	start;
 	uint32_t	end;
-	t_aabb aabb;
-	struct s_bvh_node *left;
-	struct s_bvh_node *right;
-	bool is_leaf;
+	t_aabb		aabb;
+	t_bvh_node	*left;
+	t_bvh_node	*right;
+	bool		is_leaf;
 }	t_bvh_node;
 
 typedef struct s_hitinfo
 {
-	bool	hit;
-	float	distance;
+	bool		hit;
+	float		distance;
 	// t_vec3	position;
 	// t_vec3	normal;
-	t_vec3f	position;
-	t_vec3f	normal;
-	bool	inside;
+	t_vec3f		position;
+	t_vec3f		normal;
+	bool		inside;
 
 	t_material	material;
 	// t_vec3		color;
-	
 }	t_hitinfo;
-
-
 
 //? helper structs
 typedef struct s_ray_utils
