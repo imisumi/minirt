@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: imisumi-wsl <imisumi-wsl@student.42.fr>    +#+  +:+       +#+         #
+#    By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2024/04/22 21:47:03 by imisumi-wsl      ###   ########.fr        #
+#    Updated: 2024/06/03 14:35:01 by imisumi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,6 +95,11 @@ run: all
 
 val: all
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+
+norm:
+	norminette $(SRCDIR) includes/constants.h includes/darray.h includes/minirt.h includes/struct.h
+	norminette lib/libft/src lib/libft/includes
+	norminette lib/lib3d/srcs lib/lib3d/includes
 
 rerun: re
 	./$(NAME)
