@@ -6,7 +6,7 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/06/03 12:24:34 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/06/13 15:24:11 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 bool	check_file_extension(const char *file, const char *ext)
 {
-	size_t	i;
-	size_t	len;
-	size_t	ext_len;
+	size_t			i;
+	const size_t	len = ft_strlen(file);
+	const size_t	ext_len = ft_strlen(ext);
 
-	len = ft_strlen(file);
-	ext_len = ft_strlen(ext);
 	if (len < ext_len)
 		return (false);
 	i = 0;

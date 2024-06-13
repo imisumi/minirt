@@ -1,0 +1,8 @@
+C  0,0,3   0,0,-1   60
+HDRI      assets/hdri/sun_sky.exr
+
+OBJ     assets/obj/tex-normal.obj
+# OBJ     assets/obj/3_cubes.obj
+# OBJ     assets/obj/5_colors.obj
+
+# pl 0,-1,0   0,1,0   122,122,122
