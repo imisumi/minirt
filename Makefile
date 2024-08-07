@@ -6,7 +6,7 @@
 #    By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/28 00:51:40 by ichiro            #+#    #+#              #
-#    Updated: 2024/06/13 15:17:46 by imisumi          ###   ########.fr        #
+#    Updated: 2024/08/07 13:29:45 by imisumi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CFLAGS += -I./lib/MLX42/include/
 CFLAGS += -I./lib/tinyEXR/
 
 CC = gcc -O2
-CC += -Wall -Wextra -Werror
+CC += -Wall -Wextra -Werror -g -fsanitize=address
 # CC += -g -fsanitize=thread -pthread
 # CC += -Wuninitialized -Wall -Wextra -Werror
 

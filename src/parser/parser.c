@@ -6,7 +6,7 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 00:29:56 by ichiro            #+#    #+#             */
-/*   Updated: 2024/06/03 12:38:15 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/08/07 13:33:42 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static bool	parse_type(char *line, t_scene *scene)
 		return (false);
 	}
 	ft_split_free(split);
-	free(line);
 	return (true);
 }
 
@@ -109,8 +108,6 @@ bool	parse_map(t_scene *scene, const char *file)
 				return (false);
 			}
 		}
+		free(line);
 	}
-	cleanup_gnl(line, fd);
-	close(fd);
-	return (true);
 }

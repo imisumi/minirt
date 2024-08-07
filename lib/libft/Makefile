@@ -6,7 +6,7 @@
 #    By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 12:43:01 by imisumi           #+#    #+#              #
-#    Updated: 2024/02/05 14:52:28 by imisumi          ###   ########.fr        #
+#    Updated: 2024/08/07 13:27:06 by imisumi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ HEADER = includes/libft.h
 
 CC = gcc -O2 #-pg
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 
 OBJS_DIR = objs
 SRC_DIR = src

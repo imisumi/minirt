@@ -6,7 +6,7 @@
 /*   By: imisumi <imisumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 01:16:18 by ichiro            #+#    #+#             */
-/*   Updated: 2024/06/13 15:24:11 by imisumi          ###   ########.fr       */
+/*   Updated: 2024/08/07 13:38:52 by imisumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,5 @@ int	main(int argc, char *argv[])
 	recalculat_ray_directions(&data);
 	if (run_mlx(&data) == false)
 		return (print_error("Error"));
-	return (EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
