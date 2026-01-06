@@ -12,13 +12,13 @@
 
 /**
  *
- * MLX42 is a cross-platform low level and simple cross-platform graphics
+ * MLX42 is a cross-platform low level and simple graphics
  * library written in C and uses OpenGL and GLFW for it's underlying windowing
  * and rendering system.
  * 
  * It's a much more up-to-date alternative to the miniLibX which has been
  * extensively proven to be fragile, unmaintained, deprecated and just
- * plain painfully bad to work with. Also it's code quality is dubious.
+ * plain painfully bad to work with. Also its code quality is dubious.
  * 
  * Some structs contain potential void* which are to be ignored as they 
  * simply represent points of abstraction to the hidden internal header.
@@ -592,7 +592,7 @@ void mlx_get_window_pos(mlx_t* mlx, int32_t* xpos, int32_t* ypos);
 
 /**
  * Changes the window size to the newly specified values.
- * Use this to update the window width and heigth values in the mlx handle.
+ * Use this to update the window width and height values in the mlx handle.
  * 
  * @param[in] mlx The MLX instance handle.
  * @param[in] new_width The new desired width.
@@ -857,7 +857,7 @@ mlx_image_t* mlx_new_image(mlx_t* mlx, uint32_t width, uint32_t height);
  * NOT the pointer! It will become invalid!
  * 
  * WARNING: Try to display as few images on the window as possible,
- * drawing too many images will cause a loss in peformance!
+ * drawing too many images will cause a loss in performance!
  * 
  * @param[in] mlx The MLX instance handle.
  * @param[in] img The image to draw on the screen.
