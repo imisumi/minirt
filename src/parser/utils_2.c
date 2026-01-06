@@ -59,17 +59,19 @@ bool	parse_8bit_color(char *line, t_vec3f *col)
 bool	parse_vec3(char *line, t_vec3f *vec)
 {
 	char	**split;
+	float	*v;
 
 	split = ft_split(line, ',');
 	if (split == NULL)
 		return (false);
 	if (ft_split_count(split) != 3)
 		return (ft_split_free(split), false);
-	if (ft_stof(split[0], &vec[0][X]) == false)
+	v = (float *)&vec[0];
+	if (ft_stof(split[0], &v[X]) == false)
 		return (ft_split_free(split), false);
-	if (ft_stof(split[1], &vec[0][Y]) == false)
+	if (ft_stof(split[1], &v[Y]) == false)
 		return (ft_split_free(split), false);
-	if (ft_stof(split[2], &vec[0][Z]) == false)
+	if (ft_stof(split[2], &v[Z]) == false)
 		return (ft_split_free(split), false);
 	if (isinf(vec[0][X]) || isinf(vec[0][Y]) || isinf(vec[0][Z]))
 	{

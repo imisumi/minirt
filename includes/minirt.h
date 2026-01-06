@@ -23,8 +23,6 @@
 # include <sys/stat.h>
 # include <unistd.h>
 
-# include <GLFW/glfw3.h>
-
 # include "tinyexr.h"
 # include "MLX42/MLX42.h"
 # include "libft.h"

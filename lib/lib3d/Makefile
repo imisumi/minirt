@@ -54,7 +54,7 @@ $(NAME): $(OBJS)
 				
 $(OBJ_DIR)%.o: %.c $(HEADERS)
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ $(LFLAGS)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	@echo "$(BLUE)[Compiling $<]$(NC)"
 	@printf "$(RESET_LINE)"
 

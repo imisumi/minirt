@@ -53,10 +53,26 @@ LFLAGS += -lstdc++
 
 
 OS := $(shell uname -m)
+UNAME_S := $(shell uname -s)
+
 ifeq ($(OS), arm64)
+ifeq ($(UNAME_S), Darwin)
+# Try pkg-config first, fallback to homebrew paths
+GLFW_CFLAGS := $(shell pkg-config --cflags glfw3 2>/dev/null || echo "-I/opt/homebrew/include")
+GLFW_LDFLAGS := $(shell pkg-config --libs-only-L glfw3 2>/dev/null || echo "-L/opt/homebrew/lib")
+CFLAGS += $(GLFW_CFLAGS)
+LFLAGS += $(GLFW_LDFLAGS)
+endif
 LFLAGS += -framework Cocoa -framework OpenGl -framework IOKit -lglfw
 $(info arm64)
 else ifeq ($(OS),x86_64)
+ifeq ($(UNAME_S), Darwin)
+# Try pkg-config first, fallback to standard paths
+GLFW_CFLAGS := $(shell pkg-config --cflags glfw3 2>/dev/null || echo "-I/usr/local/include")
+GLFW_LDFLAGS := $(shell pkg-config --libs-only-L glfw3 2>/dev/null || echo "-L/usr/local/lib")
+CFLAGS += $(GLFW_CFLAGS)
+LFLAGS += $(GLFW_LDFLAGS)
+endif
 LFLAGS += -ldl -lglfw -pthread -lm
 $(info x86_64)
 endif
@@ -67,7 +83,7 @@ $(NAME): $(OBJECTS) $(MLX) $(LIBFT) $(LIB3D) $(TINYEXR)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c $< -o $@ 
+	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "$(CYAN)[Created $@]$(NC)"
 
 $(MLX):

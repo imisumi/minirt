@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include <GLFW/glfw3.h>
 
 void	put_pixel(mlx_image_t *image, uint32_t x, uint32_t y, uint32_t color)
 {
